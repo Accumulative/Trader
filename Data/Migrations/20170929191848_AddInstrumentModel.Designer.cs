@@ -8,9 +8,10 @@ using Trader.Data;
 namespace Trader.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170929191848_AddInstrumentModel")]
+    partial class AddInstrumentModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -185,31 +186,6 @@ namespace Trader.Data.Migrations
                     b.ToTable("InstrumentModel");
                 });
 
-            modelBuilder.Entity("Trader.Models.TradeImportModels.TradeImport", b =>
-                {
-                    b.Property<int>("TradeImportID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ExternalReference")
-                        .IsRequired();
-
-                    b.Property<DateTime>("ImportDate");
-
-                    b.Property<int>("InstrumentModelID");
-
-                    b.Property<decimal>("Quantity");
-
-                    b.Property<DateTime>("TransactionDate");
-
-                    b.Property<decimal>("Value");
-
-                    b.HasKey("TradeImportID");
-
-                    b.HasIndex("InstrumentModelID");
-
-                    b.ToTable("TradeImport");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -244,14 +220,6 @@ namespace Trader.Data.Migrations
                     b.HasOne("Trader.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Trader.Models.TradeImportModels.TradeImport", b =>
-                {
-                    b.HasOne("Trader.Models.TradeImportModels.InstrumentModel", "Instrument")
-                        .WithMany()
-                        .HasForeignKey("InstrumentModelID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

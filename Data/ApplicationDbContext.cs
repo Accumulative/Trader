@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Trader.Models;
+using Trader.Models.TradeImportModels;
 
 namespace Trader.Data
 {
@@ -22,5 +23,9 @@ namespace Trader.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Trader.Models.TradeImportModels.InstrumentModel> InstrumentModel { get; set; }
+
+        public DbSet<Trader.Models.TradeImportModels.TradeImport> TradeImport { get; set; }
     }
 }
