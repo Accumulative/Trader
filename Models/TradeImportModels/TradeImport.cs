@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,8 +17,16 @@ namespace Trader.Models.TradeImportModels
         [Display(Name = "External Reference")]
         public string ExternalReference { get; set; }
 
+
 		[Required]
-		public InstrumentModel Instrument { get; set; }
+		[Display(Name = "Transaction type")]
+        public TransactionType type { get; set; }
+
+        [Required]
+		public Instrument Instrument { get; set; }
+
+        [ForeignKey("Instrument")]
+        public int InstrumentId { get; set; }
 
         [Required]
 		public decimal Value { get; set; }

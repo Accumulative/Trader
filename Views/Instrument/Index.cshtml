@@ -1,4 +1,4 @@
-@model IEnumerable<Trader.Models.TradeImportModels.InstrumentModel>
+@model IEnumerable<Trader.Models.TradeImportModels.Instrument>
 
 @{
     ViewData["Title"] = "Index";
@@ -25,9 +25,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.InstrumentModelID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.InstrumentModelID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.InstrumentModelID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.InstrumentID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.InstrumentID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.InstrumentID">Delete</a>
             </td>
         </tr>
 }

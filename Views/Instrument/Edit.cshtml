@@ -1,4 +1,4 @@
-@model Trader.Models.TradeImportModels.InstrumentModel
+@model Trader.Models.TradeImportModels.Instrument
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,10 +8,10 @@
 
 <form asp-action="Edit">
     <div class="form-horizontal">
-        <h4>InstrumentModel</h4>
+        <h4>Instrument</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="InstrumentModelID" />
+    <input type="hidden" asp-for="InstrumentID" />
         <div class="form-group">
             <label asp-for="Name" class="col-md-2 control-label"></label>
             <div class="col-md-10">

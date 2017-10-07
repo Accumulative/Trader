@@ -1,4 +1,4 @@
-@model Trader.Models.TradeImportModels.InstrumentModel
+@model Trader.Models.TradeImportModels.Instrument
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,10 +8,10 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>InstrumentModel</h4>
+    <h4>Instrument</h4>
     <hr />
     <dl class="dl-horizontal">
-        <input type="hidden" asp-for="InstrumentModelID" />
+        <input type="hidden" asp-for="InstrumentID" />
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>

@@ -36,5 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Models\TradeImportModels\" />
+    <Folder Include="Models\TaxModels\" />
+    <Folder Include="Models\ReportModels\" />
   </ItemGroup>
 </Project>

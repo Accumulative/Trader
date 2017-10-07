@@ -14,15 +14,28 @@ namespace Trader.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public TradeImportController(ApplicationDbContext context)
-        {
-            _context = context;    
+
+		public TradeImportController(ApplicationDbContext context)
+		{
+			_context = context;
         }
 
         // GET: TradeImport
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TradeImport.ToListAsync());
+            var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).ToListAsync();
+
+            var trades = tradesAsync.Select(x => new TradeImportIndexModel()
+            {
+                TradeImportID = x.TradeImportID,
+                ExternalReference = x.ExternalReference,
+                Instrument = x.Instrument.Name,
+                Value = x.Value,
+                Quantity = x.Quantity,
+                TransactionDate = x.TransactionDate,
+                ImportDate = x.ImportDate
+            });
+            return View(trades);
         }
 
         // GET: TradeImport/Details/5
@@ -44,9 +57,14 @@ namespace Trader.Controllers
         }
 
         // GET: TradeImport/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            IEnumerable<Instrument> instrument = await _context.InstrumentCache();
+            var instruments = instrument.OrderBy(c => c.Name).Select(x => new { Id = x.InstrumentID, Value = x.Name });
+			var model = new TradeImportViewModel();
+			model.InstrumentList = new SelectList(instruments, "Id", "Value");
+
+			return View(model);
         }
 
         // POST: TradeImport/Create
@@ -54,15 +72,32 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TradeImportID,ExternalReference,Value,Quantity,TransactionDate,ImportDate")] TradeImport tradeImport)
+        public async Task<IActionResult> Create(string ExternalReference, int InstrumentId, decimal Value, decimal Quantity,DateTime TransactionDate)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tradeImport);
+                TradeImport trade = new TradeImport()
+                {
+                    ExternalReference = ExternalReference,
+                    InstrumentId = InstrumentId,
+                    Value = Value,
+                    Quantity = Quantity,
+                    TransactionDate = TransactionDate,
+                    ImportDate = DateTime.Now
+                };
+                _context.Add(trade);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(tradeImport);
+			IEnumerable<Instrument> instrument = await _context.InstrumentCache();
+            var instruments = instrument.OrderBy(c => c.Name).Select(x => new { Id = x.InstrumentID, Value = x.Name });
+			var model = new TradeImportViewModel(); //tradeImport;
+            model.ExternalReference = ExternalReference;
+            model.Quantity = Quantity;
+            model.Value = Value;
+            model.TransactionDate = TransactionDate;
+			model.InstrumentList = new SelectList(instruments, "Id", "Value", InstrumentId);
+            return View(model);
         }
 
         // GET: TradeImport/Edit/5

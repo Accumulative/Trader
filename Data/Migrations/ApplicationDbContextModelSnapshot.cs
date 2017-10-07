@@ -173,16 +173,16 @@ namespace Trader.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Trader.Models.TradeImportModels.InstrumentModel", b =>
+            modelBuilder.Entity("Trader.Models.TradeImportModels.Instrument", b =>
                 {
-                    b.Property<int>("InstrumentModelID")
+                    b.Property<int>("InstrumentID")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
-                    b.HasKey("InstrumentModelID");
+                    b.HasKey("InstrumentID");
 
-                    b.ToTable("InstrumentModel");
+                    b.ToTable("Instrument");
                 });
 
             modelBuilder.Entity("Trader.Models.TradeImportModels.TradeImport", b =>
@@ -195,7 +195,7 @@ namespace Trader.Data.Migrations
 
                     b.Property<DateTime>("ImportDate");
 
-                    b.Property<int>("InstrumentModelID");
+                    b.Property<int>("InstrumentId");
 
                     b.Property<decimal>("Quantity");
 
@@ -205,7 +205,7 @@ namespace Trader.Data.Migrations
 
                     b.HasKey("TradeImportID");
 
-                    b.HasIndex("InstrumentModelID");
+                    b.HasIndex("InstrumentId");
 
                     b.ToTable("TradeImport");
                 });
@@ -249,9 +249,9 @@ namespace Trader.Data.Migrations
 
             modelBuilder.Entity("Trader.Models.TradeImportModels.TradeImport", b =>
                 {
-                    b.HasOne("Trader.Models.TradeImportModels.InstrumentModel", "Instrument")
+                    b.HasOne("Trader.Models.TradeImportModels.Instrument", "Instrument")
                         .WithMany()
-                        .HasForeignKey("InstrumentModelID")
+                        .HasForeignKey("InstrumentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

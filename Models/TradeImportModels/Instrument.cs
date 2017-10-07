@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Trader.Models.TradeImportModels
 {
-    public class InstrumentModel
+    public class Instrument
     {
-		public int InstrumentModelID { get; set; }
+		public int InstrumentID { get; set; }
 		public string Name { get; set; }
-        public InstrumentModel()
+        public Instrument()
         {
             
         }

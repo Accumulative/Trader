@@ -13,16 +13,18 @@ namespace Trader.Controllers
     public class InstrumentController : Controller
     {
         private readonly ApplicationDbContext _context;
+		
 
         public InstrumentController(ApplicationDbContext context)
         {
-            _context = context;    
-        }
+            _context = context;
 
+        }
+		
         // GET: Instrument
         public async Task<IActionResult> Index()
         {
-            return View(await _context.InstrumentModel.ToListAsync());
+            return View(await _context.InstrumentCache());
         }
 
         // GET: Instrument/Details/5
@@ -33,14 +35,15 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var instrumentModel = await _context.InstrumentModel
-                .SingleOrDefaultAsync(m => m.InstrumentModelID == id);
-            if (instrumentModel == null)
+            IEnumerable<Instrument> instrument = await _context.InstrumentCache();
+            var list = instrument
+                .SingleOrDefault(m => m.InstrumentID == id);
+            if (instrument == null)
             {
                 return NotFound();
             }
 
-            return View(instrumentModel);
+            return View(list);
         }
 
         // GET: Instrument/Create
@@ -54,15 +57,15 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstrumentModelID,Name")] InstrumentModel instrumentModel)
+        public async Task<IActionResult> Create([Bind("InstrumentID,Name")] Instrument instrument)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(instrumentModel);
+                _context.Add(instrument);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(instrumentModel);
+            return View(instrument);
         }
 
         // GET: Instrument/Edit/5
@@ -73,12 +76,13 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var instrumentModel = await _context.InstrumentModel.SingleOrDefaultAsync(m => m.InstrumentModelID == id);
-            if (instrumentModel == null)
+            IEnumerable<Instrument> list = await _context.InstrumentCache();
+            var instrument = list.SingleOrDefault(m => m.InstrumentID == id);
+            if (instrument == null)
             {
                 return NotFound();
             }
-            return View(instrumentModel);
+            return View(instrument);
         }
 
         // POST: Instrument/Edit/5
@@ -86,9 +90,9 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstrumentModelID,Name")] InstrumentModel instrumentModel)
+        public async Task<IActionResult> Edit(int id, [Bind("InstrumentID,Name")] Instrument instrument)
         {
-            if (id != instrumentModel.InstrumentModelID)
+            if (id != instrument.InstrumentID)
             {
                 return NotFound();
             }
@@ -97,12 +101,12 @@ namespace Trader.Controllers
             {
                 try
                 {
-                    _context.Update(instrumentModel);
+                    _context.Update(instrument);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InstrumentModelExists(instrumentModel.InstrumentModelID))
+                    if (!InstrumentExists(instrument.InstrumentID))
                     {
                         return NotFound();
                     }
@@ -113,7 +117,7 @@ namespace Trader.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(instrumentModel);
+            return View(instrument);
         }
 
         // GET: Instrument/Delete/5
@@ -124,14 +128,14 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var instrumentModel = await _context.InstrumentModel
-                .SingleOrDefaultAsync(m => m.InstrumentModelID == id);
-            if (instrumentModel == null)
+			IEnumerable<Instrument> list = await _context.InstrumentCache();
+			var instrument = list.SingleOrDefault(m => m.InstrumentID == id);
+            if (instrument == null)
             {
                 return NotFound();
             }
 
-            return View(instrumentModel);
+            return View(instrument);
         }
 
         // POST: Instrument/Delete/5
@@ -139,15 +143,15 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instrumentModel = await _context.InstrumentModel.SingleOrDefaultAsync(m => m.InstrumentModelID == id);
-            _context.InstrumentModel.Remove(instrumentModel);
+            var instrument = await _context.Instrument.SingleOrDefaultAsync(m => m.InstrumentID == id);
+            _context.Instrument.Remove(instrument);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool InstrumentModelExists(int id)
+        private bool InstrumentExists(int id)
         {
-            return _context.InstrumentModel.Any(e => e.InstrumentModelID == id);
+            return _context.Instrument.Any(e => e.InstrumentID == id);
         }
     }
 }
