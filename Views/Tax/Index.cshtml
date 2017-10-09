@@ -1,0 +1,75 @@
+@model IEnumerable<Trader.Models.TaxModels.TaxEventModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.TaxEventID)
+                </th>
+			    <th>
+                    @Html.DisplayNameFor(model => model.StartValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+			    <th>
+                    @Html.DisplayNameFor(model => model.Instrument)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+			    <th>
+                    @Html.DisplayNameFor(model => model.TotalValue)
+                </th>
+			    <th>
+                    @Html.DisplayNameFor(model => model.TaxableValue)
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxEventID)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.StartValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instrument)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.TotalValue)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.TaxableValue)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
