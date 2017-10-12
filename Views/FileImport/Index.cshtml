@@ -1,0 +1,47 @@
+@model IEnumerable<Trader.Models.FileImportModels.FileImport>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Filename)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImportDate)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Exchange)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Filename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImportDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Exchange.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FileImportId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FileImportId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FileImportId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

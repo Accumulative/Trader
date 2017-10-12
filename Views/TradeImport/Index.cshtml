@@ -1,4 +1,4 @@
-@model IEnumerable<Trader.Models.TradeImportModels.TradeImportIndexModel>
+@model IEnumerable<Trader.Models.TradeImportModels.TradeImport>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,6 +10,9 @@
     <a asp-action="Create">Create New</a>
 </p>
 <p>
+    <a asp-action="Import">Import</a>
+</p>
+<p>
     <a href="/Tax/Index">Get Taxes</a>
 </p>
 <table class="table">
@@ -19,7 +22,10 @@
                     @Html.DisplayNameFor(model => model.ExternalReference)
                 </th>
 			    <th>
-                    @Html.DisplayNameFor(model => model.Instrument)
+                    @Html.DisplayNameFor(model => model.TransactionType)
+                </th>
+			    <th>
+                    @Html.DisplayNameFor(model => model.Instrument.Name)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Value)
@@ -30,9 +36,12 @@
                 <th>
                     @Html.DisplayNameFor(model => model.TransactionDate)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImportDate)
+			    <th>
+                    @Html.DisplayNameFor(model => model.TransactionFee)
                 </th>
+			    <th>
+				    @Html.DisplayNameFor(model => model.FileImport)
+			    </th>
             <th></th>
         </tr>
     </thead>
@@ -43,7 +52,10 @@
                 @Html.DisplayFor(modelItem => item.ExternalReference)
             </td>
 			<td>
-                @Html.DisplayFor(modelItem => item.Instrument)
+                @Html.DisplayFor(modelItem => item.TransactionType)
+            </td>
+			<td>
+                @Html.DisplayFor(modelItem => item.Instrument.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Value)
@@ -51,11 +63,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
+			
             <td>
                 @Html.DisplayFor(modelItem => item.TransactionDate)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImportDate)
+			<td>
+                @Html.DisplayFor(modelItem => item.TransactionFee) @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+			<td>
+                <a asp-controller="FileImport" asp-action="Details" asp-route-id="@item.FileImportId">Import</a>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TradeImportID">Edit</a> |

@@ -39,5 +39,6 @@
     <Folder Include="Models\TaxModels\" />
     <Folder Include="Models\ReportModels\" />
     <Folder Include="Views\Tax\" />
+    <Folder Include="Models\FileImportModels\" />
   </ItemGroup>
 </Project>

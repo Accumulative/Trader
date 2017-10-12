@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Trader.Data;
+using Trader.Models.TradeImportModels;
 
-namespace Trader.Data.Migrations
+namespace Trader.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171004174627_TradeLinkInstrument")]
-    partial class TradeLinkInstrument
+    [Migration("20171011180149_Exchange_mig")]
+    partial class Exchange_mig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -201,6 +202,8 @@ namespace Trader.Data.Migrations
                     b.Property<decimal>("Quantity");
 
                     b.Property<DateTime>("TransactionDate");
+
+                    b.Property<int>("TransactionType");
 
                     b.Property<decimal>("Value");
 

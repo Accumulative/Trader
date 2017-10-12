@@ -1,0 +1,36 @@
+@model Trader.Models.FileImportModels.FileImport
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>FileImport</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Filename)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Filename)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ImportDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ImportDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Exchange)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Exchange.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.FileImportId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

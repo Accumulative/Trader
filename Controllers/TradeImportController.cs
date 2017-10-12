@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Trader.Data;
+using Trader.Models;
+using Trader.Models.FileImportModels;
 using Trader.Models.TradeImportModels;
 
 namespace Trader.Controllers
@@ -25,7 +30,7 @@ namespace Trader.Controllers
         {
             var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).ToListAsync();
 
-            var trades = tradesAsync.Select(x => new TradeImportIndexModel()
+            /*var trades = tradesAsync.Select(x => new TradeImportIndexModel()
             {
                 TradeImportID = x.TradeImportID,
                 ExternalReference = x.ExternalReference,
@@ -34,8 +39,8 @@ namespace Trader.Controllers
                 Quantity = x.Quantity,
                 TransactionDate = x.TransactionDate,
                 ImportDate = x.ImportDate
-            });
-            return View(trades);
+            });*/
+            return View(tradesAsync);
         }
 
         // GET: TradeImport/Details/5
@@ -183,6 +188,71 @@ namespace Trader.Controllers
         private bool TradeImportExists(int id)
         {
             return _context.TradeImport.Any(e => e.TradeImportID == id);
+        }
+
+        public async Task<IActionResult> Import()
+        {
+			IEnumerable<Instrument> instrument = await _context.InstrumentCache();
+            IEnumerable<Exchange> exchange = await _context.ExchangeCache();
+			var instruments = instrument.OrderBy(c => c.Name).Select(x => new { Id = x.InstrumentID, Value = x.Name });
+            var exchanges = exchange.OrderBy(c => c.Name).Select(x => new { Id = x.ExchangeId, Value = x.Name });
+            var model = new ImportModel();
+            model.ExchangeList = new SelectList(exchanges, "Id", "Value");
+			model.InstrumentList = new SelectList(instruments, "Id", "Value");
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Import(IFormFile file, int selInstrument, int selExchange)
+        {
+            int count = 0;
+            FileImport fileImport;
+            using (var reader = new StreamReader(file.OpenReadStream()))
+            {
+                //var fileContent = reader.ReadToEnd();
+                var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
+                fileImport = new FileImport
+                {
+                    Filename = parsedContentDisposition.FileName,
+                    ExchangeId = selExchange,
+                    ImportDate = DateTime.Now,
+
+                };
+                _context.FileImport.Add(fileImport);
+				while (!reader.EndOfStream)
+				{
+					var line = reader.ReadLine();
+                    count += 1;
+                    if (count >= 5)
+                    {
+                        var data = line.Split(new[] { ',' });
+                        var trade = new TradeImport()
+                        {
+                            ExternalReference = data[9],
+                            Value = decimal.Parse(data[7]),
+                            Quantity = decimal.Parse(data[2]),
+                            InstrumentId = selInstrument, //to get from a dropdown
+                            FileImport = fileImport,
+                            ImportDate = DateTime.Now,
+                            TransactionType = data[1] == "Buy" ? TransactionType.Buy : TransactionType.Sell,
+                            TransactionDate = DateTime.Parse(data[0]),
+                            Currency = (Currency)Enum.Parse(typeof(Currency),data[6]),
+                            TransactionFee = decimal.Parse(data[4])
+
+                        };
+                        _context.TradeImport.Add(trade);
+                    }
+				}
+
+				_context.SaveChanges();
+            }
+            return RedirectToAction("Result");
+        }
+        public async Task<IActionResult> Result()
+        {
+			ViewData["Message"] = "Submission successful";
+            return View();
         }
     }
 }

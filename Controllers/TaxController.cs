@@ -37,7 +37,7 @@ namespace Trader.Controllers
             foreach (var item in sorted)
             {
 
-                if (item.type == TransactionType.Buy)
+                if (item.TransactionType == TransactionType.Buy)
                 {
                     holder.Add(item);
                 }

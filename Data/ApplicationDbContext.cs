@@ -8,6 +8,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Trader.Models;
 using Trader.Models.TradeImportModels;
+using Trader.Models.FileImportModels;
 
 namespace Trader.Data
 {
@@ -15,6 +16,7 @@ namespace Trader.Data
     {
         ILoggerFactory _loggerFactory;
         private const string BlahCacheKey = "blah-cache-key";
+        private const string BlahCacheKey2 = "blah-cache-key2";
         private readonly IMemoryCache _cache;
 
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILoggerFactory loggerFactory, IMemoryCache cache)
@@ -27,7 +29,7 @@ namespace Trader.Data
 
 		public async Task<IEnumerable<Instrument>> InstrumentCache()
 		{
-			if (_cache.TryGetValue(BlahCacheKey, out IEnumerable<Instrument> instruments))
+            if (_cache.TryGetValue(BlahCacheKey, out IEnumerable<Instrument> instruments))
 			{
 				return instruments;
 			}
@@ -37,8 +39,22 @@ namespace Trader.Data
 			_cache.Set(BlahCacheKey, instruments);
 
 			return instruments;
+            /*return await Instrument.ToListAsync();*/
 		}
+		public async Task<IEnumerable<Exchange>> ExchangeCache()
+		{
+			if (_cache.TryGetValue(BlahCacheKey2, out IEnumerable<Exchange> exchanges))
+			{
+				return exchanges;
+			}
 
+			exchanges = await Exchange.ToListAsync();
+
+			_cache.Set(BlahCacheKey2, exchanges);
+
+			return exchanges;
+			/*return await Instrument.ToListAsync();*/
+		}
         public void UpdateCache()
         {
 			var logger = _loggerFactory.CreateLogger("LoggerCategory");
@@ -56,5 +72,9 @@ namespace Trader.Data
         public DbSet<Trader.Models.TradeImportModels.TradeImport> TradeImport { get; set; }
 
         public DbSet<Trader.Models.TradeImportModels.Instrument> Instrument { get; set; }
+
+        public DbSet<Trader.Models.FileImportModels.Exchange> Exchange { get; set; }
+
+        public DbSet<Trader.Models.FileImportModels.FileImport> FileImport { get; set; }
     }
 }

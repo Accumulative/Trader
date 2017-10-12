@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Trader.Models.FileImportModels;
 
 namespace Trader.Models.TradeImportModels
 {
@@ -17,10 +18,14 @@ namespace Trader.Models.TradeImportModels
         [Display(Name = "External Reference")]
         public string ExternalReference { get; set; }
 
+        [Required]
+        public int FileImportId { get; set; }
+
+        public FileImport FileImport { get; set; }
 
 		[Required]
 		[Display(Name = "Transaction type")]
-        public TransactionType type { get; set; }
+        public TransactionType TransactionType { get; set; }
 
         [Required]
 		public Instrument Instrument { get; set; }
@@ -41,5 +46,10 @@ namespace Trader.Models.TradeImportModels
         [Required]
         [Display(Name = "Import date")]
         public DateTime ImportDate { get; set; } 
+
+        public decimal TransactionFee { get; set; }
+
+        public Currency Currency { get; set; }
+
 	}
 }

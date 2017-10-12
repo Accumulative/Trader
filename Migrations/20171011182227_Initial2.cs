@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Trader.Data.Migrations
+namespace Trader.Migrations
 {
-    public partial class TradeImport_mig : Migration
+    public partial class Initial2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

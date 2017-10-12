@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Trader.Data.Migrations
+namespace Trader.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,6 +60,19 @@ namespace Trader.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Instrument",
+                columns: table => new
+                {
+                    InstrumentID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Instrument", x => x.InstrumentID);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,10 +161,36 @@ namespace Trader.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TradeImport",
+                columns: table => new
+                {
+                    TradeImportID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ExternalReference = table.Column<string>(nullable: false),
+                    ImportDate = table.Column<DateTime>(nullable: false),
+                    InstrumentId = table.Column<int>(nullable: false),
+                    Quantity = table.Column<decimal>(nullable: false),
+                    TransactionDate = table.Column<DateTime>(nullable: false),
+                    TransactionType = table.Column<int>(nullable: false),
+                    Value = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TradeImport", x => x.TradeImportID);
+                    table.ForeignKey(
+                        name: "FK_TradeImport_Instrument_InstrumentId",
+                        column: x => x.InstrumentId,
+                        principalTable: "Instrument",
+                        principalColumn: "InstrumentID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
-                column: "NormalizedName");
+                column: "NormalizedName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -176,11 +213,6 @@ namespace Trader.Data.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_UserId",
-                table: "AspNetUserRoles",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
@@ -190,6 +222,11 @@ namespace Trader.Data.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TradeImport_InstrumentId",
+                table: "TradeImport",
+                column: "InstrumentId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -210,10 +247,16 @@ namespace Trader.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "TradeImport");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Instrument");
         }
     }
 }
