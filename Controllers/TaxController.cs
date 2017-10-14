@@ -45,7 +45,8 @@ namespace Trader.Controllers
                 {
                     decimal remaining = item.Quantity;
 
-                    foreach (var item2 in holder.Where(x => x.InstrumentId == item.InstrumentId))
+                    foreach (var item2 in holder.Where(x => x.InstrumentId == item.InstrumentId).ToArray())
+                        //Iterate through a copy so we dont get an error about changing array mid loop (ToArray)
                     {
                         if (remaining > 0)
                         {
@@ -60,7 +61,9 @@ namespace Trader.Controllers
                                     Instrument = item.Instrument,
 									StartDate = item2.TransactionDate,
 									EndDate = item.TransactionDate,
-									TaxableValue = 0
+									TaxableValue = 0,
+                                    Fee = item.TransactionFee + item2.TransactionFee * remaining / item2.Quantity
+
 								});
                                 item2.Quantity -= remaining;
                                 remaining = 0;
@@ -70,13 +73,14 @@ namespace Trader.Controllers
 								taxEvents.Add(new TaxEventModel()
 								{
 									TaxEventID = id,
-									Quantity = remaining - item2.Quantity,
+									Quantity = item2.Quantity,
 									StartValue = item2.Value,
                                     EndValue = item.Value,
                                     Instrument = item.Instrument,
 									StartDate = item2.TransactionDate,
 									EndDate = item.TransactionDate,
-									TaxableValue = 0
+									TaxableValue = 0,
+                                    Fee = item.TransactionFee + item2.TransactionFee * item2.Quantity / remaining
 								});
                                 remaining -= item2.Quantity;
                                 holder.Remove(item2);

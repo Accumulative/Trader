@@ -42,5 +42,6 @@
     <Folder Include="Models\ReportModels\" />
     <Folder Include="Views\Tax\" />
     <Folder Include="Models\FileImportModels\" />
+    <Folder Include="Models\Charts\" />
   </ItemGroup>
 </Project>
