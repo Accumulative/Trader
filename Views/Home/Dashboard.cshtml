@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<h2>Dashboard</h2>
+<div class="col-md-3"><canvas width="200" height="200" id="lineChart"></canvas></div>
+<div class="col-md-3"><canvas width="200" height="200" id="lineChart2"></canvas></div>
+<div class="col-md-3"><canvas width="200" height="200" id="lineChart3"></canvas></div>
+<div class="col-md-3"><canvas width="200" height="200" id="lineChart4"></canvas></div>
+<div class="col-md-3"><canvas width="200" height="200" id="lineChart5"></canvas></div>
+
+@{ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)ViewData["chart"]; }
+
+@section Scripts {
+    <script src="~/js/Chart.min.js"></script>
+    <script>
+        @Html.Raw(chart.CreateChartCode("lineChart"));
+	@Html.Raw(chart.CreateChartCode("lineChart2"));
+	@Html.Raw(chart.CreateChartCode("lineChart3"));
+	@Html.Raw(chart.CreateChartCode("lineChart4"));
+	@Html.Raw(chart.CreateChartCode("lineChart5"));
+    </script>
+}

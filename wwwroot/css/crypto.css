@@ -1,0 +1,11 @@
+﻿body {
+}
+
+#chart_container {
+    display: inline-block;
+    padding: 1px;
+    width: 400px;
+    height: 400px;
+    border:1px solid #ddd;
+    border-radius: 4px;
+}
