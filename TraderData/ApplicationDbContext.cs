@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Trader.Models;
-using Trader.Models.TradeImportModels;
-using Trader.Models.FileImportModels;
+using TraderData.Models;
+using TraderData.Models.TradeImportModels;
+using TraderData.Models.FileImportModels;
 
-namespace Trader.Data
+namespace TraderData
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -69,12 +69,12 @@ namespace Trader.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        public DbSet<Trader.Models.TradeImportModels.TradeImport> TradeImport { get; set; }
+        public DbSet<TraderData.Models.TradeImportModels.TradeImport> TradeImport { get; set; }
 
-        public DbSet<Trader.Models.TradeImportModels.Instrument> Instrument { get; set; }
+        public DbSet<TraderData.Models.TradeImportModels.Instrument> Instrument { get; set; }
 
-        public DbSet<Trader.Models.FileImportModels.Exchange> Exchange { get; set; }
+        public DbSet<TraderData.Models.FileImportModels.Exchange> Exchange { get; set; }
 
-        public DbSet<Trader.Models.FileImportModels.FileImport> FileImport { get; set; }
+        public DbSet<TraderData.Models.FileImportModels.FileImport> FileImport { get; set; }
     }
 }

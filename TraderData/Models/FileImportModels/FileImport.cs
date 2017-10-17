@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Trader.Models.FileImportModels
+namespace TraderData.Models.FileImportModels
 {
     public class FileImport
     {
@@ -15,5 +16,11 @@ namespace Trader.Models.FileImportModels
 
         [Required]
         public int ExchangeId { get; set; }
+
+        [Required]
+		public string UserID { get; set; }
+
+		[ForeignKey("UserID")]
+		public virtual ApplicationUser User { get; set; }
     }
 }

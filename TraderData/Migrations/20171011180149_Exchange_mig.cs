@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Trader.Migrations
+namespace TraderData.Migrations
 {
     public partial class Exchange_mig : Migration
     {

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using Trader.Models;
 using Trader.Models.AccountViewModels;
 using Trader.Services;
+using TraderData.Models;
 
 namespace Trader.Controllers
 {
@@ -70,7 +71,11 @@ namespace Trader.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    if(returnUrl != null)
+                    {
+                        return RedirectToLocal(returnUrl);
+                    }
+                    return RedirectToAction("Dashboard","Home");
                 }
                 if (result.RequiresTwoFactor)
                 {

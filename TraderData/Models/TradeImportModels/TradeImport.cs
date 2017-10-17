@@ -4,9 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using Trader.Models.FileImportModels;
+using TraderData.Models.FileImportModels;
 
-namespace Trader.Models.TradeImportModels
+namespace TraderData.Models.TradeImportModels
 {
 	public class TradeImport
 	{
@@ -49,7 +49,14 @@ namespace Trader.Models.TradeImportModels
 
         public decimal TransactionFee { get; set; }
 
+
         public Currency Currency { get; set; }
+
+        [Required]
+        public string UserID { get; set; }
+
+        [ForeignKey("UserID")]
+        public virtual ApplicationUser User { get; set; }
 
 	}
 }

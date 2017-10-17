@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Trader.Models.FileImportModels
+namespace TraderData.Models.FileImportModels
 {
     public class Exchange
     {

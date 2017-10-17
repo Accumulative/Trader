@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Trader.Data;
+using TraderData;
 using Trader.Models.FileImportModels;
+using TraderData.Models.FileImportModels;
 
 namespace Trader.Controllers
 {

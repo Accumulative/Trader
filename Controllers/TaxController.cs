@@ -2,28 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Trader.Data;
+using TraderData;
+using Trader.Models;
 using Trader.Models.TaxModels;
 using Trader.Models.TradeImportModels;
 
 namespace Trader.Controllers
 {
-    
+    [Authorize]
     public class TaxController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public TaxController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+
+        public TaxController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
-            var trades = await _context.TradeImport.ToListAsync();
-            return View(await CalculateTaxEvents(trades));
+			var user = await GetCurrentUserAsync();
+
+			var userId = user?.Id;
+
+			if (userId != null)
+			{
+				var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).Where(x => x.UserID == userId).ToListAsync();
+				return View(await CalculateTaxEvents(tradesAsync));
+				
+			}
+			return NotFound();
+
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         public async Task<IEnumerable<TaxEventModel>> CalculateTaxEvents(IEnumerable<TradeImport> trades)
         {
             var sorted = trades.OrderBy(c => c.TransactionDate);

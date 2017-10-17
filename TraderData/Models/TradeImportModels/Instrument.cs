@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Trader.Models.TradeImportModels
+namespace TraderData.Models.TradeImportModels
 {
     public class Instrument
     {

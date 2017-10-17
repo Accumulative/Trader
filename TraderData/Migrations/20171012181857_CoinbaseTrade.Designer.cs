@@ -3,14 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Trader.Data;
-using Trader.Models.TradeImportModels;
+using TraderData.Data;
+using TraderData.Models;
+using TraderData.Models.TradeImportModels;
 
-namespace Trader.Migrations
+namespace TraderData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171011174409_Initial")]
-    partial class Initial
+    [Migration("20171012181857_CoinbaseTrade")]
+    partial class CoinbaseTrade
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -125,7 +126,7 @@ namespace Trader.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Trader.Models.ApplicationUser", b =>
+            modelBuilder.Entity("TraderData.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -175,7 +176,43 @@ namespace Trader.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Trader.Models.TradeImportModels.Instrument", b =>
+            modelBuilder.Entity("TraderData.Models.FileImportModels.Exchange", b =>
+                {
+                    b.Property<int>("ExchangeId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("URL");
+
+                    b.HasKey("ExchangeId");
+
+                    b.ToTable("Exchange");
+                });
+
+            modelBuilder.Entity("TraderData.Models.FileImportModels.FileImport", b =>
+                {
+                    b.Property<int>("FileImportId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ExchangeId");
+
+                    b.Property<string>("Filename")
+                        .IsRequired();
+
+                    b.Property<DateTime>("ImportDate");
+
+                    b.HasKey("FileImportId");
+
+                    b.HasIndex("ExchangeId");
+
+                    b.ToTable("FileImport");
+                });
+
+            modelBuilder.Entity("TraderData.Models.TradeImportModels.Instrument", b =>
                 {
                     b.Property<int>("InstrumentID")
                         .ValueGeneratedOnAdd();
@@ -187,13 +224,17 @@ namespace Trader.Migrations
                     b.ToTable("Instrument");
                 });
 
-            modelBuilder.Entity("Trader.Models.TradeImportModels.TradeImport", b =>
+            modelBuilder.Entity("TraderData.Models.TradeImportModels.TradeImport", b =>
                 {
                     b.Property<int>("TradeImportID")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Currency");
+
                     b.Property<string>("ExternalReference")
                         .IsRequired();
+
+                    b.Property<int>("FileImportId");
 
                     b.Property<DateTime>("ImportDate");
 
@@ -203,11 +244,15 @@ namespace Trader.Migrations
 
                     b.Property<DateTime>("TransactionDate");
 
+                    b.Property<decimal>("TransactionFee");
+
                     b.Property<int>("TransactionType");
 
                     b.Property<decimal>("Value");
 
                     b.HasKey("TradeImportID");
+
+                    b.HasIndex("FileImportId");
 
                     b.HasIndex("InstrumentId");
 
@@ -224,7 +269,7 @@ namespace Trader.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Trader.Models.ApplicationUser")
+                    b.HasOne("TraderData.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -232,7 +277,7 @@ namespace Trader.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Trader.Models.ApplicationUser")
+                    b.HasOne("TraderData.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -245,15 +290,28 @@ namespace Trader.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Trader.Models.ApplicationUser")
+                    b.HasOne("TraderData.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Trader.Models.TradeImportModels.TradeImport", b =>
+            modelBuilder.Entity("TraderData.Models.FileImportModels.FileImport", b =>
                 {
-                    b.HasOne("Trader.Models.TradeImportModels.Instrument", "Instrument")
+                    b.HasOne("TraderData.Models.FileImportModels.Exchange", "Exchange")
+                        .WithMany()
+                        .HasForeignKey("ExchangeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("TraderData.Models.TradeImportModels.TradeImport", b =>
+                {
+                    b.HasOne("TraderData.Models.FileImportModels.FileImport", "FileImport")
+                        .WithMany()
+                        .HasForeignKey("FileImportId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("TraderData.Models.TradeImportModels.Instrument", "Instrument")
                         .WithMany()
                         .HasForeignKey("InstrumentId")
                         .OnDelete(DeleteBehavior.Cascade);
