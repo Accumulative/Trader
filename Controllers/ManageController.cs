@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Trader.Models;
 using Trader.Models.ManageViewModels;
 using Trader.Services;
+using TraderData.Models;
 
 namespace Trader.Controllers
 {

@@ -1,46 +1,62 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Trader.Data;
+using TraderData;
 using Trader.Models;
 using Trader.Models.FileImportModels;
 using Trader.Models.TradeImportModels;
+using TraderData.Models;
+using TraderData.Models.TradeImportModels;
+using TraderData.Models.FileImportModels;
 
 namespace Trader.Controllers
 {
+    [Authorize]
     public class TradeImportController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-
-		public TradeImportController(ApplicationDbContext context)
+		public TradeImportController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
 		{
 			_context = context;
+            _userManager = userManager;
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: TradeImport
         public async Task<IActionResult> Index()
         {
-            var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).ToListAsync();
+            var user = await GetCurrentUserAsync();
 
-            /*var trades = tradesAsync.Select(x => new TradeImportIndexModel()
+			var userId = user?.Id;
+
+            if (userId != null)
             {
-                TradeImportID = x.TradeImportID,
-                ExternalReference = x.ExternalReference,
-                Instrument = x.Instrument.Name,
-                Value = x.Value,
-                Quantity = x.Quantity,
-                TransactionDate = x.TransactionDate,
-                ImportDate = x.ImportDate
-            });*/
-            return View(tradesAsync);
+                var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).Where(x => x.UserID == userId).ToListAsync();
+
+                /*var trades = tradesAsync.Select(x => new TradeImportIndexModel()
+                {
+                    TradeImportID = x.TradeImportID,
+                    ExternalReference = x.ExternalReference,
+                    Instrument = x.Instrument.Name,
+                    Value = x.Value,
+                    Quantity = x.Quantity,
+                    TransactionDate = x.TransactionDate,
+                    ImportDate = x.ImportDate
+                });*/
+                return View(tradesAsync);
+            }
+            return NotFound();
         }
 
         // GET: TradeImport/Details/5

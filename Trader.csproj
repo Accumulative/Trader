@@ -4,30 +4,33 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>$(PackageTargetFallback);portable-net45+win8+wp8+wpa81;</PackageTargetFallback>
     <UserSecretsId>aspnet-Trader-8A4B7202-39BA-4E3C-95AD-00D7D8FE1E8D</UserSecretsId>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.2" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.2" />
 <PackageReference Include="Microsoft.Composition" Version="1.0.30" ExcludeAssets="All" />
 <PackageReference Include="System.Composition" Version="1.0.31" />
 <PackageReference Include="Chart.js" Version="2.6.0" />
 <PackageReference Include="ChartJSCore" Version="1.1.1" />
+<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,11 +40,35 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\TradeImportModels\" />
-    <Folder Include="Models\TaxModels\" />
-    <Folder Include="Models\ReportModels\" />
     <Folder Include="Views\Tax\" />
-    <Folder Include="Models\FileImportModels\" />
-    <Folder Include="Models\Charts\" />
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="TraderData\ApplicationDbContext.cs" />
+    <Compile Remove="TraderData\Migrations\20171011174409_Initial.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171011174409_Initial.cs" />
+    <Compile Remove="TraderData\Migrations\20171011180149_Exchange_mig.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171011180149_Exchange_mig.cs" />
+    <Compile Remove="TraderData\Migrations\20171011182227_Initial2.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171011182227_Initial2.cs" />
+    <Compile Remove="TraderData\Migrations\20171011195536_Initial3.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171011195536_Initial3.cs" />
+    <Compile Remove="TraderData\Migrations\20171012171750_AddLinkFileImportTrade.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171012171750_AddLinkFileImportTrade.cs" />
+    <Compile Remove="TraderData\Migrations\20171012181857_CoinbaseTrade.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171012181857_CoinbaseTrade.cs" />
+    <Compile Remove="TraderData\Migrations\20171015095747_AddUserToModels.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171015095747_AddUserToModels.cs" />
+    <Compile Remove="TraderData\Migrations\ApplicationDbContextModelSnapshot.cs" />
+    <Compile Remove="TraderData\Models\ApplicationUser.cs" />
+    <Compile Remove="TraderData\Models\Currency.cs" />
+    <Compile Remove="TraderData\Models\FileImportModels\Exchange.cs" />
+    <Compile Remove="TraderData\Models\FileImportModels\FileImport.cs" />
+    <Compile Remove="TraderData\Models\TradeImportModels\Instrument.cs" />
+    <Compile Remove="TraderData\Models\TradeImportModels\TradeImport.cs" />
+    <Compile Remove="TraderData\Models\TradeImportModels\TransactionType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="TraderData\TraderData.csproj" />
   </ItemGroup>
 </Project>

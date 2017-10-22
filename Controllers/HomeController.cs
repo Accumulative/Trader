@@ -3,61 +3,76 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Trader.Data;
+using TraderData;
 using ChartJSCore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Trader.Models.Charts;
+using Microsoft.AspNetCore.Identity;
+using Trader.Models;
+using TraderData.Models;
 
 namespace Trader.Controllers
 {
     public class HomeController : Controller
     {
 		private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-
-		public HomeController(ApplicationDbContext context)
+		public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
 		{
 			_context = context;
+			_userManager = userManager;
 		}
         public IActionResult Index()
         {
             
             return View();
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Authorize]
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
-            var trades = _context.TradeImport;
-            var curList = _context.TradeImport.Select(x => x.Currency.ToString()).ToList();
-            List<double> count = new List<double>();
-            var currencies = curList.Distinct();
+			var user = await GetCurrentUserAsync();
 
-            foreach (var item in currencies)
-            {
-                count.Add((double)curList.Count(x => item == x));
-            }
+			var userId = user?.Id;
 
-            CryptoLineChart lineChart = new CryptoLineChart(currencies.ToList(), count);
-
-			ViewData["chart"] = lineChart.getChart;
-
-
-			var insList = _context.TradeImport.Select(x => x.Instrument.Name.ToString()).ToList();
-			count = new List<double>();
-			var instruments = insList.Distinct();
-
-			foreach (var item in instruments)
+			if (userId != null)
 			{
-				count.Add((double)insList.Count(x => item == x));
+				var trades = _context.TradeImport.Where(x => x.UserID == userId);
+
+				var curList = _context.TradeImport.Select(x => x.Currency.ToString()).ToList();
+				List<double> count = new List<double>();
+				var currencies = curList.Distinct();
+
+				foreach (var item in currencies)
+				{
+					count.Add((double)curList.Count(x => item == x));
+				}
+
+				CryptoLineChart lineChart = new CryptoLineChart(currencies.ToList(), count);
+
+				ViewData["chart"] = lineChart.getChart;
+
+
+				var insList = _context.TradeImport.Select(x => x.Instrument.Name.ToString()).ToList();
+				count = new List<double>();
+				var instruments = insList.Distinct();
+
+				foreach (var item in instruments)
+				{
+					count.Add((double)insList.Count(x => item == x));
+				}
+
+
+				CryptoBarChart barChart = new CryptoBarChart(instruments.ToList(), count);
+
+				ViewData["chart2"] = barChart.getChart;
+
+				return View();
 			}
+			return NotFound();
 
-
-			CryptoBarChart barChart = new CryptoBarChart(instruments.ToList(), count);
-
-			ViewData["chart2"] = barChart.getChart;
-
-			return View();
         }
 
         public IActionResult About()

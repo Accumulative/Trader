@@ -1,15 +1,18 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Trader.Data;
+using TraderData;
 using Trader.Models.TradeImportModels;
+using TraderData.Models.TradeImportModels;
 
 namespace Trader.Controllers
 {
+    
     public class InstrumentController : Controller
     {
         private readonly ApplicationDbContext _context;

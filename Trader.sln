@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 15.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader", "Trader.csproj", "{AAA08363-AF29-4627-8F5A-AC4D5905E7FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraderData", "TraderData\TraderData.csproj", "{8D5A54B0-D898-4A5F-BE46-C7CC632EC31F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{AAA08363-AF29-4627-8F5A-AC4D5905E7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAA08363-AF29-4627-8F5A-AC4D5905E7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAA08363-AF29-4627-8F5A-AC4D5905E7FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D5A54B0-D898-4A5F-BE46-C7CC632EC31F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D5A54B0-D898-4A5F-BE46-C7CC632EC31F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D5A54B0-D898-4A5F-BE46-C7CC632EC31F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D5A54B0-D898-4A5F-BE46-C7CC632EC31F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
