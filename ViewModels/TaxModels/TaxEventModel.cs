@@ -1,5 +1,6 @@
 ﻿using System;
 using Trader.Models.TradeImportModels;
+using TraderData.Models.TradeImportModels;
 
 namespace Trader.Models.TaxModels
 {

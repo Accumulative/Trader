@@ -17,8 +17,5 @@ namespace Trader.Models.FileImportModels
         [Required]
         [Display(Name = "Instrument:")]
         public int selInstrument { get; set; }
-        public ImportModel()
-        {
-        }
     }
 }

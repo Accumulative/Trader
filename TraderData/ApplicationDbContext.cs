@@ -9,9 +9,21 @@ using Microsoft.Extensions.Logging;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 using TraderData.Models.FileImportModels;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace TraderData
 {
+    // Use to create ApplicationDbContext for first time, make sure to match the parameters (just options)
+	//class ApplicationDbContextFactory : IDbContextFactory<ApplicationDbContext>
+	//{
+	//	public ApplicationDbContext Create(DbContextFactoryOptions options)
+ //       {
+	//		var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+ //           optionsBuilder.UseSqlServer("connectionstirnghere", b => b.MigrationsAssembly("TraderData"));
+	//		return new ApplicationDbContext(optionsBuilder.Options);
+	//	}
+	//}
+	
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         ILoggerFactory _loggerFactory;
@@ -19,13 +31,15 @@ namespace TraderData
         private const string BlahCacheKey2 = "blah-cache-key2";
         private readonly IMemoryCache _cache;
 
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILoggerFactory loggerFactory, IMemoryCache cache)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILoggerFactory loggerFactory, IMemoryCache cache)
             : base(options)
         {
             _loggerFactory = loggerFactory;
             _cache = cache;
             //UpdateCache(); DOESNT WORK
         }
+
+		
 
 		public async Task<IEnumerable<Instrument>> InstrumentCache()
 		{
@@ -34,7 +48,7 @@ namespace TraderData
 				return instruments;
 			}
 
-			instruments = await Instrument.ToListAsync();
+			 instruments = await Instrument.ToListAsync();
 
 			_cache.Set(BlahCacheKey, instruments);
 

@@ -11,6 +11,8 @@ using TraderData;
 using Trader.Models;
 using Trader.Models.TaxModels;
 using Trader.Models.TradeImportModels;
+using TraderData.Models;
+using TraderData.Models.TradeImportModels;
 
 namespace Trader.Controllers
 {

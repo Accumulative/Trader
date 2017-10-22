@@ -302,6 +302,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-appsettings.*
-
 appsettings.json
+appsettings.Development.json

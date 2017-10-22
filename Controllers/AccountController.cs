@@ -13,6 +13,7 @@ using Trader.Models;
 using Trader.Models.AccountViewModels;
 using Trader.Services;
 using TraderData.Models;
+using TraderData;
 
 namespace Trader.Controllers
 {

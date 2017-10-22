@@ -10,8 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TraderData;
-using Trader.Models;
 using Trader.Services;
+using TraderData.Models;
 
 namespace Trader
 {
@@ -22,7 +22,8 @@ namespace Trader
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
             {
@@ -30,7 +31,7 @@ namespace Trader
                 builder.AddUserSecrets<Startup>();
             }
 
-            builder.AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
 
@@ -39,9 +40,10 @@ namespace Trader
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var conString = Configuration.GetConnectionString("CryptoConnection");
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(conString));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()

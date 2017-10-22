@@ -12,7 +12,7 @@ using TraderData.Models.TradeImportModels;
 
 namespace Trader.Controllers
 {
-    [Authorize]
+    
     public class InstrumentController : Controller
     {
         private readonly ApplicationDbContext _context;

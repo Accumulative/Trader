@@ -16,6 +16,7 @@ using Trader.Models.FileImportModels;
 using Trader.Models.TradeImportModels;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
+using TraderData.Models.FileImportModels;
 
 namespace Trader.Controllers
 {
