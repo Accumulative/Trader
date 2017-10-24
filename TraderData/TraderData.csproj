@@ -8,6 +8,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Models\TaxModels\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.2" />

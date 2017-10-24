@@ -16,14 +16,14 @@ namespace Trader.Controllers
 {
     public class HomeController : Controller
     {
-		private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-		public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
-		{
-			_context = context;
-			_userManager = userManager;
-		}
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
         public IActionResult Index()
         {
             
@@ -34,64 +34,90 @@ namespace Trader.Controllers
         [Authorize]
         public async Task<IActionResult> Dashboard()
         {
-			var user = await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync();
 
-			var userId = user?.Id;
+            var userId = user?.Id;
 
-			if (userId != null)
-			{
-				var trades = _context.TradeImport.Where(x => x.UserID == userId);
+            if (userId != null)
+            {
+                var trades = _context.TradeImport.Where(x => x.UserID == userId);
 
-				var curList = _context.TradeImport.Select(x => x.Currency.ToString()).ToList();
-				List<double> count = new List<double>();
-				var currencies = curList.Distinct();
+                var curList = _context.TradeImport.Select(x => x.Currency.ToString()).ToList();
+                List<double> count = new List<double>();
+                var currencies = curList.Distinct();
 
-				foreach (var item in currencies)
-				{
-					count.Add((double)curList.Count(x => item == x));
-				}
+                foreach (var item in currencies)
+                {
+                    count.Add((double)curList.Count(x => item == x));
+                }
 
-				CryptoLineChart lineChart = new CryptoLineChart(currencies.ToList(), count);
+                CryptoLineChart lineChart = new CryptoLineChart(currencies.ToList(), new List<List<double>>() { count });
 
-				ViewData["chart"] = lineChart.getChart;
-
-
-				var insList = _context.TradeImport.Select(x => x.Instrument.Name.ToString()).ToList();
-				count = new List<double>();
-				var instruments = insList.Distinct();
-
-				foreach (var item in instruments)
-				{
-					count.Add((double)insList.Count(x => item == x));
-				}
+                ViewData["chart"] = lineChart.getChart;
 
 
-				CryptoBarChart barChart = new CryptoBarChart(instruments.ToList(), count);
+                var insList = _context.TradeImport.Select(x => x.Instrument.Name.ToString()).ToList();
+                count = new List<double>();
+                var instruments = insList.Distinct();
 
-				ViewData["chart2"] = barChart.getChart;
+                foreach (var item in instruments)
+                {
+                    count.Add((double)insList.Count(x => item == x));
+                }
+
+
+                CryptoBarChart barChart = new CryptoBarChart(instruments.ToList(), count);
+
+                ViewData["chart2"] = barChart.getChart;
 
                 CryptoPieChart pieChart = new CryptoPieChart(instruments.ToList(), count);
                 ViewData["chart3"] = pieChart.getChart;
 
 
-				var exchangeList = _context.TradeImport.Select(x => x.FileImport.Exchange.Name.ToString()).ToList();
-				count = new List<double>();
-				var exchanges = exchangeList.Distinct();
+                var exchangeList = _context.TradeImport.Select(x => x.FileImport.Exchange.Name.ToString()).ToList();
+                count = new List<double>();
+                var exchanges = exchangeList.Distinct();
 
-				foreach (var item in exchanges)
-				{
-					count.Add((double)exchangeList.Count(x => item == x));
-				}
-				CryptoPieChart pieChart2 = new CryptoPieChart(exchanges.ToList(), count);
-				ViewData["chart5"] = pieChart2.getChart;
+                foreach (var item in exchanges)
+                {
+                    count.Add((double)exchangeList.Count(x => item == x));
+                }
+                CryptoPieChart pieChart2 = new CryptoPieChart(exchanges.ToList(), count);
+                ViewData["chart5"] = pieChart2.getChart;
 
                 var months = trades
-					.GroupBy(dt => new { Month = dt.TransactionDate.Month, dt.TransactionDate.Year })
-	                .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
+                    .GroupBy(dt => new { Month = dt.TransactionDate.Month, dt.TransactionDate.Year })
+                    .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
+                    .Select(g => new { Month = g.Key.Month, Sum = g.Sum(x => x.Quantity * x.Value * (x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy ? -1 : 1)),
+                    Buys = g.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
+                    Sells = g.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
+                    });
 
-                    .Select(g => new { Month = g.Key.Month, Sum = g.Sum(x => x.Quantity * x.Value) });
-                CryptoLineChart lineChart2 = new CryptoLineChart(months.Select(x => x.Month.ToString()).ToList(), months.Select(x => (double)x.Sum).ToList());
+                CryptoLineChart lineChart2 = new CryptoLineChart(months.Select(x => x.Month.ToString()).ToList(), new List<List<double>>() {
+                    months.Select(x => (double)x.Sum).ToList(),
+                    months.Select(x => (double)x.Buys).ToList(),
+                    months.Select(x => (double)x.Sells).ToList()
+                });
                 ViewData["chart4"] = lineChart2.getChart;
+
+                var months2 = trades
+                    .GroupBy(dt => new { Month = dt.TransactionDate.Month, dt.TransactionDate.Year })
+                    .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
+                    .Select(g => new {
+                        Month = g.Key.Month,
+                        RawProfit = g.Sum(x => x.Quantity * x.Value),
+                        Fees = g.Sum(x => x.TransactionFee),
+                        
+                    });
+
+                CryptoLineChart lineChart4 = new CryptoLineChart(months.Select(x => x.Month.ToString()).ToList(), new List<List<double>>() {
+                    months.Select(x => (double)x.Sum).ToList(),
+                    months.Select(x => (double)x.Buys).ToList(),
+                    months.Select(x => (double)x.Sells).ToList()
+                });
+                ViewData["chart6"] = lineChart2.getChart;
+
+
                 DashboardViewModel model = new DashboardViewModel()
                 {
                     TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
@@ -99,9 +125,9 @@ namespace Trader.Controllers
                     TotalFeeAmount = trades.Sum(x => x.TransactionFee)
                 };
 
-				return View(model);
-			}
-			return NotFound();
+                return View(model);
+            }
+            return NotFound();
 
         }
 

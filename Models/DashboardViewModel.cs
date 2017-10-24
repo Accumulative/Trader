@@ -11,16 +11,16 @@ namespace Trader.Models
 		public decimal TotalFeeAmount { get; set; }
         [Display(Name = "Total buys")]
         public decimal TotalBuyAmount { get; set; }
-        [Display(Name = "Current investment")]
+        [Display(Name = "Current profit")]
         public decimal TotalInvested { get
             {
-                return TotalBuyAmount - TotalSellAmount;
+                return TotalSellAmount - TotalBuyAmount - TotalFeeAmount;
             } }
         public decimal TotalSpent {get{
-                return TotalInvested + TotalFeeAmount;
+                return TotalBuyAmount + TotalFeeAmount;
             }}
         public decimal Return {get{
-                return  TotalInvested / TotalSpent - 1;
+                return  TotalInvested / (TotalSellAmount - TotalBuyAmount) - 1;
             }}
 
 

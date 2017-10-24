@@ -106,8 +106,7 @@ namespace Trader.Controllers
                     TransactionDate = TransactionDate,
                     ImportDate = DateTime.Now
                 };
-                _context.Add(trade);
-                await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
 			IEnumerable<Instrument> instrument = await _context.InstrumentCache();
@@ -151,22 +150,22 @@ namespace Trader.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(tradeImport);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TradeImportExists(tradeImport.TradeImportID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+				try
+				{
+					_context.Update(tradeImport);
+					await _context.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException)
+				{
+					if (!TradeImportExists(tradeImport.TradeImportID))
+					{
+						return NotFound();
+					}
+					else
+					{
+						throw;
+					}
+				}
                 return RedirectToAction("Index");
             }
             return View(tradeImport);
@@ -195,9 +194,9 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tradeImport = await _context.TradeImport.SingleOrDefaultAsync(m => m.TradeImportID == id);
-            _context.TradeImport.Remove(tradeImport);
-            await _context.SaveChangesAsync();
+			var tradeImport = await _context.TradeImport.SingleOrDefaultAsync(m => m.TradeImportID == id);
+			_context.TradeImport.Remove(tradeImport);
+			await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
