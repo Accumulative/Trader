@@ -10,6 +10,7 @@ using Trader.Models.Charts;
 using Microsoft.AspNetCore.Identity;
 using Trader.Models;
 using TraderData.Models;
+using System.Globalization;
 
 namespace Trader.Controllers
 {
@@ -69,7 +70,36 @@ namespace Trader.Controllers
 
 				ViewData["chart2"] = barChart.getChart;
 
-				return View();
+                CryptoPieChart pieChart = new CryptoPieChart(instruments.ToList(), count);
+                ViewData["chart3"] = pieChart.getChart;
+
+
+				var exchangeList = _context.TradeImport.Select(x => x.FileImport.Exchange.Name.ToString()).ToList();
+				count = new List<double>();
+				var exchanges = exchangeList.Distinct();
+
+				foreach (var item in exchanges)
+				{
+					count.Add((double)exchangeList.Count(x => item == x));
+				}
+				CryptoPieChart pieChart2 = new CryptoPieChart(exchanges.ToList(), count);
+				ViewData["chart5"] = pieChart2.getChart;
+
+                var months = trades
+					.GroupBy(dt => new { Month = dt.TransactionDate.Month, dt.TransactionDate.Year })
+	                .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
+
+                    .Select(g => new { Month = g.Key.Month, Sum = g.Sum(x => x.Quantity * x.Value) });
+                CryptoLineChart lineChart2 = new CryptoLineChart(months.Select(x => x.Month.ToString()).ToList(), months.Select(x => (double)x.Sum).ToList());
+                ViewData["chart4"] = lineChart2.getChart;
+                DashboardViewModel model = new DashboardViewModel()
+                {
+                    TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
+                    TotalBuyAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
+                    TotalFeeAmount = trades.Sum(x => x.TransactionFee)
+                };
+
+				return View(model);
 			}
 			return NotFound();
 
