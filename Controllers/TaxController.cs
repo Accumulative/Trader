@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TraderData;
 using Trader.Models;
-using Trader.Models.TaxModels;
+using TraderData.Models.TaxModels;
 using Trader.Models.TradeImportModels;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
