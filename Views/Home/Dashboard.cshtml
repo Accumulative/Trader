@@ -48,6 +48,45 @@
     </dl>
 	
 </div>
+<div class="col-md-3">
+    <h4 align="center">Current Holdings</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveTrades[0].Currency)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveTrades[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveTrades[0].Value)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ActiveTrades)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Currency)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td>50%
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
 <div class="col-md-3"><canvas width="200" height="200" id="lineChart3"></canvas></div>
 <div class="col-md-6"><canvas width="400" height="200" id="lineChart4"></canvas></div>
 <div class="col-md-6"><canvas width="400" height="200" id="lineChart5"></canvas></div>

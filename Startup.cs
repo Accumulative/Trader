@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using TraderData;
 using Trader.Services;
 using TraderData.Models;
+using TraderServices;
 
 namespace Trader
 {
@@ -45,6 +46,8 @@ namespace Trader
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(conString));
 
+            
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -54,6 +57,7 @@ namespace Trader
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddScoped<ITrades, TradeImportService>();
             services.AddMemoryCache();
         }
 

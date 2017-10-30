@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TraderData;
-using ChartJSCore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Trader.Models.Charts;
 using Microsoft.AspNetCore.Identity;
 using Trader.Models;
 using TraderData.Models;
-using System.Globalization;
 
 namespace Trader.Controllers
 {
@@ -18,11 +16,12 @@ namespace Trader.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        private readonly ITrades _traderImportService;
+        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ITrades traderImportService)
         {
             _context = context;
             _userManager = userManager;
+            _traderImportService = traderImportService;
         }
         public IActionResult Index()
         {
@@ -122,7 +121,8 @@ namespace Trader.Controllers
                 {
                     TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
                     TotalBuyAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
-                    TotalFeeAmount = trades.Sum(x => x.TransactionFee)
+                    TotalFeeAmount = trades.Sum(x => x.TransactionFee),
+                    ActiveTrades = await _traderImportService.getActive()
                 };
 
                 return View(model);

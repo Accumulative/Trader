@@ -8,7 +8,7 @@ namespace TraderData
 {
     public interface ITrades
     {
-        List<TradeImport> getActive();
+        Task<List<TradeImport>> getActive();
         Task<List<TradeImport>> getAll();
         void Add(TradeImport trade);
         Task<bool> Edit(TradeImport trade);

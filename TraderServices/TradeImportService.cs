@@ -46,9 +46,9 @@ namespace TraderServices
             return true;
         }
 
-        public List<TradeImport> getActive()
+        public async Task<List<TradeImport>> getActive()
         {
-            throw new NotImplementedException();
+            return await _context.TradeImport.ToListAsync();
         }
 
         public async Task<List<TradeImport>> getAll()
