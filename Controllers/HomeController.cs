@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -14,14 +13,13 @@ namespace Trader.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITrades _trades;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ITrades _traderImportService;
-        public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, ITrades traderImportService)
+
+        public HomeController(ITrades trades, UserManager<ApplicationUser> userManager)
         {
-            _context = context;
+            _trades = trades;
             _userManager = userManager;
-            _traderImportService = traderImportService;
         }
         public IActionResult Index()
         {
@@ -39,9 +37,9 @@ namespace Trader.Controllers
 
             if (userId != null)
             {
-                var trades = _context.TradeImport.Where(x => x.UserID == userId);
+                var trades = await _trades.getAllByUser(userId);
 
-                var curList = _context.TradeImport.Select(x => x.Currency.ToString()).ToList();
+                var curList = trades.Select(x => x.Currency.ToString()).ToList();
                 List<double> count = new List<double>();
                 var currencies = curList.Distinct();
 
@@ -55,7 +53,7 @@ namespace Trader.Controllers
                 ViewData["chart"] = lineChart.getChart;
 
 
-                var insList = _context.TradeImport.Select(x => x.Instrument.Name.ToString()).ToList();
+                var insList = trades.Select(x => x.Instrument.Name.ToString()).ToList();
                 count = new List<double>();
                 var instruments = insList.Distinct();
 
@@ -73,7 +71,7 @@ namespace Trader.Controllers
                 ViewData["chart3"] = pieChart.getChart;
 
 
-                var exchangeList = _context.TradeImport.Select(x => x.FileImport.Exchange.Name.ToString()).ToList();
+                var exchangeList = trades.Select(x => x.FileImport.Exchange.Name.ToString()).ToList();
                 count = new List<double>();
                 var exchanges = exchangeList.Distinct();
 
@@ -122,7 +120,7 @@ namespace Trader.Controllers
                     TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
                     TotalBuyAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
                     TotalFeeAmount = trades.Sum(x => x.TransactionFee),
-                    ActiveTrades = await _traderImportService.getActive()
+                    ActiveTrades = await _trades.getActive(trades)
                 };
 
                 return View(model);

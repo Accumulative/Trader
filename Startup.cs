@@ -52,6 +52,8 @@ namespace Trader
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddScoped<ITrades, TradeImportService>();
+
             services.AddMvc();
 
             // Add application services.
