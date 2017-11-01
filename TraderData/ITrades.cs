@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TraderData.Models.FileImportModels;
 using TraderData.Models.TaxModels;
 using TraderData.Models.TradeImportModels;
 
@@ -11,7 +12,7 @@ namespace TraderData
         Task<List<TradeImport>> getActive(List<TradeImport> trades);
         Task<List<TradeImport>> getAll();
         void Add(TradeImport trade);
-        void AddMany(List<TradeImport> trade);
+        void Import(List<TradeImport> trade, FileImport fileImport);
         Task<bool> Edit(TradeImport trade);
         void Delete(int id);
         Task<List<TradeImport>> getAllByUser(string userId);

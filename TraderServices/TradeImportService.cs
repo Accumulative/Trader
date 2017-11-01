@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using TraderData;
 using TraderData.Models.TaxModels;
 using TraderData.Models.TradeImportModels;
+using TraderData.Models.FileImportModels;
 
 namespace TraderServices
 {
@@ -25,12 +26,13 @@ namespace TraderServices
             await _context.SaveChangesAsync();
         }
 
-		public async void AddMany(List<TradeImport> trades)
+		public async void Import(List<TradeImport> trades, FileImport fileImport)
 		{
             foreach (var trade in trades)
             {
                 _context.Add(trade);
             }
+            _context.Add(fileImport);
 			await _context.SaveChangesAsync();
 		}
 

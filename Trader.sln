@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TraderData", "TraderData\Tr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TraderServices", "TraderServices\TraderServices.csproj", "{AAD84F41-BCC3-44FB-B1B0-88204E03B4BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraderApi", "TraderApi\TraderApi.csproj", "{2819B122-FAAC-4AE2-B5EC-5F6BC067DA9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AAD84F41-BCC3-44FB-B1B0-88204E03B4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAD84F41-BCC3-44FB-B1B0-88204E03B4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAD84F41-BCC3-44FB-B1B0-88204E03B4BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2819B122-FAAC-4AE2-B5EC-5F6BC067DA9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2819B122-FAAC-4AE2-B5EC-5F6BC067DA9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2819B122-FAAC-4AE2-B5EC-5F6BC067DA9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2819B122-FAAC-4AE2-B5EC-5F6BC067DA9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -147,7 +147,9 @@ namespace Trader.Controllers
 				}
 				catch (DbUpdateConcurrencyException)
 				{
-					if (!TradeImportExists(tradeImport.TradeImportID))
+                    var exists = await _trades.TradeImportExists(tradeImport.TradeImportID);
+
+                    if (!exists)
 					{
 						return NotFound();
 					}
@@ -218,7 +220,6 @@ namespace Trader.Controllers
                     ImportDate = DateTime.Now,
 
                 };
-                _context.FileImport.Add(fileImport);
                 List<TradeImport> trades = new List<TradeImport>();
 				while (!reader.EndOfStream)
 				{
@@ -245,7 +246,7 @@ namespace Trader.Controllers
                     }
 				}
 
-                _trades.AddMany(trades);
+                _trades.Import(trades, fileImport);
             }
             return RedirectToAction("Result");
         }
