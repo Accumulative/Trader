@@ -67,8 +67,34 @@
     <Compile Remove="TraderData\Models\TradeImportModels\Instrument.cs" />
     <Compile Remove="TraderData\Models\TradeImportModels\TradeImport.cs" />
     <Compile Remove="TraderData\Models\TradeImportModels\TransactionType.cs" />
+    <Compile Remove="TraderData\ITrades.cs" />
+    <Compile Remove="TraderData\Models\TaxModels\TaxEventModel.cs" />
+    <Compile Remove="TraderServices\TradeImportService.cs" />
+    <Compile Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="TraderData\TraderData.csproj" />
+    <ProjectReference Include="TraderServices\TraderServices.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="TraderData\.DS_Store" />
+    <None Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.dll" />
+    <None Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.pdb" />
+    <None Remove="TraderData\obj\TraderData.csproj.nuget.g.props" />
+    <None Remove="TraderData\obj\TraderData.csproj.nuget.g.targets" />
+    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.csproj.CoreCompileInputs.cache" />
+    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.csproj.FileListAbsolute.txt" />
+    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.csprojResolveAssemblyReference.cache" />
+    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.dll" />
+    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.pdb" />
+    <None Remove="TraderServices\.DS_Store" />
+    <None Remove="TraderServices\obj\TraderServices.csproj.nuget.g.props" />
+    <None Remove="TraderServices\obj\TraderServices.csproj.nuget.g.targets" />
+    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.CoreCompileInputs.cache" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.deps.json" />
+    <Content Remove="TraderData\obj\project.assets.json" />
+    <Content Remove="TraderServices\obj\project.assets.json" />
   </ItemGroup>
 </Project>

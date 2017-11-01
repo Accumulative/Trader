@@ -11,11 +11,13 @@ namespace TraderData
         Task<List<TradeImport>> getActive(List<TradeImport> trades);
         Task<List<TradeImport>> getAll();
         void Add(TradeImport trade);
+        void AddMany(List<TradeImport> trade);
         Task<bool> Edit(TradeImport trade);
         void Delete(int id);
         Task<List<TradeImport>> getAllByUser(string userId);
         Task<List<TaxEventModel>> getTaxableEvents(List<TradeImport> trades);
         Task<TradeImport> getById(int id);
         decimal getCurrentValue(int id);
+        Task<bool> TradeImportExists(int id);
     }
 }

@@ -25,6 +25,15 @@ namespace TraderServices
             await _context.SaveChangesAsync();
         }
 
+		public async void AddMany(List<TradeImport> trades)
+		{
+            foreach (var trade in trades)
+            {
+                _context.Add(trade);
+            }
+			await _context.SaveChangesAsync();
+		}
+
         public async void Delete(int id)
         {
             var tradeImport = await _context.TradeImport.SingleOrDefaultAsync(m => m.TradeImportID == id);
@@ -62,6 +71,10 @@ namespace TraderServices
             var all = await getAll();
             return all.Where(x => x.UserID == userId).ToList();
         }
+		public async Task<bool> TradeImportExists(int id)
+		{
+			return await _context.TradeImport.AnyAsync(e => e.TradeImportID == id);
+		}
 
         public async Task<TradeImport> getById(int id)
         {
@@ -151,7 +164,7 @@ namespace TraderServices
 
                 }
             }
-            return new TaxAndTrade { taxEvents = taxEvents, activeTrades = holder };
+            return new TaxAndTrade { taxEvents = taxEvents, activeTrades = holder.ToList() };
         }
 
     }

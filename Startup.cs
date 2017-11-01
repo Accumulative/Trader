@@ -53,6 +53,7 @@ namespace Trader
                 .AddDefaultTokenProviders();
 
             services.AddScoped<ITrades, TradeImportService>();
+            services.AddScoped<IReference, ReferenceDataService>();
 
             services.AddMvc();
 

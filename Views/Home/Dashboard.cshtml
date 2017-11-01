@@ -21,7 +21,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ActiveTrades[0].Value)
                 </th>
-                <th></th>
+                <th>
+					@Html.DisplayNameFor(model => model.ActiveTrades[0].Percentage)
+				</th>
             </tr>
         </thead>
         <tbody>
@@ -32,12 +34,12 @@
                         @Html.DisplayFor(modelItem => item.Instrument.Name)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Quantity) @Html.DisplayFor(modelItem => item.Currency)
+                        £@Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Value)
                     </td>
-                    <td>50%
+                    <td>@Html.DisplayFor(modelItem => item.Percentage)
                     </td>
                 </tr>
             }

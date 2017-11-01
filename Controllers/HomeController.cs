@@ -8,6 +8,7 @@ using Trader.Models.Charts;
 using Microsoft.AspNetCore.Identity;
 using Trader.Models;
 using TraderData.Models;
+using TraderData.Models.TradeImportModels;
 
 namespace Trader.Controllers
 {
@@ -119,9 +120,19 @@ namespace Trader.Controllers
                 {
                     TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
                     TotalBuyAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
-                    TotalFeeAmount = trades.Sum(x => x.TransactionFee),
-                    ActiveTrades = await _trades.getActive(trades)
+                    TotalFeeAmount = trades.Sum(x => x.TransactionFee)
                 };
+                var aTrades = await _trades.getActive(trades);
+                model.ActiveTrades = aTrades
+                    .GroupBy(x => x.Instrument)
+                    .Select(dt => new ActiveHoldingsModel
+                    {
+                        Instrument = dt.Key,
+                        Quantity = dt.Sum(x => x.Quantity),
+                        Value = dt.Average(x => x.Value),
+                        Percentage = 0.5M
+
+                    }).ToList();
 
                 return View(model);
             }

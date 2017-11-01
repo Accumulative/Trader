@@ -24,7 +24,7 @@ namespace Trader.Models
         public decimal Return {get{
                 return  TotalInvested / (TotalSellAmount - TotalBuyAmount) - 1;
             }}
-        public List<TradeImport> ActiveTrades { get; set; }
+        public List<ActiveHoldingsModel> ActiveTrades { get; set; }
 
         public DashboardViewModel()
         {

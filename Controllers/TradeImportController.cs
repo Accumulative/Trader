@@ -23,13 +23,15 @@ namespace Trader.Controllers
     [Authorize]
     public class TradeImportController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ITrades _trades;
+        private readonly IReference _reference;
 
-		public TradeImportController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+		public TradeImportController(ITrades trades, IReference reference, UserManager<ApplicationUser> userManager)
 		{
-			_context = context;
+			_trades = trades;
             _userManager = userManager;
+            _reference = reference;
         }
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
@@ -42,18 +44,8 @@ namespace Trader.Controllers
 
             if (userId != null)
             {
-                var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).Where(x => x.UserID == userId).ToListAsync();
-
-                /*var trades = tradesAsync.Select(x => new TradeImportIndexModel()
-                {
-                    TradeImportID = x.TradeImportID,
-                    ExternalReference = x.ExternalReference,
-                    Instrument = x.Instrument.Name,
-                    Value = x.Value,
-                    Quantity = x.Quantity,
-                    TransactionDate = x.TransactionDate,
-                    ImportDate = x.ImportDate
-                });*/
+                var tradesAsync = await _trades.getAllByUser(userId);
+                tradesAsync = tradesAsync.OrderBy(x => x.TransactionDate).ToList();
                 return View(tradesAsync);
             }
             return NotFound();
@@ -67,8 +59,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var tradeImport = await _context.TradeImport
-                .SingleOrDefaultAsync(m => m.TradeImportID == id);
+            var tradeImport = await _trades.getById((int)id);
             if (tradeImport == null)
             {
                 return NotFound();
@@ -80,7 +71,7 @@ namespace Trader.Controllers
         // GET: TradeImport/Create
         public async Task<IActionResult> Create()
         {
-            IEnumerable<Instrument> instrument = await _context.InstrumentCache();
+            IEnumerable<Instrument> instrument = await _reference.getInstruments();
             var instruments = instrument.OrderBy(c => c.Name).Select(x => new { Id = x.InstrumentID, Value = x.Name });
 			var model = new TradeImportViewModel();
 			model.InstrumentList = new SelectList(instruments, "Id", "Value");
@@ -109,7 +100,7 @@ namespace Trader.Controllers
 
                 return RedirectToAction("Index");
             }
-			IEnumerable<Instrument> instrument = await _context.InstrumentCache();
+            IEnumerable<Instrument> instrument = await _reference.getInstruments();
             var instruments = instrument.OrderBy(c => c.Name).Select(x => new { Id = x.InstrumentID, Value = x.Name });
 			var model = new TradeImportViewModel(); //tradeImport;
             model.ExternalReference = ExternalReference;
@@ -128,7 +119,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var tradeImport = await _context.TradeImport.SingleOrDefaultAsync(m => m.TradeImportID == id);
+            var tradeImport = await _trades.getById((int)id);
             if (tradeImport == null)
             {
                 return NotFound();
@@ -152,8 +143,7 @@ namespace Trader.Controllers
             {
 				try
 				{
-					_context.Update(tradeImport);
-					await _context.SaveChangesAsync();
+					var res = await _trades.Edit(tradeImport);
 				}
 				catch (DbUpdateConcurrencyException)
 				{
@@ -179,8 +169,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var tradeImport = await _context.TradeImport
-                .SingleOrDefaultAsync(m => m.TradeImportID == id);
+            var tradeImport = await _trades.getById((int)id);
             if (tradeImport == null)
             {
                 return NotFound();
@@ -194,21 +183,16 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-			var tradeImport = await _context.TradeImport.SingleOrDefaultAsync(m => m.TradeImportID == id);
-			_context.TradeImport.Remove(tradeImport);
-			await _context.SaveChangesAsync();
+            _trades.Delete(id);
             return RedirectToAction("Index");
         }
 
-        private bool TradeImportExists(int id)
-        {
-            return _context.TradeImport.Any(e => e.TradeImportID == id);
-        }
+
 
         public async Task<IActionResult> Import()
         {
-			IEnumerable<Instrument> instrument = await _context.InstrumentCache();
-            IEnumerable<Exchange> exchange = await _context.ExchangeCache();
+            IEnumerable<Instrument> instrument = await _reference.getInstruments();
+            IEnumerable<Exchange> exchange = await _reference.getExchanges();
 			var instruments = instrument.OrderBy(c => c.Name).Select(x => new { Id = x.InstrumentID, Value = x.Name });
             var exchanges = exchange.OrderBy(c => c.Name).Select(x => new { Id = x.ExchangeId, Value = x.Name });
             var model = new ImportModel();
@@ -235,6 +219,7 @@ namespace Trader.Controllers
 
                 };
                 _context.FileImport.Add(fileImport);
+                List<TradeImport> trades = new List<TradeImport>();
 				while (!reader.EndOfStream)
 				{
 					var line = reader.ReadLine();
@@ -256,11 +241,11 @@ namespace Trader.Controllers
                             TransactionFee = decimal.Parse(data[4])
 
                         };
-                        _context.TradeImport.Add(trade);
+                        trades.Add(trade);
                     }
 				}
 
-				_context.SaveChanges();
+                _trades.AddMany(trades);
             }
             return RedirectToAction("Result");
         }
