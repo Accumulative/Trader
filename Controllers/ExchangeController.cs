@@ -55,8 +55,9 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ExchangeId,Name,DateCreated,URL")] Exchange exchange)
+        public async Task<IActionResult> Create([Bind("ExchangeId,Name,URL")] Exchange exchange)
         {
+            exchange.DateCreated = DateTime.Now;
             if (ModelState.IsValid)
             {
                 _context.Add(exchange);

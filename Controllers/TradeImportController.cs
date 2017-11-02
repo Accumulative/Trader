@@ -207,48 +207,58 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Import(IFormFile file, int selInstrument, int selExchange)
         {
-            int count = 0;
-            FileImport fileImport;
-            using (var reader = new StreamReader(file.OpenReadStream()))
+            var user = await GetCurrentUserAsync();
+
+            var userId = user?.Id;
+
+            if (userId != null)
             {
-                //var fileContent = reader.ReadToEnd();
-                var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
-                fileImport = new FileImport
+                int count = 0;
+                FileImport fileImport;
+                using (var reader = new StreamReader(file.OpenReadStream()))
                 {
-                    Filename = parsedContentDisposition.FileName,
-                    ExchangeId = selExchange,
-                    ImportDate = DateTime.Now,
-
-                };
-                List<TradeImport> trades = new List<TradeImport>();
-				while (!reader.EndOfStream)
-				{
-					var line = reader.ReadLine();
-                    count += 1;
-                    if (count >= 5)
+                    //var fileContent = reader.ReadToEnd();
+                    var parsedContentDisposition = ContentDispositionHeaderValue.Parse(file.ContentDisposition);
+                    fileImport = new FileImport
                     {
-                        var data = line.Split(new[] { ',' });
-                        var trade = new TradeImport()
+                        Filename = parsedContentDisposition.FileName,
+                        ExchangeId = selExchange,
+                        ImportDate = DateTime.Now,
+                        UserID = userId
+
+                    };
+                    List<TradeImport> trades = new List<TradeImport>();
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        count += 1;
+                        if (count >= 5)
                         {
-                            ExternalReference = data[9],
-                            Value = decimal.Parse(data[7]),
-                            Quantity = decimal.Parse(data[2]),
-                            InstrumentId = selInstrument, //to get from a dropdown
-                            FileImport = fileImport,
-                            ImportDate = DateTime.Now,
-                            TransactionType = data[1] == "Buy" ? TransactionType.Buy : TransactionType.Sell,
-                            TransactionDate = DateTime.Parse(data[0]),
-                            Currency = (Currency)Enum.Parse(typeof(Currency),data[6]),
-                            TransactionFee = decimal.Parse(data[4])
+                            var data = line.Split(new[] { ',' });
+                            var trade = new TradeImport()
+                            {
+                                ExternalReference = data[9],
+                                Value = decimal.Parse(data[7]),
+                                Quantity = decimal.Parse(data[2]),
+                                InstrumentId = selInstrument, //to get from a dropdown
+                                FileImport = fileImport,
+                                ImportDate = DateTime.Now,
+                                TransactionType = data[1] == "Buy" ? TransactionType.Buy : TransactionType.Sell,
+                                TransactionDate = DateTime.Parse(data[0]),
+                                Currency = (Currency)Enum.Parse(typeof(Currency), data[6]),
+                                TransactionFee = decimal.Parse(data[4]),
+                                UserID = userId
 
-                        };
-                        trades.Add(trade);
+                            };
+                            trades.Add(trade);
+                        }
                     }
-				}
 
-                _trades.Import(trades, fileImport);
+                    _trades.Import(trades, fileImport);
+                }
+                return RedirectToAction("Result");
             }
-            return RedirectToAction("Result");
+            return NotFound();
         }
         public async Task<IActionResult> Result()
         {

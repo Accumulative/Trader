@@ -16,15 +16,18 @@ namespace Trader.Models
         [Display(Name = "Current profit")]
         public decimal TotalInvested { get
             {
-                return TotalSellAmount - TotalBuyAmount - TotalFeeAmount;
+                return TotalSellAmount - TotalBuyAmount - TotalFeeAmount + TotalHoldings;
             } }
         public decimal TotalSpent {get{
                 return TotalBuyAmount + TotalFeeAmount;
             }}
         public decimal Return {get{
-                return  TotalInvested / (TotalSellAmount - TotalBuyAmount) - 1;
+                return (TotalBuyAmount+TotalInvested) / TotalBuyAmount - 1;
             }}
         public List<ActiveHoldingsModel> ActiveTrades { get; set; }
+
+        [Display(Name = "Total holdings")]
+        public decimal TotalHoldings { get; set; }
 
         public DashboardViewModel()
         {

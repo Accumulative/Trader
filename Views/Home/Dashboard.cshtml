@@ -34,10 +34,10 @@
                         @Html.DisplayFor(modelItem => item.Instrument.Name)
                     </td>
                     <td>
-                        £@Html.DisplayFor(modelItem => item.Quantity)
+                        @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Value)
+                        $@Html.DisplayFor(modelItem => item.Value)
                     </td>
                     <td>@Html.DisplayFor(modelItem => item.Percentage)
                     </td>
@@ -68,6 +68,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.TotalBuyAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalHoldings)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalHoldings)
         </dd>
 		<dt>
             @Html.DisplayNameFor(model => model.TotalInvested)

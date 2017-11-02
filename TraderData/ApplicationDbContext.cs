@@ -13,17 +13,18 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace TraderData
 {
-    // Use to create ApplicationDbContext for first time, make sure to match the parameters (just options)
-	//class ApplicationDbContextFactory : IDbContextFactory<ApplicationDbContext>
-	//{
-	//	public ApplicationDbContext Create(DbContextFactoryOptions options)
- //       {
-	//		var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
- //           optionsBuilder.UseSqlServer("connectionstirnghere", b => b.MigrationsAssembly("TraderData"));
-	//		return new ApplicationDbContext(optionsBuilder.Options);
-	//	}
-	//}
-	
+    //Use to create ApplicationDbContext for first time, make sure to match the parameters(just options)
+
+    //class ApplicationDbContextFactory : IDbContextFactory<ApplicationDbContext>
+    //{
+    //    public ApplicationDbContext Create(DbContextFactoryOptions options)
+    //    {
+    //        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+    //        optionsBuilder.UseSqlServer("connectionstirnghere", b => b.MigrationsAssembly("TraderData"));
+    //        return new ApplicationDbContext(optionsBuilder.Options);
+    //    }
+    //}
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         ILoggerFactory _loggerFactory;

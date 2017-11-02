@@ -54,13 +54,13 @@ namespace Trader
 
             services.AddScoped<ITrades, TradeImportService>();
             services.AddScoped<IReference, ReferenceDataService>();
+            services.AddScoped<IInstrumentData, InstrumentDataService>();
 
             services.AddMvc();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
-            services.AddScoped<ITrades, TradeImportService>();
             services.AddMemoryCache();
         }
 

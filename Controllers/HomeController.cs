@@ -16,11 +16,13 @@ namespace Trader.Controllers
     {
         private readonly ITrades _trades;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IInstrumentData _instrumentData;
 
-        public HomeController(ITrades trades, UserManager<ApplicationUser> userManager)
+        public HomeController(ITrades trades, IInstrumentData instrumentData, UserManager<ApplicationUser> userManager)
         {
             _trades = trades;
             _userManager = userManager;
+            _instrumentData = instrumentData;
         }
         public IActionResult Index()
         {
@@ -88,7 +90,7 @@ namespace Trader.Controllers
                     .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
                     .Select(g => new { Month = g.Key.Month, Sum = g.Sum(x => x.Quantity * x.Value * (x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy ? -1 : 1)),
                     Buys = g.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
-                    Sells = g.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
+                    Sells = g.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value)
                     });
 
                 CryptoLineChart lineChart2 = new CryptoLineChart(months.Select(x => x.Month.ToString()).ToList(), new List<List<double>>() {
@@ -115,24 +117,31 @@ namespace Trader.Controllers
                 });
                 ViewData["chart6"] = lineChart2.getChart;
 
-
-                DashboardViewModel model = new DashboardViewModel()
-                {
-                    TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
-                    TotalBuyAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
-                    TotalFeeAmount = trades.Sum(x => x.TransactionFee)
-                };
                 var aTrades = await _trades.getActive(trades);
-                model.ActiveTrades = aTrades
+                var bTrades = aTrades
                     .GroupBy(x => x.Instrument)
                     .Select(dt => new ActiveHoldingsModel
                     {
                         Instrument = dt.Key,
                         Quantity = dt.Sum(x => x.Quantity),
-                        Value = dt.Average(x => x.Value),
+                        Value = _instrumentData.GetCurrentValue(dt.Key),
                         Percentage = 0.5M
 
                     }).ToList();
+
+
+
+                DashboardViewModel model = new DashboardViewModel()
+                {
+                    TotalSellAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Sell).Sum(x => x.Quantity * x.Value),
+                    TotalBuyAmount = trades.Where(x => x.TransactionType == TraderData.Models.TradeImportModels.TransactionType.Buy).Sum(x => x.Quantity * x.Value),
+                    TotalFeeAmount = trades.Sum(x => x.TransactionFee),
+                    TotalHoldings = bTrades.Sum(x => x.Quantity * x.Value)
+                };
+                model.ActiveTrades = bTrades;
+                    
+
+
 
                 return View(model);
             }
