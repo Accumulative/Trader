@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 using TraderData.Models.FileImportModels;
 
 namespace TraderData.Models.TradeImportModels
 {
-	public class TradeImport
+    public class TradeImport
 	{
 		[Required]
 		[Display(Name = "Trade Import ID")]

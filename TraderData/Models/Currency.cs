@@ -1,5 +1,4 @@
-﻿using System;
-namespace TraderData.Models
+﻿namespace TraderData.Models
 {
     public enum Currency
     {

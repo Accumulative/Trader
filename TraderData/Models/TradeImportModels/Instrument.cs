@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace TraderData.Models.TradeImportModels
+﻿namespace TraderData.Models.TradeImportModels
 {
     public class Instrument
     {

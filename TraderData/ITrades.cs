@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TraderData.Models.FileImportModels;
 using TraderData.Models.TaxModels;

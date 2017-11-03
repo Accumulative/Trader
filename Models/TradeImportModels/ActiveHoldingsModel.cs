@@ -1,7 +1,4 @@
-﻿using System;
-using TraderData.Models.TradeImportModels;
-
-namespace TraderData.Models.TradeImportModels
+﻿namespace TraderData.Models.TradeImportModels
 {
     public class ActiveHoldingsModel
     {

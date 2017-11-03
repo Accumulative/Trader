@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 using TraderData.Models.FileImportModels;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace TraderData
 {

@@ -1,5 +1,4 @@
-﻿using System;
-namespace TraderData.Models.TradeImportModels
+﻿namespace TraderData.Models.TradeImportModels
 {
     public enum TransactionType
     {

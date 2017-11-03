@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TraderData;
-using Trader.Models;
 using Trader.Models.FileImportModels;
 using Trader.Models.TradeImportModels;
 using TraderData.Models;
