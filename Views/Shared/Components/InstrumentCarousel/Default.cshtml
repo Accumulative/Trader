@@ -1,0 +1,38 @@
+﻿@model Trader.Models.InstrumentInfoViewModel
+
+<div id="theCarousel" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        @{
+            int i = 0;
+            foreach (InstrumentInfoModel ins in Model.instrumentInfoList)
+            {
+                <li data-target="#theCarousel" data-slide-to="@(i)" class="@(i==0?"active":"")"></li>
+                i++;
+            }
+        }
+    </ol>
+    <div class="carousel-inner">
+        @{
+                int j = 0;
+                foreach (InstrumentInfoModel ins in Model.instrumentInfoList)
+                {
+                    <div class="item @(j==0?"active":"")">
+                        <div class="slide@(j)">
+                            <div class="carousel-caption">
+                                <label class="visible-lg-inline-block">@ins.instrument.Name</label>
+                                <p class="visible-lg-inline-block">£@ins.value</p>
+                            </div>
+                        </div>
+                    </div>
+                    j++;
+                }
+        }
+        <a class="left carousel-control" href="#theCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#theCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+
+</div>

@@ -34,7 +34,6 @@ namespace TraderData
         {
             _loggerFactory = loggerFactory;
             _cache = cache;
-            //UpdateCache(); DOESNT WORK
         }
 
 		
@@ -67,10 +66,16 @@ namespace TraderData
 			return exchanges;
 			/*return await Instrument.ToListAsync();*/
 		}
-        public void UpdateCache()
+        public async Task UpdateExchangeCache()
         {
-			var logger = _loggerFactory.CreateLogger("LoggerCategory");
-			logger.LogInformation("CACHED INSTRUMENTS CALL------");
+            var exchanges = await Exchange.ToListAsync();
+            _cache.Set(BlahCacheKey2, exchanges);
+        }
+
+        public async Task UpdateInstrumentCache()
+        {
+            var instruments = await Instrument.ToListAsync();
+            _cache.Set(BlahCacheKey, instruments);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

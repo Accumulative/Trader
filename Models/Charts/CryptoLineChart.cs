@@ -27,7 +27,7 @@ namespace Trader.Models.Charts
 			ChartJSCore.Models.Options options = new Options()
 			{
 				MaintainAspectRatio = true,
-				Responsive = false,
+				Responsive = true,
 				Scales = new Scales()
 				{
 					XAxes = new List<Scale>()

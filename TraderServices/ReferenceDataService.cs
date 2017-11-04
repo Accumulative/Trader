@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,39 +19,75 @@ namespace TraderServices
 			_context = context;
 		}
 
-        public void AddExchange(Exchange exchange)
+        public async Task AddExchange(Exchange exchange)
         {
-            throw new NotImplementedException();
+            _context.Add(exchange);
+            await _context.SaveChangesAsync();
+            await _context.UpdateExchangeCache();
         }
 
-        public void AddInstrument(Instrument instrument)
+        public async Task AddInstrument(Instrument instrument)
         {
-            throw new NotImplementedException();
+            _context.Add(instrument);
+            await _context.SaveChangesAsync();
+            await _context.UpdateInstrumentCache();
         }
 
-        public void DeleteExchange(int id)
+        public async Task DeleteExchange(int id)
         {
-            throw new NotImplementedException();
+            var exchange = await GetExchangeById(id);
+            _context.Exchange.Remove(exchange);
+            await _context.SaveChangesAsync();
+            await _context.UpdateExchangeCache();
         }
 
-        public void DeleteInstrument(int id)
+        public async Task DeleteInstrument(int id)
         {
-            throw new NotImplementedException();
+            var instrument = await GetInstrumentById(id);
+            _context.Instrument.Remove(instrument);
+            await _context.SaveChangesAsync();
+            await _context.UpdateInstrumentCache();
         }
 
-        public async Task<bool> EditExchange(Exchange instrument)
+        public async Task<bool> EditExchange(Exchange exchange)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Update(exchange);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            await _context.UpdateExchangeCache();
+            return true;
         }
 
-        public Task<bool> EditInstrument(Instrument instrument)
+        public async Task<bool> EditInstrument(Instrument instrument)
         {
-            throw new NotImplementedException();
+            try
+            {
+                _context.Update(instrument);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            await _context.UpdateInstrumentCache();
+            return true;
         }
 
         public IEnumerable<Currency> getCurrencies()
         {
             return Enum.GetValues(typeof(Currency)).Cast<Currency>();
+        }
+
+        public async Task<Exchange> GetExchangeById(int id)
+        {
+            return await _context.Exchange
+                .SingleOrDefaultAsync(m => m.ExchangeId == id);
         }
 
         public async Task<IEnumerable<Exchange>> getExchanges()
@@ -62,5 +99,22 @@ namespace TraderServices
         {
             return await _context.InstrumentCache();
         }
+
+        public bool ExchangeExists(int id)
+        {
+            return _context.Exchange.Any(e => e.ExchangeId == id);
+        }
+
+        public bool InstrumentExists(int id)
+        {
+            return _context.Instrument.Any(e => e.InstrumentID == id);
+        }
+
+        public async Task<Instrument> GetInstrumentById(int id)
+        {
+            return await _context.Instrument
+                .SingleOrDefaultAsync(m => m.InstrumentID == id);
+        }
+        
     }
 }

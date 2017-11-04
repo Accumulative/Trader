@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TraderData;
 using TraderData.Models.TaxModels;
 using TraderData.Models;
@@ -15,13 +14,15 @@ namespace Trader.Controllers
     [Authorize]
     public class TaxController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITrades _trades;
+        private readonly IReference _reference;
         private readonly UserManager<ApplicationUser> _userManager;
 
 
-        public TaxController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public TaxController(ITrades trades, UserManager<ApplicationUser> userManager, IReference reference)
         {
-            _context = context;
+            _reference = reference;
+            _trades = trades;
             _userManager = userManager;
         }
         public async Task<IActionResult> Index()
@@ -32,7 +33,7 @@ namespace Trader.Controllers
 
 			if (userId != null)
 			{
-				var tradesAsync = await _context.TradeImport.Include(s => s.Instrument).Where(x => x.UserID == userId).ToListAsync();
+                var tradesAsync = await _trades.getAllByUser(userId);
 				return View(await CalculateTaxEvents(tradesAsync));
 				
 			}
@@ -46,7 +47,7 @@ namespace Trader.Controllers
         {
             var sorted = trades.OrderBy(c => c.TransactionDate);
 
-            var instruments = await _context.InstrumentCache();
+            var instruments = await _reference.getInstruments();
             List<TradeImport> holder = new List<TradeImport>();
 
             List<TaxEventModel> taxEvents = new List<TaxEventModel>();

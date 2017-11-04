@@ -6,24 +6,41 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TraderData;
 using TraderData.Models.FileImportModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using TraderData.Models;
 
 namespace Trader.Controllers
 {
     [Authorize]
     public class FileImportController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IFileImport _fileImport;
+        private readonly IReference _reference;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public FileImportController(ApplicationDbContext context)
+        public FileImportController(IFileImport fileImport, UserManager<ApplicationUser> userManager, IReference reference)
         {
-            _context = context;    
+            _fileImport = fileImport;
+            _userManager = userManager;
+            _reference = reference;
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: FileImport
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.FileImport.Include(f => f.Exchange);
-            return View(await applicationDbContext.ToListAsync());
+            var user = await GetCurrentUserAsync();
+
+            var userId = user?.Id;
+
+            if (userId != null)
+            {                
+                return View(await _fileImport.getAllByUser(userId));
+            }
+            return NotFound();
+            
         }
 
         // GET: FileImport/Details/5
@@ -34,9 +51,8 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var fileImport = await _context.FileImport
-                .Include(f => f.Exchange)
-                .SingleOrDefaultAsync(m => m.FileImportId == id);
+            var fileImport = await _fileImport.getByIdAsync((int)id);
+
             if (fileImport == null)
             {
                 return NotFound();
@@ -46,9 +62,9 @@ namespace Trader.Controllers
         }
 
         // GET: FileImport/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            ViewData["ExchangeId"] = new SelectList(_context.Exchange, "ExchangeId", "Name");
+            ViewData["ExchangeId"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name");
             return View();
         }
 
@@ -61,11 +77,11 @@ namespace Trader.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(fileImport);
-                await _context.SaveChangesAsync();
+                await _fileImport.Add(fileImport);
+                
                 return RedirectToAction("Index");
             }
-            ViewData["ExchangeId"] = new SelectList(_context.Exchange, "ExchangeId", "Name", fileImport.ExchangeId);
+            ViewData["ExchangeId"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name", fileImport.ExchangeId);
             return View(fileImport);
         }
 
@@ -77,12 +93,12 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var fileImport = await _context.FileImport.SingleOrDefaultAsync(m => m.FileImportId == id);
+            var fileImport = await _fileImport.getByIdAsync((int)id);
             if (fileImport == null)
             {
                 return NotFound();
             }
-            ViewData["ExchangeId"] = new SelectList(_context.Exchange, "ExchangeId", "Name", fileImport.ExchangeId);
+            ViewData["ExchangeId"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name", fileImport.ExchangeId);
             return View(fileImport);
         }
 
@@ -100,25 +116,13 @@ namespace Trader.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(fileImport);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!FileImportExists(fileImport.FileImportId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+                var res = await _fileImport.Edit(fileImport);
+                if (res)
+                    return RedirectToAction("Index");
+                else
+                    return NotFound();
             }
-            ViewData["ExchangeId"] = new SelectList(_context.Exchange, "ExchangeId", "Name", fileImport.ExchangeId);
+            ViewData["ExchangeId"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name", fileImport.ExchangeId);
             return View(fileImport);
         }
 
@@ -130,9 +134,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var fileImport = await _context.FileImport
-                .Include(f => f.Exchange)
-                .SingleOrDefaultAsync(m => m.FileImportId == id);
+            var fileImport = await _fileImport.getByIdAsync((int)id);
             if (fileImport == null)
             {
                 return NotFound();
@@ -146,15 +148,10 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var fileImport = await _context.FileImport.SingleOrDefaultAsync(m => m.FileImportId == id);
-            _context.FileImport.Remove(fileImport);
-            await _context.SaveChangesAsync();
+            await _fileImport.Delete(id);
             return RedirectToAction("Index");
         }
 
-        private bool FileImportExists(int id)
-        {
-            return _context.FileImport.Any(e => e.FileImportId == id);
-        }
+        
     }
 }

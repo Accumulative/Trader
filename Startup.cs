@@ -51,6 +51,7 @@ namespace Trader
             services.AddScoped<ITrades, TradeImportService>();
             services.AddScoped<IReference, ReferenceDataService>();
             services.AddScoped<IInstrumentData, InstrumentDataService>();
+            services.AddScoped<IFileImport, FileImportService>();
 
             services.AddMvc();
 

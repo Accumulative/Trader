@@ -28,6 +28,8 @@ namespace Trader.Models
         [Display(Name = "Total holdings")]
         public decimal TotalHoldings { get; set; }
 
+        public DashboardFilterModel filter { get; set; }
+
         public DashboardViewModel()
         {
             

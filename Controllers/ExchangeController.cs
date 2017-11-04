@@ -10,17 +10,17 @@ namespace Trader.Controllers
 {
     public class ExchangeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IReference _reference;
 
-        public ExchangeController(ApplicationDbContext context)
+        public ExchangeController(IReference reference)
         {
-            _context = context;    
+            _reference = reference;    
         }
 
         // GET: Exchange
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Exchange.ToListAsync());
+            return View(await _reference.getExchanges());
         }
 
         // GET: Exchange/Details/5
@@ -31,8 +31,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var exchange = await _context.Exchange
-                .SingleOrDefaultAsync(m => m.ExchangeId == id);
+            var exchange = await _reference.GetExchangeById((int)id);
             if (exchange == null)
             {
                 return NotFound();
@@ -57,8 +56,7 @@ namespace Trader.Controllers
             exchange.DateCreated = DateTime.Now;
             if (ModelState.IsValid)
             {
-                _context.Add(exchange);
-                await _context.SaveChangesAsync();
+                await _reference.AddExchange(exchange);
                 return RedirectToAction("Index");
             }
             return View(exchange);
@@ -72,7 +70,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var exchange = await _context.Exchange.SingleOrDefaultAsync(m => m.ExchangeId == id);
+            var exchange = await _reference.GetExchangeById((int)id);
             if (exchange == null)
             {
                 return NotFound();
@@ -85,7 +83,7 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ExchangeId,Name,DateCreated,URL")] Exchange exchange)
+        public async Task<IActionResult> Edit(int id, [Bind("ExchangeId,Name,URL")] Exchange exchange)
         {
             if (id != exchange.ExchangeId)
             {
@@ -94,23 +92,11 @@ namespace Trader.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(exchange);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ExchangeExists(exchange.ExchangeId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+                var res = await _reference.EditExchange(exchange);
+                if (res)
+                    return RedirectToAction("Index");
+                else
+                    return NotFound();
             }
             return View(exchange);
         }
@@ -123,8 +109,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var exchange = await _context.Exchange
-                .SingleOrDefaultAsync(m => m.ExchangeId == id);
+            var exchange = await _reference.GetExchangeById((int)id);
             if (exchange == null)
             {
                 return NotFound();
@@ -138,15 +123,10 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var exchange = await _context.Exchange.SingleOrDefaultAsync(m => m.ExchangeId == id);
-            _context.Exchange.Remove(exchange);
-            await _context.SaveChangesAsync();
+            await _reference.DeleteExchange(id);
             return RedirectToAction("Index");
         }
 
-        private bool ExchangeExists(int id)
-        {
-            return _context.Exchange.Any(e => e.ExchangeId == id);
-        }
+       
     }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Trader.Models;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Trader.Controllers
 {
@@ -17,11 +18,13 @@ namespace Trader.Controllers
         private readonly ITrades _trades;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IInstrumentData _instrumentData;
+        private readonly IReference _reference;
 
-        public HomeController(ITrades trades, IInstrumentData instrumentData, UserManager<ApplicationUser> userManager)
+        public HomeController(ITrades trades, IInstrumentData instrumentData, UserManager<ApplicationUser> userManager, IReference reference)
         {
             _trades = trades;
             _userManager = userManager;
+            _reference = reference;
             _instrumentData = instrumentData;
         }
         public IActionResult Index()
@@ -115,7 +118,7 @@ namespace Trader.Controllers
                     months.Select(x => (double)x.Buys).ToList(),
                     months.Select(x => (double)x.Sells).ToList()
                 });
-                ViewData["chart6"] = lineChart2.getChart;
+                ViewData["chart6"] = lineChart4.getChart;
 
                 var aTrades = await _trades.getActive(trades);
                 var bTrades = aTrades
@@ -130,6 +133,10 @@ namespace Trader.Controllers
                     }).ToList();
 
 
+                DashboardFilterModel filters = new DashboardFilterModel
+                {
+                    InstrumentList = new SelectList(trades.Select(x => x.Instrument).Distinct().Select(x => new { Id = x.InstrumentID, Value = x.Name }), "Id", "Value")
+                };
 
                 DashboardViewModel model = new DashboardViewModel()
                 {
@@ -139,8 +146,7 @@ namespace Trader.Controllers
                     TotalHoldings = bTrades.Sum(x => x.Quantity * x.Value)
                 };
                 model.ActiveTrades = bTrades;
-                    
-
+                model.filter = filters;
 
 
                 return View(model);
@@ -148,6 +154,8 @@ namespace Trader.Controllers
             return NotFound();
 
         }
+
+        
 
         public IActionResult About()
         {

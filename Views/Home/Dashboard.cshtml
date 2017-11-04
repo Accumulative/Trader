@@ -4,12 +4,89 @@
     ViewData["Title"] = "Home Page";
 }
 <h2>Dashboard</h2>
+
+<div class="container">
+    <div>
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="filter.instrumentId" class="control-label"></label>:
+                <select class="dropdown-menu-left" asp-for="filter.instrumentId" asp-items="@Model.filter.InstrumentList"></select>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="filter.instrumentId" class="control-label"></label>:
+                <select class="dropdown-menu-left" asp-for="filter.instrumentId" asp-items="@Model.filter.InstrumentList"></select>
+            </div>
+            <div class="col-md-3">
+                <label asp-for="filter.instrumentId" class="control-label"></label>:
+                <select class="dropdown-menu-left" asp-for="filter.instrumentId" asp-items="@Model.filter.InstrumentList"></select>
+            </div>
+            <div class="col-md-3">
+                <a href="#bigChart" data-toggle="collapse">Hide</a>
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div class="row">
+            @{
+                if (Model.TotalInvested >= 0)
+                {
+                    <div class="col-md-4 stat_container">
+                        <label class="stat_label visible-lg-inline-block">@Html.DisplayNameFor(model => model.TotalInvested):  </label>
+                        <p class="text-success visible-lg-inline-block stat_value">@Html.DisplayFor(model => model.TotalInvested) </p><span class="glyphicon glyphicon-circle-arrow-up text-success" />
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-4 stat_container">
+                        <label class="stat_label visible-lg-inline-block">@Html.DisplayNameFor(model => model.TotalInvested):  </label>
+                        <p class="text-danger visible-lg-inline-block stat_value">@Html.DisplayFor(model => model.TotalInvested) </p><span class="glyphicon glyphicon-circle-arrow-down text-danger" />
+                    </div>
+                }
+                if (Model.Return >= 0)
+                {
+                    <div class="col-md-4 stat_container">
+                        <label class="stat_label visible-lg-inline-block">@Html.DisplayNameFor(model => model.Return):  </label>
+                        <p class="text-success visible-lg-inline-block stat_value">@Html.DisplayFor(model => model.Return) </p><span class="glyphicon glyphicon-circle-arrow-up text-success" />
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-4 stat_container">
+                        <label class="stat_label visible-lg-inline-block">@Html.DisplayNameFor(model => model.Return):  </label>
+                        <p class="text-danger visible-lg-inline-block stat_value">@Html.DisplayFor(model => model.Return) </p><span class="glyphicon glyphicon-circle-arrow-down text-danger" />
+                    </div>
+                }
+                if (Model.TotalHoldings >= 0)
+                {
+                    <div class="col-md-4 stat_container">
+                        <label class="stat_label visible-lg-inline-block">@Html.DisplayNameFor(model => model.TotalHoldings):  </label>
+                        <p class="text-success visible-lg-inline-block stat_value">@Html.DisplayFor(model => model.TotalHoldings) </p><span class="glyphicon glyphicon-circle-arrow-up text-success" />
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-4 stat_container">
+                        <label class="stat_label visible-lg-inline-block">@Html.DisplayNameFor(model => model.TotalHoldings):  </label>
+                        <p class="text-danger visible-lg-inline-block stat_value">@Html.DisplayFor(model => model.TotalHoldings) </p><span class="glyphicon glyphicon-circle-arrow-down text-danger" />
+                    </div>
+                }
+
+
+            }
+        </div>
+        <div id="bigChart" class="collapse in">
+            
+            <canvas id="lineChart4"></canvas>
+        </div>
+    </div>
+</div>
+
 <div class="col-md-4"><canvas width="200" height="200" id="lineChart"></canvas></div>
 <div class="col-md-4"><canvas width="200" height="200" id="lineChart2"></canvas></div>
 
 <div class="col-md-4">
     <h4 align="center">Current Holdings</h4>
-    <table class="table">
+    <table class="table table-hover table-bordered">
         <thead>
             <tr>
                 <th>
@@ -98,15 +175,16 @@
 </div>
 
 <div class="col-md-3"><canvas width="200" height="200" id="lineChart3"></canvas></div>
-<div class="col-md-6"><canvas width="400" height="200" id="lineChart4"></canvas></div>
 <div class="col-md-6"><canvas width="400" height="200" id="lineChart5"></canvas></div>
+<div class="col-md-6"><canvas width="400" height="200" id="lineChart6"></canvas></div>
 
 
 @{ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)ViewData["chart"];
-ChartJSCore.Models.Chart chart2 = (ChartJSCore.Models.Chart)ViewData["chart2"];
-ChartJSCore.Models.Chart chart3 = (ChartJSCore.Models.Chart)ViewData["chart3"];
-ChartJSCore.Models.Chart chart4 = (ChartJSCore.Models.Chart)ViewData["chart4"];
-ChartJSCore.Models.Chart chart5 = (ChartJSCore.Models.Chart)ViewData["chart5"];}
+    ChartJSCore.Models.Chart chart2 = (ChartJSCore.Models.Chart)ViewData["chart2"];
+    ChartJSCore.Models.Chart chart3 = (ChartJSCore.Models.Chart)ViewData["chart3"];
+    ChartJSCore.Models.Chart chart4 = (ChartJSCore.Models.Chart)ViewData["chart4"];
+    ChartJSCore.Models.Chart chart5 = (ChartJSCore.Models.Chart)ViewData["chart5"];
+    ChartJSCore.Models.Chart chart6 = (ChartJSCore.Models.Chart)ViewData["chart6"];}
 
 @section Scripts {
     <script src="~/js/Chart.min.js"></script>
@@ -116,5 +194,6 @@ ChartJSCore.Models.Chart chart5 = (ChartJSCore.Models.Chart)ViewData["chart5"];}
 	@Html.Raw(chart3.CreateChartCode("lineChart3"));
 	@Html.Raw(chart4.CreateChartCode("lineChart4"));
 	@Html.Raw(chart5.CreateChartCode("lineChart5"));
+        @Html.Raw(chart6.CreateChartCode("lineChart6"));
     </script>
 }

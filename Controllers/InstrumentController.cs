@@ -11,19 +11,19 @@ namespace Trader.Controllers
 
     public class InstrumentController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IReference _reference;
 		
 
-        public InstrumentController(ApplicationDbContext context)
+        public InstrumentController(IReference reference)
         {
-            _context = context;
+            _reference = reference;
 
         }
 		
         // GET: Instrument
         public async Task<IActionResult> Index()
         {
-            return View(await _context.InstrumentCache());
+            return View(await _reference.getInstruments());
         }
 
         // GET: Instrument/Details/5
@@ -34,15 +34,13 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            IEnumerable<Instrument> instrument = await _context.InstrumentCache();
-            var list = instrument
-                .SingleOrDefault(m => m.InstrumentID == id);
+            Instrument instrument = await _reference.GetInstrumentById((int)id);
             if (instrument == null)
             {
                 return NotFound();
             }
 
-            return View(list);
+            return View(instrument);
         }
 
         // GET: Instrument/Create
@@ -60,8 +58,8 @@ namespace Trader.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(instrument);
-                await _context.SaveChangesAsync();
+                await _reference.AddInstrument(instrument);
+                
                 return RedirectToAction("Index");
             }
             return View(instrument);
@@ -75,8 +73,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            IEnumerable<Instrument> list = await _context.InstrumentCache();
-            var instrument = list.SingleOrDefault(m => m.InstrumentID == id);
+            Instrument instrument = await _reference.GetInstrumentById((int)id);
             if (instrument == null)
             {
                 return NotFound();
@@ -98,23 +95,11 @@ namespace Trader.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(instrument);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InstrumentExists(instrument.InstrumentID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+                var res = await _reference.EditInstrument(instrument);
+                if (res)
+                    return RedirectToAction("Index");
+                else
+                    return NotFound();
             }
             return View(instrument);
         }
@@ -127,8 +112,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-			IEnumerable<Instrument> list = await _context.InstrumentCache();
-			var instrument = list.SingleOrDefault(m => m.InstrumentID == id);
+            Instrument instrument = await _reference.GetInstrumentById((int)id);
             if (instrument == null)
             {
                 return NotFound();
@@ -142,15 +126,10 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instrument = await _context.Instrument.SingleOrDefaultAsync(m => m.InstrumentID == id);
-            _context.Instrument.Remove(instrument);
-            await _context.SaveChangesAsync();
+            await _reference.DeleteInstrument(id);
             return RedirectToAction("Index");
         }
 
-        private bool InstrumentExists(int id)
-        {
-            return _context.Instrument.Any(e => e.InstrumentID == id);
-        }
+        
     }
 }

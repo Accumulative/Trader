@@ -32,7 +32,7 @@ namespace Trader.Controllers
             _userManager = userManager;
             _reference = reference;
         }
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+       
 
         // GET: TradeImport
         public async Task<IActionResult> Index()
@@ -49,6 +49,7 @@ namespace Trader.Controllers
             }
             return NotFound();
         }
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: TradeImport/Details/5
         public async Task<IActionResult> Details(int? id)
