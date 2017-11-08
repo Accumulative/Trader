@@ -21,7 +21,10 @@ namespace Trader.Models
                 return TotalBuyAmount + TotalFeeAmount;
             }}
         public decimal Return {get{
-                return (TotalBuyAmount+TotalInvested) / TotalBuyAmount - 1;
+                if (TotalBuyAmount != 0)
+                    return (TotalBuyAmount + TotalInvested) / TotalBuyAmount - 1;
+                else
+                    return 0;
             }}
         public List<ActiveHoldingsModel> ActiveTrades { get; set; }
 

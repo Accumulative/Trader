@@ -41,6 +41,8 @@
 
   <ItemGroup>
     <Folder Include="Views\Tax\" />
+    <Folder Include="Models\" />
+    <Folder Include="Views\Users\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="TraderData\ApplicationDbContext.cs" />

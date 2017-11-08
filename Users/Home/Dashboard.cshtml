@@ -1,0 +1,114 @@
+﻿@model Trader.Models.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h2>Dashboard</h2>
+<div class="col-md-4"><canvas width="200" height="200" id="lineChart"></canvas></div>
+<div class="col-md-4"><canvas width="200" height="200" id="lineChart2"></canvas></div>
+
+<div class="col-md-4">
+    <h4 align="center">Current Holdings</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveTrades[0].Instrument)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveTrades[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ActiveTrades[0].Value)
+                </th>
+                <th>
+					@Html.DisplayNameFor(model => model.ActiveTrades[0].Percentage)
+				</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ActiveTrades)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Instrument.Name)
+                    </td>
+                    <td>
+                        £@Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.Percentage)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+<div class="col-md-3">
+    <h4 align="center">Top level trading</h4>
+    <dl class="dl-horizontal table-bordered">
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalSellAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalSellAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalFeeAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalFeeAmount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalBuyAmount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalBuyAmount)
+        </dd>
+		<dt>
+            @Html.DisplayNameFor(model => model.TotalInvested)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalInvested)
+        </dd>
+		<dt>
+            @Html.DisplayNameFor(model => model.TotalSpent)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotalSpent)
+        </dd>
+		<dt>
+            @Html.DisplayNameFor(model => model.Return)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Return)
+        </dd>
+    </dl>
+	
+</div>
+
+<div class="col-md-3"><canvas width="200" height="200" id="lineChart3"></canvas></div>
+<div class="col-md-6"><canvas width="400" height="200" id="lineChart4"></canvas></div>
+<div class="col-md-6"><canvas width="400" height="200" id="lineChart5"></canvas></div>
+
+
+@{ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)ViewData["chart"];
+ChartJSCore.Models.Chart chart2 = (ChartJSCore.Models.Chart)ViewData["chart2"];
+ChartJSCore.Models.Chart chart3 = (ChartJSCore.Models.Chart)ViewData["chart3"];
+ChartJSCore.Models.Chart chart4 = (ChartJSCore.Models.Chart)ViewData["chart4"];
+ChartJSCore.Models.Chart chart5 = (ChartJSCore.Models.Chart)ViewData["chart5"];}
+
+@section Scripts {
+    <script src="~/js/Chart.min.js"></script>
+    <script>
+        @Html.Raw(chart.CreateChartCode("lineChart"));
+	@Html.Raw(chart2.CreateChartCode("lineChart2"));
+	@Html.Raw(chart3.CreateChartCode("lineChart3"));
+	@Html.Raw(chart4.CreateChartCode("lineChart4"));
+	@Html.Raw(chart5.CreateChartCode("lineChart5"));
+    </script>
+}

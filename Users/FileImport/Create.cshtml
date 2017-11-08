@@ -1,0 +1,45 @@
+﻿@model TraderData.Models.FileImportModels.FileImport
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>FileImport</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Filename" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Filename" class="form-control" />
+                <span asp-validation-for="Filename" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ImportDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ImportDate" class="form-control" />
+                <span asp-validation-for="ImportDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ExchangeId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ExchangeId" class ="form-control" asp-items="ViewBag.ExchangeId"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

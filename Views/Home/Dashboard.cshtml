@@ -8,21 +8,28 @@
 <div class="container">
     <div>
         <div class="row">
-            <div class="col-md-3">
-                <label asp-for="filter.instrumentId" class="control-label"></label>:
-                <select class="dropdown-menu-left" asp-for="filter.instrumentId" asp-items="@Model.filter.InstrumentList"></select>
-            </div>
-            <div class="col-md-3">
-                <label asp-for="filter.instrumentId" class="control-label"></label>:
-                <select class="dropdown-menu-left" asp-for="filter.instrumentId" asp-items="@Model.filter.InstrumentList"></select>
-            </div>
-            <div class="col-md-3">
-                <label asp-for="filter.instrumentId" class="control-label"></label>:
-                <select class="dropdown-menu-left" asp-for="filter.instrumentId" asp-items="@Model.filter.InstrumentList"></select>
-            </div>
-            <div class="col-md-3">
-                <a href="#bigChart" data-toggle="collapse">Hide</a>
-            </div>
+			<form asp-action="Dashboard">
+                <div class="col-md-3">
+                    <label asp-for="filter.instrumentId" class="control-label"></label>:
+                    @Html.DropDownListFor(model => model.filter.instrumentId , Model.filter.InstrumentList, "-Instrument-")
+                </div>
+                <div class="col-md-2">
+                    <label asp-for="filter.monthNo" class="control-label"></label>:
+                    @Html.DropDownListFor(model => model.filter.monthNo , Model.filter.Month, "-Month-")
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="filter.exchangeId" class="control-label"></label>:
+                    @Html.DropDownListFor(model => model.filter.exchangeId , Model.filter.ExchangeList, "-Exchange-")
+                </div>
+			
+                <div class="col-md-2 form-actions no-color">
+                    <input type="submit" value="Filter" class="btn btn-default" />
+                </div>
+				<div class="col-md-2">
+                    <a href="#bigChart" data-toggle="collapse">Hide</a>
+                </div>
+            </form>
+
         </div>
     </div>
     <div class="jumbotron">

@@ -35,7 +35,7 @@ namespace Trader.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Authorize]
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> Dashboard(DashboardViewModel viewModel)
         {
             var user = await GetCurrentUserAsync();
 
@@ -44,6 +44,26 @@ namespace Trader.Controllers
             if (userId != null)
             {
                 var trades = await _trades.getAllByUser(userId);
+
+                // set new filter before, others you get filtered-filters
+				DashboardFilterModel filters = new DashboardFilterModel
+				{
+					InstrumentList = new SelectList(trades.Select(x => x.Instrument).Distinct().Select(x => new { Id = x.InstrumentID, Value = x.Name }), "Id", "Value", viewModel.filter == null ? null : viewModel.filter.instrumentId), //sometimes null)
+					Month = new SelectList(trades.Select(x => x.TransactionDate.Month + "/" + x.TransactionDate.Year).Distinct().Select(x => new { Id = x, Value = x }), "Id", "Value", viewModel.filter == null ? null : viewModel.filter.monthNo),
+					ExchangeList = new SelectList(trades.Select(x => x.FileImport.Exchange).Distinct().Select(x => new { Id = x.Name, Value = x.Name }), "Id", "Value", viewModel.filter == null ? null : viewModel.filter.exchangeId)
+
+				};
+
+                // Apply filters
+                if (viewModel.filter != null)
+                {
+                    if (viewModel.filter.exchangeId != null)
+                        trades = trades.Where(x => x.FileImport.ExchangeId == viewModel.filter.exchangeId).ToList();
+                    if (viewModel.filter.instrumentId != null)
+                        trades = trades.Where(x => x.InstrumentId == viewModel.filter.instrumentId).ToList();
+                    if (viewModel.filter.monthNo != null)
+                        trades = trades.Where(x => x.TransactionDate.Month + "/" + x.TransactionDate.Year == viewModel.filter.monthNo).ToList();
+                }
 
                 var curList = trades.Select(x => x.Currency.ToString()).ToList();
                 List<double> count = new List<double>();
@@ -133,10 +153,7 @@ namespace Trader.Controllers
                     }).ToList();
 
 
-                DashboardFilterModel filters = new DashboardFilterModel
-                {
-                    InstrumentList = new SelectList(trades.Select(x => x.Instrument).Distinct().Select(x => new { Id = x.InstrumentID, Value = x.Name }), "Id", "Value")
-                };
+
 
                 DashboardViewModel model = new DashboardViewModel()
                 {
