@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TransactionService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+<PackageReference Include="Microsoft.Composition" Version="1.0.30" ExcludeAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="TransactionService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TraderData\TraderData.csproj" />
   </ItemGroup>
 </Project>
