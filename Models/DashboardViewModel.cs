@@ -33,7 +33,9 @@ namespace Trader.Models
 
         public DashboardFilterModel filter { get; set; }
 
-        public DashboardViewModel()
+        public ChartJSCore.Models.Chart chartOne { get; set; }
+
+		public DashboardViewModel()
         {
             
         }

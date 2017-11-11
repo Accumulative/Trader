@@ -35,11 +35,43 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-					<li><a asp-area="" asp-controller="Instrument" asp-action="Index">Instruments</a></li>
-					<li><a asp-area="" asp-controller="TradeImport" asp-action="Index">Trades</a></li>
-						<li><a asp-area="" asp-controller="FileImport" asp-action="Index">Imports</a></li>
-						<li><a asp-area="" asp-controller="Exchange" asp-action="Index">Exchanges</a></li>
-						<li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+					
+
+
+
+				    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Trades
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#">Trades
+                                    <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                            <li><a tabindex="-1" asp-area="" asp-controller="TradeImport" asp-action="Index">Manage Trades</a></li>
+                                            <li><a asp-area="" asp-controller="TradeAnalysis" asp-action="Index">Analyse trades</a></li>
+                                    </ul>
+                                </li>
+								<li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#">Imports
+                                    <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                            <li><a asp-area="" asp-controller="FileImport" asp-action="Index">All imports</a></li>
+                                            <li><a asp-area="" asp-controller="TradeImport" asp-action="Import">Import trades</a></li>
+                                    </ul>
+                                </li>
+                        </ul>
+                    </li>
+
+
+					<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
+                        <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                          <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
+                          <li><a asp-area="" asp-controller="Exchange" asp-action="Index">Exchanges</a></li>
+                          <li><a asp-area="" asp-controller="Instrument" asp-action="Index">Instruments</a></li>
+                        </ul>
+                    </li>
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
@@ -73,8 +105,18 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+			
     </environment>
 
     @RenderSection("Scripts", required: false)
+		<script>
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
 </body>
 </html>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trader", "Trader.csproj", "{FD2587D0-6E2E-4E99-935A-939712FDBA93}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trader", "Trader.csproj", "{FD2587D0-6E2E-4E99-935A-939712FDBA93}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TraderData", "TraderData\TraderData.csproj", "{5A94A971-6B45-4DA6-8AC1-D77D025F784A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraderData", "TraderData\TraderData.csproj", "{5A94A971-6B45-4DA6-8AC1-D77D025F784A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TraderServices", "TraderServices\TraderServices.csproj", "{AAD84F41-BCC3-44FB-B1B0-88204E03B4BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TraderServices", "TraderServices\TraderServices.csproj", "{AAD84F41-BCC3-44FB-B1B0-88204E03B4BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

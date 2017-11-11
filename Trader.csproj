@@ -43,6 +43,10 @@
     <Folder Include="Views\Tax\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Users\" />
+    <Folder Include="Views\Home\Components\" />
+    <Folder Include="Views\Shared\Components\Dashboard\" />
+    <Folder Include="Models\TradeAnalysisModels\" />
+    <Folder Include="Views\TradeAnalysis\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="TraderData\ApplicationDbContext.cs" />
@@ -72,10 +76,20 @@
     <Compile Remove="TraderData\Models\TaxModels\TaxEventModel.cs" />
     <Compile Remove="TraderServices\TradeImportService.cs" />
     <Compile Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.AssemblyInfo.cs" />
+    <Compile Remove="TraderData\IFileImport.cs" />
+    <Compile Remove="TraderData\IInstrumentData.cs" />
+    <Compile Remove="TraderData\IReference.cs" />
+    <Compile Remove="TraderData\Models\AdminModels\Settings.cs" />
+    <Compile Remove="TraderData\Models\InstrumentModels\InstrumentData.cs" />
+    <Compile Remove="TraderServices\FileImportService.cs" />
+    <Compile Remove="TraderServices\InstrumentDataService.cs" />
+    <Compile Remove="TraderServices\ReferenceDataService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="TraderData\TraderData.csproj" />
-    <ProjectReference Include="TraderServices\TraderServices.csproj" />
+    <ProjectReference Include="TraderData\TraderData.csproj">
+    </ProjectReference>
+    <ProjectReference Include="TraderServices\TraderServices.csproj">
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="TraderData\.DS_Store" />
@@ -92,10 +106,17 @@
     <None Remove="TraderServices\obj\TraderServices.csproj.nuget.g.props" />
     <None Remove="TraderServices\obj\TraderServices.csproj.nuget.g.targets" />
     <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.CoreCompileInputs.cache" />
+    <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.dll" />
+    <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.pdb" />
+    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.FileListAbsolute.txt" />
+    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csprojResolveAssemblyReference.cache" />
+    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.dll" />
+    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.pdb" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.deps.json" />
     <Content Remove="TraderData\obj\project.assets.json" />
     <Content Remove="TraderServices\obj\project.assets.json" />
+    <Content Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.deps.json" />
   </ItemGroup>
 </Project>

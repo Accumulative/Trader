@@ -24,10 +24,11 @@ namespace TraderData.Models.TradeImportModels
 		[Display(Name = "Transaction type")]
         public TransactionType TransactionType { get; set; }
 
-        [Required]
+
 		public Instrument Instrument { get; set; }
 
         [ForeignKey("Instrument")]
+        [Required]
         public int InstrumentId { get; set; }
 
         [Required]

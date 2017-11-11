@@ -1,0 +1,154 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Trader.Models.TradeAnalysisModels.TradeAnalysisModel
+
+<h2>Trade Analysis</h2>
+<h3>Summary</h3>
+<div class="row">
+	<div class="col-md-6">
+        <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Profit)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Profit)
+                </dd>
+			    <dt>
+                    @Html.DisplayNameFor(model => model.MoneyTaken)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.MoneyTaken)
+                </dd>
+        		<dt>
+                    @Html.DisplayNameFor(model => model.TotalFee)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TotalFee)
+                </dd>
+        		<dt>
+                    @Html.DisplayNameFor(model => model.endTrade.Value)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.endTrade.Value)
+                </dd>
+        		<dt>
+                    @Html.DisplayNameFor(model => model.Return)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Return)
+                </dd>
+        	</dl>
+    </div>
+	<div class="col-md-6">
+        <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.CurrentProfit)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CurrentProfit)
+                </dd>
+			    <dt>
+                    @Html.DisplayNameFor(model => model.CurrentMoneyTaken)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CurrentMoneyTaken)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TotalFee)
+                </dt>
+                <dd>
+				    @Html.DisplayFor(model => model.TotalFee) (buy fee x2)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CurrentValue)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CurrentValue)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.CurrentReturn)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CurrentReturn)
+                </dd>
+            </dl>
+    </div>
+</div>
+<div class="row">
+<div class="col-md-6">
+    <h4>Buy</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.startTrade.ExternalReference)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.startTrade.ExternalReference)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.startTrade.Value)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.startTrade.Value)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.startTrade.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.startTrade.Quantity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.startTrade.TransactionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.startTrade.TransactionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.startTrade.ImportDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.startTrade.ImportDate)
+        </dd>
+    </dl>
+</div>
+<div class="col-md-6">
+    <h4>Sell</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.endTrade.ExternalReference)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.endTrade.ExternalReference)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.endTrade.Value)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.endTrade.Value)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.endTrade.Quantity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.endTrade.Quantity)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.endTrade.TransactionDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.endTrade.TransactionDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.endTrade.ImportDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.endTrade.ImportDate)
+        </dd>
+    </dl>
+</div>
+	</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

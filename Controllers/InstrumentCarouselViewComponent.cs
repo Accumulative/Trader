@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TraderData;
 using Trader.Models;
+using TraderData.Models.InstrumentModels;
 
 namespace Trader.Controllers
 {
@@ -21,12 +22,14 @@ namespace Trader.Controllers
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var model = new InstrumentInfoViewModel();
-            var instruments = await _reference.getInstruments();
-            model.instrumentInfoList = instruments.Select(x => new InstrumentInfoModel()
+
+            var temp2 = await _instrumentData.InstrumentPriceCache();
+            var temp = temp2.Select(x => new InstrumentInfoModel()
             {
-                instrument = x,
-                value = _instrumentData.GetCurrentValue(x)
+                instrument = x.instrument,
+                price = x.price
             });
+            model.instrumentInfoList = temp;
 
             return View(model);
         }

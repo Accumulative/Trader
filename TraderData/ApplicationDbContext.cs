@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 using TraderData.Models.FileImportModels;
+using TraderData.Models.AdminModels;
 
 namespace TraderData
 {
@@ -27,6 +28,7 @@ namespace TraderData
         ILoggerFactory _loggerFactory;
         private const string BlahCacheKey = "blah-cache-key";
         private const string BlahCacheKey2 = "blah-cache-key2";
+        private const string BlahCacheKey3 = "blah-cache-key4";
         private readonly IMemoryCache _cache;
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ILoggerFactory loggerFactory, IMemoryCache cache)
@@ -45,12 +47,7 @@ namespace TraderData
 				return instruments;
 			}
 
-			 instruments = await Instrument.ToListAsync();
-
-			_cache.Set(BlahCacheKey, instruments);
-
-			return instruments;
-            /*return await Instrument.ToListAsync();*/
+            return await UpdateInstrumentCache();
 		}
 		public async Task<IEnumerable<Exchange>> ExchangeCache()
 		{
@@ -59,23 +56,39 @@ namespace TraderData
 				return exchanges;
 			}
 
-			exchanges = await Exchange.ToListAsync();
-
-			_cache.Set(BlahCacheKey2, exchanges);
-
-			return exchanges;
-			/*return await Instrument.ToListAsync();*/
+            return await UpdateExchangeCache();
 		}
-        public async Task UpdateExchangeCache()
+		public async Task<Settings> SettingsCache()
+		{
+			if (_cache.TryGetValue(BlahCacheKey3, out Settings settings))
+			{
+				return settings;
+			}
+
+			return await UpdateSettingsCache();
+		}
+		public async Task<Settings> UpdateSettingsCache()
+		{
+			var settings = new Settings
+			{
+				RefreshTime = 5 * 60 //await Exchange.ToListAsync();
+			};
+
+			_cache.Set(BlahCacheKey3, settings);
+            return settings;
+		}
+        public async Task<IEnumerable<Exchange>> UpdateExchangeCache()
         {
             var exchanges = await Exchange.ToListAsync();
             _cache.Set(BlahCacheKey2, exchanges);
+            return exchanges;
         }
 
-        public async Task UpdateInstrumentCache()
+        public async Task<IEnumerable<Instrument>> UpdateInstrumentCache()
         {
             var instruments = await Instrument.ToListAsync();
             _cache.Set(BlahCacheKey, instruments);
+            return instruments;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

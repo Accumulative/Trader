@@ -132,7 +132,12 @@ namespace TraderServices
                                     StartDate = item2.TransactionDate,
                                     EndDate = item.TransactionDate,
                                     TaxableValue = 0,
-                                    Fee = item.TransactionFee + item2.TransactionFee * remaining / item2.Quantity
+                                    Fee = item.TransactionFee + item2.TransactionFee * remaining / item2.Quantity,
+                                    TradeIdentifier = new TradeCompletionIdentifier
+                                    {
+                                        StartTradeID = item2.TradeImportID,
+                                        EndTradeID = item.TradeImportID
+                                    }
 
                                 });
                                 item2.Quantity -= remaining;
@@ -150,7 +155,12 @@ namespace TraderServices
                                     StartDate = item2.TransactionDate,
                                     EndDate = item.TransactionDate,
                                     TaxableValue = 0,
-                                    Fee = item.TransactionFee + item2.TransactionFee * item2.Quantity / remaining
+                                    Fee = item.TransactionFee + item2.TransactionFee * item2.Quantity / remaining,
+									TradeIdentifier = new TradeCompletionIdentifier
+									{
+										StartTradeID = item2.TradeImportID,
+										EndTradeID = item.TradeImportID
+									}
                                 });
                                 remaining -= item2.Quantity;
                                 holder.Remove(item2);

@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using TraderData.Models.TradeImportModels;
 
 namespace TraderData.Models.TaxModels
 {
+    public class TradeCompletionIdentifier
+    {
+		public int StartTradeID { get; set; }
+		public int EndTradeID { get; set; }
+    }
     public class TaxEventModel
     {
         
@@ -17,6 +23,7 @@ namespace TraderData.Models.TaxModels
         public decimal ProfitLoss { get { return (EndValue - StartValue) * Quantity - Fee; } }
         public decimal Fee { get; set; }
         public decimal TaxableValue { get; set; }
+        public TradeCompletionIdentifier TradeIdentifier { get; set; }
 
         public TaxEventModel()
         {

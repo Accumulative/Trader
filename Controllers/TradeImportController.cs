@@ -17,6 +17,7 @@ using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 using TraderData.Models.FileImportModels;
 
+
 namespace Trader.Controllers
 {
     [Authorize]
@@ -132,7 +133,7 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TradeImportID,ExternalReference,Value,Quantity,TransactionDate,ImportDate")] TradeImport tradeImport)
+        public async Task<IActionResult> Edit(int id, [Bind("TradeImportID,ExternalReference,InstrumentId,Value,Quantity,TransactionDate,UserID,FileImportId")] TradeImport tradeImport)
         {
             if (id != tradeImport.TradeImportID)
             {

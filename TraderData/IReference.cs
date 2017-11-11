@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TraderData.Models;
+using TraderData.Models.AdminModels;
 using TraderData.Models.FileImportModels;
 using TraderData.Models.TradeImportModels;
 
@@ -21,5 +22,6 @@ namespace TraderData
         Task<Exchange> GetExchangeById(int id);
         Task<Instrument> GetInstrumentById(int id);
         bool InstrumentExists(int id);
+        Task<Settings> GetSettings();
     }
 }

@@ -3,7 +3,7 @@
     public class ActiveHoldingsModel
     {
 
-
+        public int TradeImportId { get; set; }
 		public Instrument Instrument { get; set; }
 
 

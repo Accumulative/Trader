@@ -1,0 +1,224 @@
+﻿@model Trader.Models.TradeAnalysisModels.TradeAnalysisDashboardViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<h3>Best trades</h3>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].TaxEventID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].StartValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].EndValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].Instrument.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].TotalValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].ProfitLoss)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.bestTrades[0].Fee)
+                </th>
+            
+                <th>
+                    Actions
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.bestTrades) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxEventID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instrument.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalValue)
+            </td>
+            <td class="@(item.ProfitLoss > 0 ? "bg-success" : "bg-danger")">
+                @Html.DisplayFor(modelItem => item.ProfitLoss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
+				@Html.ActionLink("Analyse","Analysis", new { StartTradeID = item.TradeIdentifier.StartTradeID , EndTradeID = item.TradeIdentifier.EndTradeID  }) 
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h3>Worst trades</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].TaxEventID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].StartValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].EndValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].Instrument.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].StartDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].EndDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].TotalValue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].ProfitLoss)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.worstTrades[0].Fee)
+                </th>
+            
+                <th>
+                    Actions
+                </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.worstTrades) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxEventID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instrument.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalValue)
+            </td>
+            
+             
+            <td class="@(item.ProfitLoss > 0 ? "bg-success" : "bg-danger")">
+                @Html.DisplayFor(modelItem => item.ProfitLoss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fee)
+            </td>
+            <td>
+                @Html.ActionLink("Analyse","Analysis", new { StartTradeID = item.TradeIdentifier.StartTradeID , EndTradeID = item.TradeIdentifier.EndTradeID  }) 
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<h3>Active trades</h3>
+
+<div class="col-md-12">
+    <h4 align="center">Current Holdings</h4>
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.activeTrades[0].Instrument)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.activeTrades[0].Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.activeTrades[0].Value)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.activeTrades[0].Percentage)
+                </th>
+				<th>
+                    Actions
+				</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.activeTrades)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Instrument.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        $@Html.DisplayFor(modelItem => item.Value)
+                    </td>
+                    <td class="@(item.Percentage > 0 ? "bg-success" : "bg-danger")">
+                @Html.DisplayFor(modelItem => item.Percentage)
+                    </td>
+				    <td>
+					@Html.ActionLink("Analyse","Analysis", new { StartTradeID = item.TradeImportId }) 
+				    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>

@@ -7,6 +7,7 @@ using TraderData;
 using TraderData.Models;
 using TraderData.Models.FileImportModels;
 using TraderData.Models.TradeImportModels;
+using TraderData.Models.AdminModels;
 
 namespace TraderServices
 {
@@ -25,6 +26,12 @@ namespace TraderServices
             await _context.SaveChangesAsync();
             await _context.UpdateExchangeCache();
         }
+
+		public async Task<Settings> GetSettings()
+		{
+            var sett = await _context.SettingsCache();
+            return sett;
+		}
 
         public async Task AddInstrument(Instrument instrument)
         {
