@@ -93,5 +93,11 @@ namespace TraderData
         public DbSet<TraderData.Models.FileImportModels.Exchange> Exchange { get; set; }
 
         public DbSet<TraderData.Models.FileImportModels.FileImport> FileImport { get; set; }
+
+        public DbSet<TraderData.Models.NewsModels.NewsItem> NewsItem { get; set; }
+
+        public DbSet<TraderData.Models.ContactModels.Message> Message { get; set; }
+
+        public DbSet<TraderData.Models.ContactModels.Enquiry> Enquiry { get; set; }
     }
 }

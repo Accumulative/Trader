@@ -1,0 +1,46 @@
+@model TraderData.Models.ContactModels.Enquiry
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Enquiry</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="CustomerId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CustomerId" class="form-control" />
+                <span asp-validation-for="CustomerId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="QueryType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="QueryType" class="form-control"></select>
+                <span asp-validation-for="QueryType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Ts" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Ts" class="form-control" />
+                <span asp-validation-for="Ts" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

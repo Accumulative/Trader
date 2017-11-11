@@ -7,7 +7,7 @@ using TraderData.Models.FileImportModels;
 
 namespace TraderServices
 {
-    class FileImportService : IFileImport
+    public class FileImportService : IFileImport
     {
         private readonly ApplicationDbContext _context;
 

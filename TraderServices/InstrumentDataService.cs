@@ -4,7 +4,7 @@ using TraderData.Models.TradeImportModels;
 
 namespace TraderServices
 {
-    class InstrumentDataService : IInstrumentData
+    public class InstrumentDataService : IInstrumentData
     {
         public decimal GetCurrentValue(Instrument instrument)
         {

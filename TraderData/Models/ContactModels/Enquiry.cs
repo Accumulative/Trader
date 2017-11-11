@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace TraderData.Models
+namespace TraderData.Models.ContactModels
 {
     public class Enquiry
     {
