@@ -11,9 +11,10 @@ using TraderData.Models.TradeImportModels;
 namespace TraderData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171111133127_AddNewsAndEnquiries")]
+    partial class AddNewsAndEnquiries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.3")
@@ -124,18 +125,6 @@ namespace TraderData.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("TraderData.Models.AdminModels.Settings", b =>
-                {
-                    b.Property<int>("SettingsID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("RefreshTime");
-
-                    b.HasKey("SettingsID");
-
-                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("TraderData.Models.ApplicationUser", b =>

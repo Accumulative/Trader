@@ -42,21 +42,40 @@
 				    <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Trades
                         <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu multi-level">
                                 <li class="dropdown-submenu">
-                                    <a class="test" tabindex="-1" href="#">Trades
-                                    <span class="caret"></span></a>
+                                    <a class="test" tabindex="-1" href="#">Trades</a>
                                     <ul class="dropdown-menu">
                                             <li><a tabindex="-1" asp-area="" asp-controller="TradeImport" asp-action="Index">Manage Trades</a></li>
                                             <li><a asp-area="" asp-controller="TradeAnalysis" asp-action="Index">Analyse trades</a></li>
                                     </ul>
                                 </li>
+                                
 								<li class="dropdown-submenu">
-                                    <a class="test" tabindex="-1" href="#">Imports
-                                    <span class="caret"></span></a>
+                                    <a class="test" tabindex="-1" href="#">Imports</a>
                                     <ul class="dropdown-menu">
                                             <li><a asp-area="" asp-controller="FileImport" asp-action="Index">All imports</a></li>
                                             <li><a asp-area="" asp-controller="TradeImport" asp-action="Import">Import trades</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#">
+                                        Taxes
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a tabindex="-1" asp-area="" asp-controller="Tax" asp-action="Index">Generate Taxes</a></li>
+                                        <li><a asp-area="" asp-controller="Tax" asp-action="Index">Tax Advice (coming soon)</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#">
+                                        News
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a tabindex="-1" asp-area="" asp-controller="NewsItems" asp-action="Index">News board (coming soon)</a></li>
+                                        <li><a asp-area="" asp-controller="NewsItems" asp-action="Index">Events calendar (coming soon)</a></li>
                                     </ul>
                                 </li>
                         </ul>
@@ -70,6 +89,9 @@
                           <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
                           <li><a asp-area="" asp-controller="Exchange" asp-action="Index">Exchanges</a></li>
                           <li><a asp-area="" asp-controller="Instrument" asp-action="Index">Instruments</a></li>
+                            <li><a asp-area="" asp-controller="Enquiries" asp-action="Index">Enquiries</a></li>
+                            <li><a asp-area="" asp-controller="NewsItems" asp-action="Index">Manage news</a></li>
+                            <li><a asp-area="" asp-controller="Settings" asp-action="Index">System config</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -112,7 +134,7 @@
 		<script>
 $(document).ready(function(){
   $('.dropdown-submenu a.test').on("click", function(e){
-    $(this).next('ul').toggle();
+      $(this).next('ul').toggle();
     e.stopPropagation();
     e.preventDefault();
   });

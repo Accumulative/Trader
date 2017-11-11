@@ -9,7 +9,6 @@ using TraderData.Models.TradeImportModels;
 
 namespace TraderServices
 {
-    
     public class InstrumentDataService : IInstrumentData
     {
         private readonly IMemoryCache _cache;

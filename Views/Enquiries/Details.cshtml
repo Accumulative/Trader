@@ -1,0 +1,36 @@
+@model TraderData.Models.ContactModels.Enquiry
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Enquiry</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CustomerId)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.QueryType)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.QueryType)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ts)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ts)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.EnquiryID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

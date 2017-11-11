@@ -16,14 +16,14 @@ using ChartJSCore;
 
 namespace Trader.Controllers
 {
-    public class DashboardViewComponent : ViewComponent
+    public class DashboardGraphsViewComponent : ViewComponent
     {
 		private readonly ITrades _trades;
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IInstrumentData _instrumentData;
 		private readonly IReference _reference;
 
-		public DashboardViewComponent(ITrades trades, IInstrumentData instrumentData, UserManager<ApplicationUser> userManager, IReference reference)
+		public DashboardGraphsViewComponent(ITrades trades, IInstrumentData instrumentData, UserManager<ApplicationUser> userManager, IReference reference)
 		{
 			_trades = trades;
 			_userManager = userManager;

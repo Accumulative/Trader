@@ -183,21 +183,19 @@
 
 
 @{
-    Chart chart = (Chart)Model.chartOne;
-    Chart chart2 = (Chart)ViewData["chart2"];
+    ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)Model.chartOne;
+    ChartJSCore.Models.Chart chart2 = (ChartJSCore.Models.Chart)ViewData["chart2"];
     ChartJSCore.Models.Chart chart3 = (ChartJSCore.Models.Chart)ViewData["chart3"];
     ChartJSCore.Models.Chart chart4 = (ChartJSCore.Models.Chart)ViewData["chart4"];
     ChartJSCore.Models.Chart chart5 = (ChartJSCore.Models.Chart)ViewData["chart5"];
     ChartJSCore.Models.Chart chart6 = (ChartJSCore.Models.Chart)ViewData["chart6"];}
 
-@section Scripts {
-    <script src="~/js/Chart.min.js"></script>
-    <script>
-        @Html.Raw(chart.CreateChartCode("lineChart2"));
-    @Html.Raw(chart2.CreateChartCode("lineChart2"));
-    @Html.Raw(chart3.CreateChartCode("lineChart3"));
-    @Html.Raw(chart4.CreateChartCode("lineChart4"));
-    @Html.Raw(chart5.CreateChartCode("lineChart5"));
-        @Html.Raw(chart6.CreateChartCode("lineChart6"));
-    </script>
-}
+<script src="~/js/Chart.min.js"></script>
+<script>
+    @Html.Raw(chart.CreateChartCode("lineChart2"));
+@Html.Raw(chart2.CreateChartCode("lineChart2"));
+@Html.Raw(chart3.CreateChartCode("lineChart3"));
+@Html.Raw(chart4.CreateChartCode("lineChart4"));
+@Html.Raw(chart5.CreateChartCode("lineChart5"));
+    @Html.Raw(chart6.CreateChartCode("lineChart6"));
+</script>

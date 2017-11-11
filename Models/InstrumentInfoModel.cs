@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TraderData.Models.InstrumentModels;
+using System.Collections.Generic;
 using TraderData.Models.TradeImportModels;
 
 namespace Trader.Models

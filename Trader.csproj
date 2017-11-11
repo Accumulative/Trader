@@ -7,6 +7,17 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="TraderData\**" />
+    <Compile Remove="TraderServices\**" />
+    <Content Remove="TraderData\**" />
+    <Content Remove="TraderServices\**" />
+    <EmbeddedResource Remove="TraderData\**" />
+    <EmbeddedResource Remove="TraderServices\**" />
+    <None Remove="TraderData\**" />
+    <None Remove="TraderServices\**" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.3" />
@@ -41,49 +52,15 @@
 
   <ItemGroup>
     <Folder Include="Views\Tax\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Users\" />
-    <Folder Include="Views\Home\Components\" />
-    <Folder Include="Views\Shared\Components\Dashboard\" />
     <Folder Include="Models\TradeAnalysisModels\" />
     <Folder Include="Views\TradeAnalysis\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="TraderData\ApplicationDbContext.cs" />
-    <Compile Remove="TraderData\Migrations\20171011174409_Initial.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171011174409_Initial.cs" />
-    <Compile Remove="TraderData\Migrations\20171011180149_Exchange_mig.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171011180149_Exchange_mig.cs" />
-    <Compile Remove="TraderData\Migrations\20171011182227_Initial2.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171011182227_Initial2.cs" />
-    <Compile Remove="TraderData\Migrations\20171011195536_Initial3.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171011195536_Initial3.cs" />
-    <Compile Remove="TraderData\Migrations\20171012171750_AddLinkFileImportTrade.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171012171750_AddLinkFileImportTrade.cs" />
-    <Compile Remove="TraderData\Migrations\20171012181857_CoinbaseTrade.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171012181857_CoinbaseTrade.cs" />
-    <Compile Remove="TraderData\Migrations\20171015095747_AddUserToModels.Designer.cs" />
-    <Compile Remove="TraderData\Migrations\20171015095747_AddUserToModels.cs" />
-    <Compile Remove="TraderData\Migrations\ApplicationDbContextModelSnapshot.cs" />
-    <Compile Remove="TraderData\Models\ApplicationUser.cs" />
-    <Compile Remove="TraderData\Models\Currency.cs" />
-    <Compile Remove="TraderData\Models\FileImportModels\Exchange.cs" />
-    <Compile Remove="TraderData\Models\FileImportModels\FileImport.cs" />
-    <Compile Remove="TraderData\Models\TradeImportModels\Instrument.cs" />
-    <Compile Remove="TraderData\Models\TradeImportModels\TradeImport.cs" />
-    <Compile Remove="TraderData\Models\TradeImportModels\TransactionType.cs" />
-    <Compile Remove="TraderData\ITrades.cs" />
-    <Compile Remove="TraderData\Models\TaxModels\TaxEventModel.cs" />
-    <Compile Remove="TraderServices\TradeImportService.cs" />
-    <Compile Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.AssemblyInfo.cs" />
-    <Compile Remove="TraderData\IFileImport.cs" />
-    <Compile Remove="TraderData\IInstrumentData.cs" />
-    <Compile Remove="TraderData\IReference.cs" />
-    <Compile Remove="TraderData\Models\AdminModels\Settings.cs" />
-    <Compile Remove="TraderData\Models\InstrumentModels\InstrumentData.cs" />
-    <Compile Remove="TraderServices\FileImportService.cs" />
-    <Compile Remove="TraderServices\InstrumentDataService.cs" />
-    <Compile Remove="TraderServices\ReferenceDataService.cs" />
+    <Compile Remove="Controllers\CultureCountriesController.cs" />
+    <Compile Remove="Controllers\PayPalTransactionsController.cs" />
+    <Compile Remove="Controllers\PurchaseController.cs" />
+    <Compile Remove="Models\ContactViewModels\ContactView.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="TraderData\TraderData.csproj">
@@ -92,31 +69,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="TraderData\.DS_Store" />
-    <None Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.dll" />
-    <None Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.pdb" />
-    <None Remove="TraderData\obj\TraderData.csproj.nuget.g.props" />
-    <None Remove="TraderData\obj\TraderData.csproj.nuget.g.targets" />
-    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.csproj.CoreCompileInputs.cache" />
-    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.csproj.FileListAbsolute.txt" />
-    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.csprojResolveAssemblyReference.cache" />
-    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.dll" />
-    <None Remove="TraderData\obj\Debug\netcoreapp1.1\TraderData.pdb" />
-    <None Remove="TraderServices\.DS_Store" />
-    <None Remove="TraderServices\obj\TraderServices.csproj.nuget.g.props" />
-    <None Remove="TraderServices\obj\TraderServices.csproj.nuget.g.targets" />
-    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.CoreCompileInputs.cache" />
-    <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.dll" />
-    <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.pdb" />
-    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.FileListAbsolute.txt" />
-    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csprojResolveAssemblyReference.cache" />
-    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.dll" />
-    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.pdb" />
+    <None Include="Controllers\CultureCountriesController.cs" />
+    <None Include="Controllers\PayPalTransactionsController.cs" />
+    <None Include="Controllers\PurchaseController.cs" />
+    <None Include="Controllers\SaleModelsController2.cs" />
+    <None Include="Models\ContactViewModels\ContactView.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.deps.json" />
-    <Content Remove="TraderData\obj\project.assets.json" />
-    <Content Remove="TraderServices\obj\project.assets.json" />
-    <Content Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.deps.json" />
+    <Compile Update="Resources\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>
