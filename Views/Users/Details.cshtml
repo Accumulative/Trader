@@ -1,0 +1,121 @@
+@model Trader.Models.AccountViewModels.UserDetailsViewModel
+
+<div>
+    <h4>ApplicationUser</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.user.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.UserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.NormalizedUserName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.NormalizedUserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.NormalizedEmail)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.NormalizedEmail)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.EmailConfirmed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.EmailConfirmed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.SecurityStamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.SecurityStamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.ConcurrencyStamp)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.ConcurrencyStamp)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.PhoneNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.PhoneNumberConfirmed)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.PhoneNumberConfirmed)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.TwoFactorEnabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.TwoFactorEnabled)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.LockoutEnd)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.LockoutEnd)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.LockoutEnabled)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.LockoutEnabled)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.user.AccessFailedCount)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.user.AccessFailedCount)
+        </dd>
+    </dl>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.roles)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.roles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item)
+                </td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item">Remove</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.user.Id  }) |
+    <a asp-action="Index">Back to List</a>
+</div>

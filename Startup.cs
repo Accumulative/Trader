@@ -55,7 +55,7 @@ namespace Trader
 
             services.AddMvc();
 
-
+            
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -92,6 +92,8 @@ namespace Trader
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RolesData.SeedRoles(app.ApplicationServices).Wait();
         }
     }
 }
