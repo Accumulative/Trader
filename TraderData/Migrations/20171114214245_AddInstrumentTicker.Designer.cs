@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using TraderData;
-using TraderData.Models.ContactModels;
 using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 
 namespace TraderData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171114214245_AddInstrumentTicker")]
+    partial class AddInstrumentTicker
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.3")
@@ -126,18 +126,6 @@ namespace TraderData.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TraderData.Models.AdminModels.Settings", b =>
-                {
-                    b.Property<int>("SettingsID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("RefreshTime");
-
-                    b.HasKey("SettingsID");
-
-                    b.ToTable("Settings");
-                });
-
             modelBuilder.Entity("TraderData.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -188,44 +176,6 @@ namespace TraderData.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TraderData.Models.ContactModels.Enquiry", b =>
-                {
-                    b.Property<int>("EnquiryID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("CustomerId")
-                        .HasMaxLength(128);
-
-                    b.Property<int>("QueryType");
-
-                    b.Property<DateTime>("Ts");
-
-                    b.HasKey("EnquiryID");
-
-                    b.ToTable("Enquiry");
-                });
-
-            modelBuilder.Entity("TraderData.Models.ContactModels.Message", b =>
-                {
-                    b.Property<int>("MessageID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<int>("EnquiryID");
-
-                    b.Property<bool>("FromCustomer");
-
-                    b.Property<DateTime>("Ts");
-
-                    b.HasKey("MessageID");
-
-                    b.HasIndex("EnquiryID");
-
-                    b.ToTable("Message");
-                });
-
             modelBuilder.Entity("TraderData.Models.FileImportModels.Exchange", b =>
                 {
                     b.Property<int>("ExchangeId")
@@ -265,22 +215,6 @@ namespace TraderData.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("FileImport");
-                });
-
-            modelBuilder.Entity("TraderData.Models.NewsModels.NewsItem", b =>
-                {
-                    b.Property<int>("NewsItemID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Title");
-
-                    b.Property<DateTime>("Ts");
-
-                    b.HasKey("NewsItemID");
-
-                    b.ToTable("NewsItem");
                 });
 
             modelBuilder.Entity("TraderData.Models.TradeImportModels.Instrument", b =>
@@ -371,14 +305,6 @@ namespace TraderData.Migrations
                     b.HasOne("TraderData.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("TraderData.Models.ContactModels.Message", b =>
-                {
-                    b.HasOne("TraderData.Models.ContactModels.Enquiry", "Enquiry")
-                        .WithMany()
-                        .HasForeignKey("EnquiryID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

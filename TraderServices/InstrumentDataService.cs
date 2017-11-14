@@ -6,9 +6,24 @@ using Microsoft.Extensions.Caching.Memory;
 using TraderData;
 using TraderData.Models.InstrumentModels;
 using TraderData.Models.TradeImportModels;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TraderServices
 {
+    public class CoinbasePrice
+    {
+        public Data data { get; set; }
+    }
+    public class Data
+    {
+        public string currency { get; set; }
+        public string amount { get; set; }
+
+    }
     public class InstrumentDataService : IInstrumentData
     {
         private readonly IMemoryCache _cache;
@@ -50,12 +65,16 @@ namespace TraderServices
 			}
 
             var insList = await _reference.getInstruments();
+            var tasks = insList.Select(async x => new InstrumentData
+            {
+                instrument = x,
+                price = await GetCoinbasePrice(x.Ticker)
+            }).ToList();
+
+            var results = await Task.WhenAll(tasks);
+
             instrumentCache = new InstrumentDataCacheStore{ 
-                instruments = insList.Select(x => new InstrumentData
-                {
-                    instrument = x,
-                    price = (decimal)RandGen.Next(20, 40)
-                }).ToList(),
+                instruments = results.ToList(),
                 lastStored = DateTime.Now
             };
 
@@ -63,6 +82,28 @@ namespace TraderServices
 
 			return instrumentCache.instruments;
 			/*return await Instrument.ToListAsync();*/
+		}
+        public async Task<decimal> GetCoinbasePrice(string pair)
+        {
+            var url = "/v2/prices/" + pair + "/buy";
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    client.BaseAddress = new Uri("https://api.coinbase.com");
+                    var response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+
+                    var stringResult = await response.Content.ReadAsStringAsync();
+                    var rawWeather = JsonConvert.DeserializeObject<CoinbasePrice>(stringResult);
+                    return decimal.Parse(rawWeather.data.amount);
+                }
+                catch (HttpRequestException httpRequestException)
+                {
+                    return 0;
+                }
+            }
+
 		}
     }
     class InstrumentDataCacheStore

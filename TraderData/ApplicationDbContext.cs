@@ -8,6 +8,7 @@ using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 using TraderData.Models.FileImportModels;
 using TraderData.Models.AdminModels;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace TraderData
 {
@@ -18,7 +19,7 @@ namespace TraderData
     //    public ApplicationDbContext Create(DbContextFactoryOptions options)
     //    {
     //        var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-    //        optionsBuilder.UseSqlServer("connectionstirnghere", b => b.MigrationsAssembly("TraderData"));
+    //        optionsBuilder.UseSqlServer("", b => b.MigrationsAssembly("TraderData"));
     //        return new ApplicationDbContext(optionsBuilder.Options);
     //    }
     //}
