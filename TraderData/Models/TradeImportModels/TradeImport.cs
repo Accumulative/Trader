@@ -15,7 +15,6 @@ namespace TraderData.Models.TradeImportModels
         [Display(Name = "External Reference")]
         public string ExternalReference { get; set; }
 
-        [Required]
         public int FileImportId { get; set; }
 
         public FileImport FileImport { get; set; }
@@ -41,7 +40,6 @@ namespace TraderData.Models.TradeImportModels
         [Display(Name = "Transaction date")]
         public DateTime TransactionDate { get; set; }
 
-        [Required]
         [Display(Name = "Import date")]
         public DateTime ImportDate { get; set; } 
 
@@ -56,5 +54,9 @@ namespace TraderData.Models.TradeImportModels
         [ForeignKey("UserID")]
         public virtual ApplicationUser User { get; set; }
 
+        public TradeImport()
+        {
+            ImportDate = DateTime.Now;
+        }
 	}
 }

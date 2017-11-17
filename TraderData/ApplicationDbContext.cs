@@ -115,5 +115,7 @@ namespace TraderData
         public DbSet<TraderData.Models.ContactModels.Enquiry> Enquiry { get; set; }
 
         public DbSet<TraderData.Models.AdminModels.Settings> Settings { get; set; }
+
+        public DbSet<TraderData.Models.InstrumentModels.InstrumentPrice> InstrumentPrice { get; set; }
     }
 }

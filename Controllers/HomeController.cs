@@ -35,12 +35,33 @@ namespace Trader.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         [Authorize]
-        public IActionResult Dashboard()
-        { 
-            return View();
+        public async Task<IActionResult> Dashboard()
+        {
+            var user = await GetCurrentUserAsync();
+
+            var userId = user?.Id;
+
+            if (userId != null)
+            {
+                var trades = await _trades.getAllByUser(userId);
+
+                // set new filter before, others you get filtered-filters
+                DashboardFilterModel filters = new DashboardFilterModel
+                {
+                    InstrumentList = new SelectList(trades.Select(x => x.Instrument).Distinct().Select(x => new { Id = x.InstrumentID, Value = x.Name }), "Id", "Value"), //sometimes null)
+                    Month = new SelectList(trades.Select(x => x.TransactionDate.Month + "/" + x.TransactionDate.Year).Distinct().Select(x => new { Id = x, Value = x }), "Id", "Value"),
+                    ExchangeList = new SelectList(trades.Select(x => x.FileImport.Exchange).Distinct().Select(x => new { Id = x.Name, Value = x.Name }), "Id", "Value")
+
+                };
+                return View(filters);
+            }
+            return NotFound();
         }
 
-        
+        public IActionResult DashboardGraphViewComponent(DashboardFilterModel filterModel)
+        {
+            return ViewComponent("DashboardGraphsViewComponent", filterModel);
+        }
 
         public IActionResult About()
         {

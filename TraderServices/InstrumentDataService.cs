@@ -7,10 +7,8 @@ using TraderData;
 using TraderData.Models.InstrumentModels;
 using TraderData.Models.TradeImportModels;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TraderServices
 {
@@ -28,11 +26,14 @@ namespace TraderServices
     {
         private readonly IMemoryCache _cache;
         private readonly IReference _reference;
+        private readonly ApplicationDbContext _context;
+
         private const string BlahCacheKey = "blah-cache-key3";
-        public InstrumentDataService(IMemoryCache cache, IReference reference)
+        public InstrumentDataService(IMemoryCache cache, IReference reference, ApplicationDbContext context)
         {
             _reference = reference;
             _cache = cache;
+            _context = context;
         }
         public async Task<decimal> GetCurrentValue(int instrumentID)
         {
@@ -65,13 +66,15 @@ namespace TraderServices
 			}
 
             var insList = await _reference.getInstruments();
-            var tasks = insList.Select(async x => new InstrumentData
+            var results = insList.Select(x => new InstrumentData
             {
-                instrument = x,
-                price = await GetCoinbasePrice(x.Ticker)
+                instrument = x
             }).ToList();
 
-            var results = await Task.WhenAll(tasks);
+            foreach(var ins in results)
+            {
+                ins.price = await GetCoinbasePrice(ins.instrument);
+            }
 
             instrumentCache = new InstrumentDataCacheStore{ 
                 instruments = results.ToList(),
@@ -83,9 +86,9 @@ namespace TraderServices
 			return instrumentCache.instruments;
 			/*return await Instrument.ToListAsync();*/
 		}
-        public async Task<decimal> GetCoinbasePrice(string pair)
+        public async Task<decimal> GetCoinbasePrice(Instrument instrument)
         {
-            var url = "/v2/prices/" + pair + "/buy";
+            var url = "/v2/prices/" + instrument.Ticker + "/buy";
             using (var client = new HttpClient())
             {
                 try
@@ -96,7 +99,14 @@ namespace TraderServices
 
                     var stringResult = await response.Content.ReadAsStringAsync();
                     var rawWeather = JsonConvert.DeserializeObject<CoinbasePrice>(stringResult);
-                    return decimal.Parse(rawWeather.data.amount);
+                    var price = decimal.Parse(rawWeather.data.amount);
+
+                    // Store the price
+                    var exchange = await _reference.GetExchangeByNameAsync("Coinbase");
+                    await StorePrice(exchange.ExchangeId, price, instrument.InstrumentID );
+
+                    // return the price
+                    return price;
                 }
                 catch (HttpRequestException httpRequestException)
                 {
@@ -105,6 +115,30 @@ namespace TraderServices
             }
 
 		}
+
+        public async Task StorePrice (int exchangeID, decimal price, int instrumentID)
+        {
+            _context.Add(new InstrumentPrice
+            {
+                ExchangeID = exchangeID,
+                Price = price,
+                InstrumentID = instrumentID,
+                DateTime = DateTime.Now
+            });
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<InstrumentData>> GetValueBetweenDates(int instrumentID, DateTime fromDate, DateTime toDate)
+        {
+            var exchange = await _reference.GetExchangeByNameAsync("Coinbase");
+            var ins = await _context.InstrumentPrice.Include(x => x.Instrument).Where(x => x.DateTime <= toDate && x.DateTime >= fromDate && x.ExchangeID == exchange.ExchangeId && x.Instrument.InstrumentID == instrumentID)
+                .Select(x => new InstrumentData
+                {
+                    instrument = x.Instrument,
+                    price = x.Price,
+                    dateTime = x.DateTime
+                }).ToListAsync();
+            return ins;
+        }
     }
     class InstrumentDataCacheStore
     {

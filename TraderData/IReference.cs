@@ -9,7 +9,9 @@ namespace TraderData
 {
     public interface IReference
     {
-		Task<IEnumerable<Instrument>> getInstruments();
+        Task<Exchange> GetExchangeByNameAsync(string Name);
+
+        Task<IEnumerable<Instrument>> getInstruments();
         Task AddInstrument(Instrument instrument);
         Task<bool> EditInstrument(Instrument instrument);
         Task DeleteInstrument(int id);

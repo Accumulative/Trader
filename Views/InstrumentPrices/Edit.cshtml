@@ -1,0 +1,54 @@
+@model TraderData.Models.InstrumentModels.InstrumentPrice
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>InstrumentPrice</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="InstrumentPriceID" />
+        <div class="form-group">
+            <label asp-for="ExchangeID" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="ExchangeID" class="form-control" asp-items="ViewBag.ExchangeID"></select>
+                <span asp-validation-for="ExchangeID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="InstrumentID" class="control-label col-md-2"></label>
+            <div class="col-md-10">
+                <select asp-for="InstrumentID" class="form-control" asp-items="ViewBag.InstrumentID"></select>
+                <span asp-validation-for="InstrumentID" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

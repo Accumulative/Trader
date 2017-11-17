@@ -1,11 +1,47 @@
-﻿
+﻿@model Trader.Models.DashboardFilterModel
+
 @{
     ViewData["Title"] = "Home Page";
 }
 <h2>Dashboard</h2>
+
+
+<div>
+    <div class="row">
+        <form action="#" id="example-form">
+            <div class="col-md-3">
+                <label asp-for="instrumentId" class="control-label"></label>:
+                @Html.DropDownListFor(model => model.instrumentId, Model.InstrumentList, "-Instrument-")
+            </div>
+            <div class="col-md-2">
+                <label asp-for="monthNo" class="control-label"></label>:
+                @Html.DropDownListFor(model => model.monthNo, Model.Month, "-Month-")
+            </div>
+            <div class="col-md-3">
+                <label asp-for="exchangeId" class="control-label"></label>:
+                @Html.DropDownListFor(model => model.exchangeId, Model.ExchangeList, "-Exchange-")
+            </div>
+
+            <div class="col-md-2 form-actions no-color">
+                <input id="submitFilters" value="Filter" class="btn btn-default" />
+            </div>
+
+        </form>
+
+    </div>
+</div>
+<div id="graphs_container" />
+
 @section Scripts {
     <script src="~/js/Chart.min.js"></script>
-    }
-@await Component.InvokeAsync("DashboardGraphs")
+    <script >
+        var container = $("#graphs_container");
+        $('#submitFilters').click(function () {
+                $.post("/Home/DashboardGraphViewComponent", $('#example-form').serialize(), function (data) { container.html(data); });
+        })
+        $.post("/Home/DashboardGraphViewComponent", $('#example-form').serialize(), function (data) { container.html(data); });
+   </script>
+
+}
 
 

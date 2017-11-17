@@ -16,6 +16,7 @@ using ChartJSCore;
 
 namespace Trader.Controllers
 {
+    [ViewComponent(Name = "DashboardGraphsViewComponent")]
     public class DashboardGraphsViewComponent : ViewComponent
     {
 		private readonly ITrades _trades;
@@ -32,7 +33,7 @@ namespace Trader.Controllers
 		}
 		private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-		public async Task<IViewComponentResult> InvokeAsync(DashboardViewModel viewModel)
+		public async Task<IViewComponentResult> InvokeAsync(DashboardFilterModel viewModel)
 		{
 			var user = await GetCurrentUserAsync();
 
@@ -42,24 +43,15 @@ namespace Trader.Controllers
 			{
 				var trades = await _trades.getAllByUser(userId);
 
-				// set new filter before, others you get filtered-filters
-				DashboardFilterModel filters = new DashboardFilterModel
-				{
-					InstrumentList = new SelectList(trades.Select(x => x.Instrument).Distinct().Select(x => new { Id = x.InstrumentID, Value = x.Name }), "Id", "Value", viewModel == null ? null : viewModel.filter.instrumentId), //sometimes null)
-					Month = new SelectList(trades.Select(x => x.TransactionDate.Month + "/" + x.TransactionDate.Year).Distinct().Select(x => new { Id = x, Value = x }), "Id", "Value", viewModel == null ? null : viewModel.filter.monthNo),
-					ExchangeList = new SelectList(trades.Select(x => x.FileImport.Exchange).Distinct().Select(x => new { Id = x.Name, Value = x.Name }), "Id", "Value", viewModel == null ? null : viewModel.filter.exchangeId)
-
-				};
-
 				// Apply filters
 				if (viewModel != null)
 				{
-					if (viewModel.filter.exchangeId != null)
-						trades = trades.Where(x => x.FileImport.ExchangeId == viewModel.filter.exchangeId).ToList();
-					if (viewModel.filter.instrumentId != null)
-						trades = trades.Where(x => x.InstrumentId == viewModel.filter.instrumentId).ToList();
-					if (viewModel.filter.monthNo != null)
-						trades = trades.Where(x => x.TransactionDate.Month + "/" + x.TransactionDate.Year == viewModel.filter.monthNo).ToList();
+					if (viewModel.exchangeId != null)
+						trades = trades.Where(x => x.FileImport.ExchangeId == viewModel.exchangeId).ToList();
+					if (viewModel.instrumentId != null)
+						trades = trades.Where(x => x.InstrumentId == viewModel.instrumentId).ToList();
+					if (viewModel.monthNo != null)
+						trades = trades.Where(x => x.TransactionDate.Month + "/" + x.TransactionDate.Year == viewModel.monthNo).ToList();
 				}
 
 				var curList = trades.Select(x => x.Currency.ToString()).ToList();
@@ -163,7 +155,7 @@ namespace Trader.Controllers
 					TotalHoldings = bTrades.Sum(x => x.Quantity * x.Value)
 				};
 				model.ActiveTrades = bTrades;
-				model.filter = filters;
+				//model.filter = filters;
                 model.chartOne = lineChart.getChart;
                 //ViewData["Test"] = "Hello world";
 

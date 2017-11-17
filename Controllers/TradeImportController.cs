@@ -95,8 +95,7 @@ namespace Trader.Controllers
                     InstrumentId = InstrumentId,
                     Value = Value,
                     Quantity = Quantity,
-                    TransactionDate = TransactionDate,
-                    ImportDate = DateTime.Now
+                    TransactionDate = TransactionDate
                 };
 
                 return RedirectToAction("Index");

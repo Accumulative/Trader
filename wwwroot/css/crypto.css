@@ -1,6 +1,11 @@
 ﻿body {
 }
 
+.navbar-inverse {
+    background-color: #000;
+    border-color: #080808;
+}
+
 .dropdown-submenu {
     position: relative;
 }

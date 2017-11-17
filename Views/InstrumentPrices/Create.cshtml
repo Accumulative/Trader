@@ -1,0 +1,51 @@
+@model TraderData.Models.InstrumentModels.InstrumentPrice
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>InstrumentPrice</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="ExchangeID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="ExchangeID" class ="form-control" asp-items="ViewBag.ExchangeID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="InstrumentID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="InstrumentID" class ="form-control" asp-items="ViewBag.InstrumentID"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="DateTime" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="DateTime" class="form-control" />
+                <span asp-validation-for="DateTime" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

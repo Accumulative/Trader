@@ -13,6 +13,8 @@ namespace TraderData
         Task<decimal> GetCurrentValue(int instrumentID);
         decimal GetValueAtDate(Instrument instrument, DateTime date);
         Task<List<InstrumentData>> InstrumentPriceCache();
-        Task<decimal> GetCoinbasePrice(string pair);
+        Task<decimal> GetCoinbasePrice(Instrument instrument);
+        Task StorePrice(int exchangeID, decimal price, int instrumentID);
+        Task<List<InstrumentData>> GetValueBetweenDates(int instrumentID, DateTime fromDate, DateTime toDate);
     }
 }

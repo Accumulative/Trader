@@ -2,6 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using TraderData;
 using TraderData.Models.TradeImportModels;
+using Trader.Models.InstrumentViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
+using System;
 
 namespace Trader.Controllers
 {
@@ -51,7 +55,7 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("InstrumentID,Name")] Instrument instrument)
+        public async Task<IActionResult> Create([Bind("InstrumentID,Name,Ticker")] Instrument instrument)
         {
             if (ModelState.IsValid)
             {
@@ -60,6 +64,29 @@ namespace Trader.Controllers
                 return RedirectToAction("Index");
             }
             return View(instrument);
+        }
+
+        public async Task<IActionResult> Graph()
+        {
+            var ins = await _reference.getInstruments();
+            var start = DateTime.Now.AddYears(-1);
+            var end = DateTime.Now;
+            var dates = Enumerable.Range(0, 1 + end.Subtract(start).Days)
+                          .Select(offset => start.AddDays(offset))
+                          .ToList();
+
+            InstrumentGraphFilter filters = new InstrumentGraphFilter
+            {
+                InstrumentList = new SelectList(ins.Select(x => new { Id = x.InstrumentID, Value = x.Name }), "Id", "Value"), //sometimes null)
+                Month = new SelectList(dates.Select(x => x.Month + "/" + x.Year).Distinct().Select(x => new { Id = x, Value = x }), "Id", "Value")
+
+            };
+            return View(filters);
+        }
+
+        public IActionResult InstrumentGraphViewComponent(InstrumentGraphFilter filterModel)
+        {
+            return ViewComponent("InstrumentGraphViewComponent", filterModel);
         }
 
         // GET: Instrument/Edit/5
@@ -83,7 +110,7 @@ namespace Trader.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("InstrumentID,Name")] Instrument instrument)
+        public async Task<IActionResult> Edit(int id, [Bind("InstrumentID,Name,Ticker")] Instrument instrument)
         {
             if (id != instrument.InstrumentID)
             {

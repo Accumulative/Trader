@@ -20,6 +20,14 @@ namespace TraderServices
 			_context = context;
 		}
 
+        public async Task<Exchange> GetExchangeByNameAsync(string Name)
+        {
+            var exchanges = await getExchanges();
+            var selEx = exchanges.FirstOrDefault(x => x.Name == Name);
+
+            return selEx;
+        }
+
         public async Task AddExchange(Exchange exchange)
         {
             _context.Add(exchange);

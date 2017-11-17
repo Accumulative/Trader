@@ -1,0 +1,35 @@
+@model Trader.Models.InstrumentViewModels.InstrumentGraphFilter
+@{
+    ViewData["Title"] = "Graph";
+}
+
+<h2>Graph</h2>
+<div class="row">
+    <form action="#" id="example-form">
+        <div class="col-md-3">
+            <label asp-for="instrumentId" class="control-label"></label>:
+            @Html.DropDownListFor(model => model.instrumentId, Model.InstrumentList, "-Instrument-")
+        </div>
+        <div class="col-md-2">
+            <label asp-for="monthNo" class="control-label"></label>:
+            @Html.DropDownListFor(model => model.monthNo, Model.Month, "-Month-")
+        </div>
+        <div class="col-md-2 form-actions no-color">
+            <input id="submitFilters" value="Filter" class="btn btn-default" />
+        </div>
+
+    </form>
+
+</div>
+<div id="graphs_container" />
+@section Scripts {
+    <script src="~/js/Chart.min.js"></script>
+    <script >
+        var container = $("#graphs_container");
+        $('#submitFilters').click(function () {
+            $.post("/Instrument/InstrumentGraphViewComponent", $('#example-form').serialize(), function (data) { container.html(data); });
+        })
+        $.post("/Instrument/InstrumentGraphViewComponent", $('#example-form').serialize(), function (data) { container.html(data); });
+   </script>
+
+}

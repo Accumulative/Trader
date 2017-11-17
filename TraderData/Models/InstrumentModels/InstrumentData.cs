@@ -7,5 +7,6 @@ namespace TraderData.Models.InstrumentModels
 	{
 		public Instrument instrument { get; set; }
 		public decimal price { get; set; }
+        public DateTime dateTime { get; set; }
 	}
 }

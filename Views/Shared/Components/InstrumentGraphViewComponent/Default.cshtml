@@ -1,0 +1,19 @@
+﻿@model Trader.Models.InstrumentViewModels.InstrumentGraphViewModel
+
+<div class="container">
+    
+    <div class="jumbotron">
+            <canvas id="lineChart"></canvas>
+    </div>
+</div>
+
+
+
+@{
+    ChartJSCore.Models.Chart chart = (ChartJSCore.Models.Chart)Model.chartOne;
+}
+
+<script src="~/js/Chart.min.js"></script>
+<script>
+    @Html.Raw(chart.CreateChartCode("lineChart"));
+</script>
