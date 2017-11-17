@@ -9,18 +9,90 @@
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">@UserManager.GetUserName(User)
+					<span class="glyphicon glyphicon-user navbar_glyph"></span></a>
             </li>
             <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link display:inline">Log out
+                    <span class="glyphicon glyphicon-log-out navbar_glyph"></span>
+				</button>
+					
             </li>
+				<li class="dropdown" style="padding-top:15px; padding-left:30px;">
+            <div class="button dropdown-toggle" data-toggle="dropdown" >
+                <div class="notification_icon">
+                    <span style="font-size:20px" class="glyphicon glyphicon-bell"></span>
+                    <span class="caret"></span>
+                </div>
+                <span class="button__badge">2</span>
+            </div>
+            <ul class="dropdown-menu notify-drop">
+            <div class="notify-drop-title">
+                <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">Notifications (<b>2</b>)</div>
+                    <div class="col-md-6 col-sm-6 col-xs-6 text-right"><a href="" class="rIcon allRead" data-tooltip="tooltip" data-placement="bottom" title="Delete all">Delete all<span class="glyphicon glyphicon-remove-sign" style="padding-left:5px;"></span></a></div>
+                </div>
+            </div>
+            <!-- end notify title -->
+            <!-- notify content -->
+            <div class="drop-content">
+                <li>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                    <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Tesla</a> announced <a href="">New trucks will...</a> <a href="" class="rIcon"><span class="glyphicon glyphicon-remove-sign"></span></a>
+                    
+                    <hr>
+                    <p class="time">Just now</p>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                    <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Tesla</a> announced <a href="">New trucks will...</a> <a href="" class="rIcon"><span class="glyphicon glyphicon-remove-sign"></span></a>
+                    
+                    <hr>
+                    <p class="time">5 minutes ago...</p>
+                    </div>
+                </li>
+
+				<li>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                    <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Tesla</a> announced <a href="">New trucks will...</a> <a href="" class="rIcon"><span class="glyphicon glyphicon-remove-sign"></span></a>
+                    
+                    <hr>
+                    <p class="time">Just now</p>
+                    </div>
+                </li>
+
+				<li>
+                    <div class="col-md-3 col-sm-3 col-xs-3"><div class="notify-img"><img src="http://placehold.it/45x45" alt=""></div></div>
+                    <div class="col-md-9 col-sm-9 col-xs-9 pd-l0"><a href="">Tesla</a> announced <a href="">New trucks will...</a> <a href="" class="rIcon"><span class="glyphicon glyphicon-remove-sign"></span></a>
+                    
+                    <hr>
+                    <p class="time">Just now</p>
+                    </div>
+                </li>
+            </div>
+            <div class="notify-drop-footer text-center">
+                <a href=""><span class="glyphicon glyphicon-eye-open" style="padding-right:5px"></span>View all</a>
+            </div>
+          </ul>
+        </li>
         </ul>
     </form>
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
-        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+        <li><a style="display:inline-block" asp-area="" asp-controller="Account" asp-action="Register">Register
+			<span class="glyphicon glyphicon-retweet navbar_glyph"></span></a></li>
+        <li><a style="display:inline-block" asp-area="" asp-controller="Account" asp-action="Login">Log in
+				<span class="glyphicon glyphicon-log-in navbar_glyph"></span></a>
+			</li>
+			<li>
+			<div class="notification_icon" style="padding-top:15px; padding-left:30px;">
+                    <span style="font-size:20px" class="glyphicon glyphicon-bell"></span>
+                </div>
+				</li>
+		
     </ul>
 }

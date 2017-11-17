@@ -32,6 +32,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a asp-area="" asp-controller="Home" asp-action="Dashboard" class="navbar-left"><img style="max-height:50px; padding-right:20px" src="~/images/CryptoTRader.jpg" /></a>
+            
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -41,21 +42,22 @@
 
 				    <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Trades
-                        <span class="caret"></span></a>
+                        <span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu multi-level">
                                 <li class="dropdown-submenu">
                                     <a class="test" tabindex="-1" href="#">Trades</a>
                                     <ul class="dropdown-menu">
-                                            <li><a tabindex="-1" asp-area="" asp-controller="TradeImport" asp-action="Index">Manage Trades</a></li>
-                                            <li><a asp-area="" asp-controller="TradeAnalysis" asp-action="Index">Analyse trades</a></li>
+                                            <li><a class="dropdown_item" tabindex="-1" asp-area="" asp-controller="TradeImport" asp-action="Index">Manage Trades<span class="glyphicon glyphicon-bitcoin menu_logo"></span></a></li>
+                                            <li><a class="dropdown_item" asp-area="" asp-controller="TradeAnalysis" asp-action="Index">Analyse trades<span class="glyphicon glyphicon-stats menu_logo"></span></a></li>
                                     </ul>
                                 </li>
                                 
 								<li class="dropdown-submenu">
                                     <a class="test" tabindex="-1" href="#">Imports</a>
                                     <ul class="dropdown-menu">
-                                            <li><a asp-area="" asp-controller="FileImport" asp-action="Index">All imports</a></li>
-                                            <li><a asp-area="" asp-controller="TradeImport" asp-action="Import">Import trades</a></li>
+                                            <li><a class="dropdown_item" asp-area="" asp-controller="FileImport" asp-action="Index">All imports<span class="glyphicon glyphicon-list menu_logo"></span></a></li>
+                                            <li><a class="dropdown_item" asp-area="" asp-controller="TradeImport" asp-action="Import">Import trades<span class="glyphicon glyphicon-open menu_logo"></span></a></li>
                                     </ul>
                                 </li>
 
@@ -64,10 +66,11 @@
                                         Taxes
                                     </a>
                                     <ul class="dropdown-menu">
-                                        <li><a tabindex="-1" asp-area="" asp-controller="Tax" asp-action="Index">Generate Taxes</a></li>
-                                        <li><a asp-area="" asp-controller="Tax" asp-action="Index">Tax Advice (coming soon)</a></li>
+                                        <li><a class="dropdown_item" tabindex="-1" asp-area="" asp-controller="Tax" asp-action="Index">Generate Taxes<span class="glyphicon glyphicon-calendar menu_logo"></span></a></li>
+                                        <li><a class="dropdown_item" asp-area="" asp-controller="Tax" asp-action="Index">Tax Advice (coming soon)</a></li>
                                     </ul>
                                 </li>
+                               
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -81,16 +84,16 @@
                                     News
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a tabindex="-1" asp-area="" asp-controller="NewsItems" asp-action="Index">News board (coming soon)</a></li>
-                                    <li><a asp-area="" asp-controller="NewsItems" asp-action="Index">Events calendar (coming soon)</a></li>
+                                    <li><a tabindex="-1" asp-area="" asp-controller="NewsItems" asp-action="Index">News board (coming soon)<span class="glyphicon glyphicon-warning-sign menu_logo"></span></a></li>
+                                    <li><a asp-area="" asp-controller="NewsItems" asp-action="Index">Events calendar (coming soon)<span class="glyphicon glyphicon-calendar menu_logo"></span></a></li>
                                 </ul>
                             </li>
 
                             <li class="dropdown-submenu">
                                 <a class="test" tabindex="-1" href="#">Statistics</a>
                                 <ul class="dropdown-menu">
-                                    <li><a asp-area="" asp-controller="Instrument" asp-action="Graph">Price graphs</a></li>
-                                    <li><a asp-area="" asp-controller="Instrument" asp-action="Graph">Alerts and stats</a></li>
+                                    <li><a asp-area="" asp-controller="Instrument" asp-action="Graph">Price graphs<span class="glyphicon glyphicon-usd menu_logo"></span></a></li>
+                                    <li><a asp-area="" asp-controller="Instrument" asp-action="Graph">Alerts and stats<span class="glyphicon glyphicon-flash menu_logo"></span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -101,21 +104,20 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
                         <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                          <li><a asp-area="" asp-controller="Users" asp-action="Index">Users</a></li>
-                          <li><a asp-area="" asp-controller="Exchange" asp-action="Index">Exchanges</a></li>
-                            <li class="dropdown-submenu">
+                          <li><a class="dropdown_item" asp-area="" asp-controller="Users" asp-action="Index">Users</a><span class="glyphicon glyphicon-user menu_logo"></span></li>
+                          <li><a class="dropdown_item" asp-area="" asp-controller="Exchange" asp-action="Index">Exchanges</a><span class="glyphicon glyphicon-credit-card menu_logo"></span></li>
+								<li class="dropdown-submenu">
                                 <a class="test" tabindex="-1" href="#">
                                     Instruments
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a asp-area="" asp-controller="Instrument" asp-action="Index">Instruments</a></li>
+                                    <li><a asp-area="" asp-controller="Instrument" asp-action="Index">Instruments</a><span class="glyphicon glyphicon-tags menu_logo"></span></li>
                                     <li><a asp-area="" asp-controller="InstrumentPrices" asp-action="Index">Instrument prices</a></li>
                                 </ul>
                             </li>
-                          
-                            <li><a asp-area="" asp-controller="Enquiries" asp-action="Index">Enquiries</a></li>
-                            <li><a asp-area="" asp-controller="NewsItems" asp-action="Index">Manage news</a></li>
-                            <li><a asp-area="" asp-controller="Settings" asp-action="Index">System config</a></li>
+                            <li><a class="dropdown_item" asp-area="" asp-controller="Enquiries" asp-action="Index">Enquiries</a><span class="glyphicon glyphicon-comment menu_logo"></span></li>
+                            <li><a class="dropdown_item" asp-area="" asp-controller="NewsItems" asp-action="Index">Manage news</a><span class="glyphicon glyphicon-globe menu_logo"></span></li>
+                            <li><a class="dropdown_item" asp-area="" asp-controller="Settings" asp-action="Index">System config</a><span class="glyphicon glyphicon-cog menu_logo"></span></li>
                         </ul>
                     </li>
                     }
