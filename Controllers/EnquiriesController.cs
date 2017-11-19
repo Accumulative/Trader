@@ -10,7 +10,7 @@ using TraderData.Models.ContactModels;
 
 namespace Trader.Controllers
 {
-    public class EnquiriesController : Controller
+    public class EnquiriesController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

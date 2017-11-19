@@ -10,7 +10,7 @@ using TraderData.Models.AdminModels;
 
 namespace Trader.Controllers
 {
-    public class SettingsController : Controller
+    public class SettingsController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

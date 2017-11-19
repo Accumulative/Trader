@@ -10,7 +10,7 @@ using System;
 namespace Trader.Controllers
 {
 
-    public class InstrumentController : Controller
+    public class InstrumentController : BaseController
     {
         private readonly IReference _reference;
 		

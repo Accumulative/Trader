@@ -1,6 +1,10 @@
 ﻿body {
 }
 
+.navbar-inverse {
+    background-color: black;
+}
+
 .menu_logo {
     display: inline-block;
     float: right;

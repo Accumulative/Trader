@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Trader.Controllers
 {
-    public class UserRolesController : Controller
+    public class UserRolesController : BaseController
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         public UserRolesController(RoleManager<IdentityRole> roleManager)

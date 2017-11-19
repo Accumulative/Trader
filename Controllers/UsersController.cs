@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 namespace Trader.Controllers
 {
     [Authorize(Roles = "Admin")]//RolesData.SeedRoles(app.ApplicationServices).Wait();
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;

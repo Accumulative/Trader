@@ -10,7 +10,7 @@ using TraderData.Models.NewsModels;
 
 namespace Trader.Controllers
 {
-    public class NewsItemsController : Controller
+    public class NewsItemsController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

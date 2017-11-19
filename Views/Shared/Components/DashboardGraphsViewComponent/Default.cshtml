@@ -5,7 +5,11 @@
     
     <div class="jumbotron">
         <div class="row" style="text-align: right">
-            <a id="chart_toggle" href="#bigChart" data-toggle="collapse">Hide</a>
+            <a id="chart_toggle" href="#bigChart" data-toggle="collapse">Hide
+				
+			</a>
+			<span id="hide_glyph" class="glyphicon glyphicon-eye-close" style="padding-left:5px;"></span>
+
         </div>
         <div class="row">
             @{
@@ -177,8 +181,16 @@
 @Html.Raw(chart5.CreateChartCode("lineChart5"));
     @Html.Raw(chart6.CreateChartCode("lineChart6"));
     $('#chart_toggle').click(function () {
-        $(this).text(function (i, old) {
-            return old == 'Hide' ? 'Show' : 'Hide';
-        });
+        
+	    if($("#hide_glyph").attr('class') == 'glyphicon glyphicon-eye-open') 
+	    {
+	        $("#hide_glyph").attr('class', 'glyphicon glyphicon-eye-close');
+            $(this).text('Hide');
+	    }
+    	else
+    	{
+            $("#hide_glyph").attr('class', 'glyphicon glyphicon-eye-open');
+	        $(this).text('Show');
+    	}
     });
 </script>

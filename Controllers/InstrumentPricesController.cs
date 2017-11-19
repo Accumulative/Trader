@@ -10,7 +10,7 @@ using TraderData.Models.InstrumentModels;
 
 namespace Trader.Controllers
 {
-    public class InstrumentPricesController : Controller
+    public class InstrumentPricesController : BaseController
     {
         private readonly ApplicationDbContext _context;
 

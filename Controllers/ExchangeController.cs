@@ -6,7 +6,7 @@ using TraderData.Models.FileImportModels;
 
 namespace Trader.Controllers
 {
-    public class ExchangeController : Controller
+    public class ExchangeController : BaseController
     {
         private readonly IReference _reference;
 

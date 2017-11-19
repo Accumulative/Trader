@@ -11,7 +11,7 @@ using TraderData.Models;
 namespace Trader.Controllers
 {
     [Authorize]
-    public class FileImportController : Controller
+    public class FileImportController : BaseController
     {
         private readonly IFileImport _fileImport;
         private readonly IReference _reference;

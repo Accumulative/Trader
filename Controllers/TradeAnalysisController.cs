@@ -23,7 +23,7 @@ using Trader.Models.TradeAnalysisModels;
 namespace Trader.Controllers
 {
     [Authorize]
-    public class TradeAnalysisController : Controller
+    public class TradeAnalysisController : BaseController
     {
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly ITrades _trades;

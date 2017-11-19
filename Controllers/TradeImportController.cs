@@ -21,7 +21,7 @@ using TraderData.Models.FileImportModels;
 namespace Trader.Controllers
 {
     [Authorize]
-    public class TradeImportController : Controller
+    public class TradeImportController : BaseController
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITrades _trades;

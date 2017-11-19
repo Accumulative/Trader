@@ -84,6 +84,23 @@
     <Compile Remove="TraderServices\FileImportService.cs" />
     <Compile Remove="TraderServices\InstrumentDataService.cs" />
     <Compile Remove="TraderServices\ReferenceDataService.cs" />
+    <Compile Remove="TraderData\BlobHandler.cs" />
+    <Compile Remove="TraderData\RolesData.cs" />
+    <Compile Remove="TraderData\Migrations\20171111133127_AddNewsAndEnquiries.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171111133127_AddNewsAndEnquiries.cs" />
+    <Compile Remove="TraderData\Migrations\20171111145428_AddSettingsModel.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171111145428_AddSettingsModel.cs" />
+    <Compile Remove="TraderData\Migrations\20171114214245_AddInstrumentTicker.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171114214245_AddInstrumentTicker.cs" />
+    <Compile Remove="TraderData\Migrations\20171116193451_AddInstrumentPrice.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171116193451_AddInstrumentPrice.cs" />
+    <Compile Remove="TraderData\Models\PayPalTransaction.cs" />
+    <Compile Remove="TraderData\Models\ContactModels\Enquiry.cs" />
+    <Compile Remove="TraderData\Models\ContactModels\Message.cs" />
+    <Compile Remove="TraderData\Models\InstrumentModels\InstrumentPrice.cs" />
+    <Compile Remove="TraderData\Models\LocalisationModels\CultureCountry.cs" />
+    <Compile Remove="TraderData\Models\NewsModels\NewsItem.cs" />
+    <Compile Remove="TraderServices\TransactionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="TraderData\TraderData.csproj">
@@ -112,6 +129,13 @@
     <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csprojResolveAssemblyReference.cache" />
     <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.dll" />
     <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.pdb" />
+    <None Remove="TraderData\Models\.DS_Store" />
+    <None Remove="TraderData\obj\TraderData.csproj.EntityFrameworkCore.targets" />
+    <None Remove="TraderData\obj\TraderData.csproj.nuget.cache" />
+    <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderData.dll" />
+    <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderData.pdb" />
+    <None Remove="TraderServices\obj\TraderServices.csproj.nuget.cache" />
+    <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.CopyComplete" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.deps.json" />

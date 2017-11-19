@@ -12,7 +12,7 @@ using TraderData.Models.TradeImportModels;
 namespace Trader.Controllers
 {
     [Authorize]
-    public class TaxController : Controller
+    public class TaxController : BaseController
     {
         private readonly ITrades _trades;
         private readonly IReference _reference;
