@@ -13,6 +13,9 @@
     <thead>
         <tr>
                 <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUser.UserName)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.QueryType)
                 </th>
                 <th>
@@ -25,14 +28,18 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.UserName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.QueryType)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Ts)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.EnquiryID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.EnquiryID">Not a problem</a>
+                <a asp-action="Edit" asp-route-id="@item.EnquiryID">Edit</a> |
+                <a asp-action="AdminDetails" asp-route-id="@item.EnquiryID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EnquiryID">Delete</a>
             </td>
         </tr>
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,20 +13,79 @@ namespace Trader.Controllers
 {
     public class InstrumentPricesController : BaseController
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IInstrumentData _instrumentData;
+        private readonly IReference _reference;
 
-        public InstrumentPricesController(ApplicationDbContext context)
+        public InstrumentPricesController(IInstrumentData instrumentData, IReference reference)
         {
-            _context = context;    
+            _instrumentData = instrumentData;
+            _reference = reference;
         }
 
-        // GET: InstrumentPrices
-        public async Task<IActionResult> Index()
-        {
-            var applicationDbContext = _context.InstrumentPrice.Include(i => i.Exchange).Include(i => i.Instrument);
-            return View(await applicationDbContext.ToListAsync());
+		// GET: InstrumentPrices
+		public async Task<IActionResult> Index(
+        	string sortOrder,
+        	string currentFilter,
+        	string searchString,
+        	int? page)
+		{
+			ViewData["CurrentSort"] = sortOrder;
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "Date_desc" : "Date";
+            ViewData["PriceSortParm"] = sortOrder == "Price" ? "Price_desc" : "Price";
+
+			if (searchString != null)
+			{
+				page = 1;
+			}
+			else
+			{
+				searchString = currentFilter;
+			}
+
+			ViewData["CurrentFilter"] = searchString;
+            var insPriceAll = await _instrumentData.GetStoredPricesAsync();
+            var insPrices = insPriceAll.Select(x => x);
+
+			if (!String.IsNullOrEmpty(searchString))
+			{
+                if(IsNumber(searchString))
+                {
+					insPrices = insPrices.Where(s => s.Price > int.Parse(searchString));
+                }
+                else
+                {
+					insPrices = insPrices.Where(s => s.Instrument.Name.Contains(searchString));   
+                }
+			}
+			switch (sortOrder)
+			{
+				case "Price":
+					insPrices = insPrices.OrderBy(s => s.Price);
+					break;
+				case "Price_desc":
+					insPrices = insPrices.OrderByDescending(s => s.Price);
+					break;
+				case "Date":
+					insPrices = insPrices.OrderBy(s => s.DateTime);
+					break;
+				case "Date_desc":
+					insPrices = insPrices.OrderByDescending(s => s.DateTime);
+					break;
+				default:
+					insPrices = insPrices.OrderBy(s => s.DateTime);
+					break;
+			}
+			int pageSize = 50;
+			return View( PaginatedList<InstrumentPrice>.Create(insPrices.AsQueryable(), page ?? 1, pageSize));
         }
 
+
+
+        internal bool IsNumber(string s)
+		{
+			int i;
+			return int.TryParse(s, out i);
+		}
         // GET: InstrumentPrices/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -34,10 +94,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var instrumentPrice = await _context.InstrumentPrice
-                .Include(i => i.Exchange)
-                .Include(i => i.Instrument)
-                .SingleOrDefaultAsync(m => m.InstrumentPriceID == id);
+            var instrumentPrice = await _instrumentData.GetPriceByID((int)id);
             if (instrumentPrice == null)
             {
                 return NotFound();
@@ -47,10 +104,11 @@ namespace Trader.Controllers
         }
 
         // GET: InstrumentPrices/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ExchangeID"] = new SelectList(_context.Exchange, "ExchangeId", "Name");
-            ViewData["InstrumentID"] = new SelectList(_context.Instrument, "InstrumentID", "InstrumentID");
+            
+            ViewData["ExchangeID"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name");
+            ViewData["InstrumentID"] = new SelectList(await _reference.getInstruments(), "InstrumentID", "InstrumentID");
             return View();
         }
 
@@ -63,12 +121,11 @@ namespace Trader.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(instrumentPrice);
-                await _context.SaveChangesAsync();
+                await _instrumentData.AddInstrumentPrice(instrumentPrice);
                 return RedirectToAction("Index");
             }
-            ViewData["ExchangeID"] = new SelectList(_context.Exchange, "ExchangeId", "Name", instrumentPrice.ExchangeID);
-            ViewData["InstrumentID"] = new SelectList(_context.Instrument, "InstrumentID", "InstrumentID", instrumentPrice.InstrumentID);
+            ViewData["ExchangeID"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name", instrumentPrice.ExchangeID);
+            ViewData["InstrumentID"] = new SelectList(await _reference.getInstruments(), "InstrumentID", "InstrumentID", instrumentPrice.InstrumentID);
             return View(instrumentPrice);
         }
 
@@ -80,13 +137,13 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var instrumentPrice = await _context.InstrumentPrice.SingleOrDefaultAsync(m => m.InstrumentPriceID == id);
+            var instrumentPrice = await _instrumentData.GetPriceByID((int)id);
             if (instrumentPrice == null)
             {
                 return NotFound();
             }
-            ViewData["ExchangeID"] = new SelectList(_context.Exchange, "ExchangeId", "Name", instrumentPrice.ExchangeID);
-            ViewData["InstrumentID"] = new SelectList(_context.Instrument, "InstrumentID", "InstrumentID", instrumentPrice.InstrumentID);
+            ViewData["ExchangeID"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name", instrumentPrice.ExchangeID);
+            ViewData["InstrumentID"] = new SelectList(await _reference.getInstruments(), "InstrumentID", "InstrumentID", instrumentPrice.InstrumentID);
             return View(instrumentPrice);
         }
 
@@ -104,26 +161,15 @@ namespace Trader.Controllers
 
             if (ModelState.IsValid)
             {
-                try
+                var res = await _instrumentData.EditInstrumentPrice(instrumentPrice);
+                if (res)
                 {
-                    _context.Update(instrumentPrice);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InstrumentPriceExists(instrumentPrice.InstrumentPriceID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction("Index");
+                return NotFound();
             }
-            ViewData["ExchangeID"] = new SelectList(_context.Exchange, "ExchangeId", "Name", instrumentPrice.ExchangeID);
-            ViewData["InstrumentID"] = new SelectList(_context.Instrument, "InstrumentID", "InstrumentID", instrumentPrice.InstrumentID);
+            ViewData["ExchangeID"] = new SelectList(await _reference.getExchanges(), "ExchangeId", "Name", instrumentPrice.ExchangeID);
+            ViewData["InstrumentID"] = new SelectList(await _reference.getInstruments(), "InstrumentID", "InstrumentID", instrumentPrice.InstrumentID);
             return View(instrumentPrice);
         }
 
@@ -135,10 +181,7 @@ namespace Trader.Controllers
                 return NotFound();
             }
 
-            var instrumentPrice = await _context.InstrumentPrice
-                .Include(i => i.Exchange)
-                .Include(i => i.Instrument)
-                .SingleOrDefaultAsync(m => m.InstrumentPriceID == id);
+            var instrumentPrice = await _instrumentData.GetPriceByID((int)id);
             if (instrumentPrice == null)
             {
                 return NotFound();
@@ -152,15 +195,10 @@ namespace Trader.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var instrumentPrice = await _context.InstrumentPrice.SingleOrDefaultAsync(m => m.InstrumentPriceID == id);
-            _context.InstrumentPrice.Remove(instrumentPrice);
-            await _context.SaveChangesAsync();
+            await _instrumentData.DeleteInstrumentPrice(id);
             return RedirectToAction("Index");
         }
 
-        private bool InstrumentPriceExists(int id)
-        {
-            return _context.InstrumentPrice.Any(e => e.InstrumentPriceID == id);
-        }
+
     }
 }

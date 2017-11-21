@@ -1,4 +1,4 @@
-@model TraderData.Models.ContactModels.Enquiry
+@model Trader.Models.ContactViewModels.InitialContactView
 
 @{
     ViewData["Title"] = "Create";
@@ -10,26 +10,20 @@
     <div class="form-horizontal">
         <h4>Enquiry</h4>
         <hr />
+		
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="CustomerId" class="col-md-2 control-label"></label>
+            <label asp-for="queryType" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="CustomerId" class="form-control" />
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
+                <select asp-for="queryType" asp-items="@(Html.GetEnumSelectList<TraderData.Models.ContactModels.QueryType>())" ></select>
+                <span asp-validation-for="queryType" class="text-danger"></span>
             </div>
         </div>
-        <div class="form-group">
-            <label asp-for="QueryType" class="col-md-2 control-label"></label>
+		<div class="form-group">
+            <label asp-for="description" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select asp-for="QueryType" class="form-control"></select>
-                <span asp-validation-for="QueryType" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Ts" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Ts" class="form-control" />
-                <span asp-validation-for="Ts" class="text-danger"></span>
+                <textarea asp-for="description" class="form-control" ></textarea>
+                <span asp-validation-for="description" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">

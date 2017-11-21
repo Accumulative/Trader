@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TraderData.Models.ContactModels
 {
@@ -8,13 +9,23 @@ namespace TraderData.Models.ContactModels
     {
         [Key]
         public int EnquiryID { get; set; }
-        [StringLength(128)]
-        public string CustomerId { get; set; }
+
+        public virtual ApplicationUser ApplicationUser { get; set; }
+
+        [Required]
+        [ForeignKey("ApplicationUser")]
+        public string UserID { get; set; }
+
         [Required]
         [Display(Name = "QueryType")]
         public QueryType QueryType { get; set; }
         [Display(Name = "Timestamp")]
         public DateTime Ts { get; set; }
+
+        public Enquiry()
+        {
+            Ts = DateTime.Now;
+        }
     }
     public enum QueryType
     {

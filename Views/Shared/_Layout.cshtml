@@ -98,6 +98,16 @@
                             </li>
                         </ul>
                     </li>
+					<li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Help
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a asp-area="" asp-controller="Enquiries" asp-action="Index">Enquiries<span class="glyphicon glyphicon-comment menu_logo"></span></a></li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="faq">Frequently asked questions<span class="   glyphicon glyphicon-question-sign menu_logo"></span></a></li>
+                        </ul>
+                    </li>
                     @if (User.IsInRole("Admin"))
                     {
 					<li class="dropdown">
@@ -115,7 +125,7 @@
                                     <li><a asp-area="" asp-controller="InstrumentPrices" asp-action="Index">Instrument prices<span class="glyphicon glyphicon-gbp menu_logo"></span></a></li>
                                 </ul>
                             </li>
-                            <li><a class="dropdown_item" asp-area="" asp-controller="Enquiries" asp-action="Index">Enquiries<span class="glyphicon glyphicon-comment menu_logo"></span></a></li>
+                            <li><a class="dropdown_item" asp-area="" asp-controller="Enquiries" asp-action="AdminIndex">Enquiries<span class="glyphicon glyphicon-comment menu_logo"></span></a></li>
                             <li><a class="dropdown_item" asp-area="" asp-controller="NewsItems" asp-action="Index">Manage news<span class="glyphicon glyphicon-globe menu_logo"></span></a></li>
                             <li><a class="dropdown_item" asp-area="" asp-controller="Settings" asp-action="Index">System config<span class="glyphicon glyphicon-cog menu_logo"></span></a></li>
                         </ul>

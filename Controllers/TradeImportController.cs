@@ -17,7 +17,6 @@ using TraderData.Models;
 using TraderData.Models.TradeImportModels;
 using TraderData.Models.FileImportModels;
 
-
 namespace Trader.Controllers
 {
     [Authorize]
@@ -33,23 +32,90 @@ namespace Trader.Controllers
             _userManager = userManager;
             _reference = reference;
         }
-       
 
-        // GET: TradeImport
-        public async Task<IActionResult> Index()
+
+		// GET: TradeImport
+		public async Task<IActionResult> Index(
+			string sortOrder,
+			string currentFilter,
+			string searchString,
+			int? page)
         {
+
             var user = await GetCurrentUserAsync();
 
 			var userId = user?.Id;
 
             if (userId != null)
             {
-                var tradesAsync = await _trades.getAllByUser(userId);
-                tradesAsync = tradesAsync.OrderBy(x => x.TransactionDate).ToList();
-                return View(tradesAsync);
+				ViewData["CurrentSort"] = sortOrder;
+				ViewData["DateSortParm"] = sortOrder == "Date" ? "Date_desc" : "Date";
+				ViewData["ValueSortParm"] = sortOrder == "Price" ? "Price_desc" : "Price";
+				ViewData["QuantitySortParm"] = sortOrder == "Qty" ? "Qty_desc" : "Qty";
+
+				if (searchString != null)
+				{
+					page = 1;
+				}
+				else
+				{
+					searchString = currentFilter;
+				}
+
+				ViewData["CurrentFilter"] = searchString;
+
+
+                var tradesAll = await _trades.getAllByUser(userId);
+
+				var trades = tradesAll.Select(x => x);
+
+				if (!String.IsNullOrEmpty(searchString))
+				{
+					if (IsNumber(searchString))
+					{
+						trades = trades.Where(s => s.Value > int.Parse(searchString));
+					}
+					else
+					{
+						trades = trades.Where(s => s.Instrument.Name.Contains(searchString)
+                                             || s.TransactionDate.ToString().Contains(searchString)
+                                             || s.FileImport.Exchange.Name.Contains(searchString));
+					}
+				}
+				switch (sortOrder)
+				{
+					case "Price":
+						trades = trades.OrderBy(s => s.Value);
+						break;
+					case "Price_desc":
+						trades = trades.OrderByDescending(s => s.Value);
+						break;
+					case "Date":
+						trades = trades.OrderBy(s => s.TransactionDate);
+						break;
+					case "Date_desc":
+						trades = trades.OrderByDescending(s => s.TransactionDate);
+						break;
+					case "Qty":
+						trades = trades.OrderBy(s => s.Quantity);
+						break;
+					case "Qty_desc":
+						trades = trades.OrderByDescending(s => s.Quantity);
+						break;
+					default:
+						trades = trades.OrderBy(x => x.TransactionDate).ToList();
+						break;
+				}
+				int pageSize = 50;
+				return View(PaginatedList<TradeImport>.Create(trades.AsQueryable(), page ?? 1, pageSize));
             }
             return NotFound();
         }
+		internal bool IsNumber(string s)
+		{
+			int i;
+			return int.TryParse(s, out i);
+		}
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: TradeImport/Details/5
@@ -254,7 +320,8 @@ namespace Trader.Controllers
                         }
                     }
 
-                    _trades.Import(trades, fileImport);
+                    await _trades.Import(trades, fileImport);
+                    return RedirectToAction("Result");
                 }
                 return RedirectToAction("Result");
             }

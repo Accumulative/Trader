@@ -17,5 +17,10 @@ namespace TraderData.Models.ContactModels
         public DateTime Ts { get; set; }
         // true is yes, false is no
         public bool FromCustomer { get; set; }
+
+        public Message()
+        {
+            Ts = DateTime.Now;
+        }
     }
 }

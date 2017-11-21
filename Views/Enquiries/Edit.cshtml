@@ -13,13 +13,6 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="EnquiryID" />
         <div class="form-group">
-            <label asp-for="CustomerId" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="CustomerId" class="form-control" />
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
             <label asp-for="QueryType" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select asp-for="QueryType" class="form-control"></select>

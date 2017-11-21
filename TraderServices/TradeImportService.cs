@@ -26,7 +26,7 @@ namespace TraderServices
             await _context.SaveChangesAsync();
         }
 
-		public async void Import(List<TradeImport> trades, FileImport fileImport)
+		public async Task<bool> Import(List<TradeImport> trades, FileImport fileImport)
 		{
             foreach (var trade in trades)
             {
@@ -34,6 +34,7 @@ namespace TraderServices
             }
             _context.Add(fileImport);
 			await _context.SaveChangesAsync();
+            return true;
 		}
 
         public async void Delete(int id)

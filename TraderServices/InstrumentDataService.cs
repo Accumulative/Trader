@@ -139,6 +139,46 @@ namespace TraderServices
                 }).ToListAsync();
             return ins;
         }
+        public async Task<List<InstrumentPrice>> GetStoredPricesAsync()
+        {
+            return await _context.InstrumentPrice.Include(i => i.Exchange).Include(i => i.Instrument).ToListAsync();
+        }
+        public async Task<InstrumentPrice> GetPriceByID(int id)
+        {
+            var all = await GetStoredPricesAsync();
+            return all.FirstOrDefault(x => x.InstrumentPriceID == id);
+        }
+        public async Task AddInstrumentPrice(InstrumentPrice instrumentPrice)
+        {
+			_context.Add(instrumentPrice);
+			await _context.SaveChangesAsync();
+        }
+		public async Task<bool> EditInstrumentPrice(InstrumentPrice instrumentPrice)
+		{
+
+			try
+			{
+				_context.Update(instrumentPrice);
+				await _context.SaveChangesAsync();
+			}
+			catch (DbUpdateConcurrencyException)
+			{
+                return false;
+			}
+            return true;
+		}
+		private bool InstrumentPriceExists(int id)
+		{
+			return _context.InstrumentPrice.Any(e => e.InstrumentPriceID == id);
+			
+		}
+        public async Task DeleteInstrumentPrice(int id)
+        {
+			var instrumentPrice = await _context.InstrumentPrice.SingleOrDefaultAsync(m => m.InstrumentPriceID == id);
+			_context.InstrumentPrice.Remove(instrumentPrice);
+			await _context.SaveChangesAsync();
+        }
+
     }
     class InstrumentDataCacheStore
     {

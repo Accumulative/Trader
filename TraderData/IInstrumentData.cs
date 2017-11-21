@@ -16,5 +16,10 @@ namespace TraderData
         Task<decimal> GetCoinbasePrice(Instrument instrument);
         Task StorePrice(int exchangeID, decimal price, int instrumentID);
         Task<List<InstrumentData>> GetValueBetweenDates(int instrumentID, DateTime fromDate, DateTime toDate);
+        Task<List<InstrumentPrice>> GetStoredPricesAsync();
+        Task<InstrumentPrice> GetPriceByID(int id);
+        Task AddInstrumentPrice(InstrumentPrice instrumentPrice);
+        Task<bool> EditInstrumentPrice(InstrumentPrice instrumentPrice);
+        Task DeleteInstrumentPrice(int id);
     }
 }

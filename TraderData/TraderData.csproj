@@ -12,6 +12,7 @@
   <ItemGroup>
     <Folder Include="Models\TaxModels\" />
     <Folder Include="Models\AdminModels\" />
+    <Folder Include="Models\AlertModels\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.3" />
