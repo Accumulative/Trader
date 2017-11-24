@@ -8,7 +8,7 @@
 
 <div>
     <div class="row">
-        <form action="#" id="example-form">
+        <div id="example-form">
             <div class="col-md-3">
                 <label asp-for="instrumentId" class="control-label"></label>:
                 @Html.DropDownListFor(model => model.instrumentId, Model.InstrumentList, "-Instrument-")
@@ -29,7 +29,7 @@
 				
             </div>
 
-        </form>
+        </div>
 
     </div>
 </div>
@@ -41,9 +41,9 @@
     <script >
         var container = $("#graphs_container");
         $('#submitFilters').click(function () {
-                $.post("/Home/DashboardGraphViewComponent", $('#example-form').serialize(), function (data) { container.html(data); });
+                $.post("/Home/DashboardGraphViewComponent", $('#example-form :input').serialize(), function (data) { container.html(data); });
         })
-        $.post("/Home/DashboardGraphViewComponent", $('#example-form').serialize(), function (data) { container.html(data); });
+        $.post("/Home/DashboardGraphViewComponent", $('#example-form :input').serialize(), function (data) { container.html(data); });
    </script>
 
 }

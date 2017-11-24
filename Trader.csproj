@@ -26,7 +26,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.2" />
-<PackageReference Include="Microsoft.Composition" Version="1.0.30" ExcludeAssets="All" />
+<PackageReference Include="Microsoft.Composition" Version="1.0.31" ExcludeAssets="All" />
 <PackageReference Include="System.Composition" Version="1.0.31" />
 <PackageReference Include="Chart.js" Version="2.6.0" />
 <PackageReference Include="ChartJSCore" Version="1.1.1" />
@@ -101,6 +101,17 @@
     <Compile Remove="TraderData\Models\LocalisationModels\CultureCountry.cs" />
     <Compile Remove="TraderData\Models\NewsModels\NewsItem.cs" />
     <Compile Remove="TraderServices\TransactionService.cs" />
+    <Compile Remove="TraderApi\Program.cs" />
+    <Compile Remove="TraderApi\Startup.cs" />
+    <Compile Remove="TraderApi\ApiModels\ApiTrade.cs" />
+    <Compile Remove="TraderApi\Controllers\TradesController.cs" />
+    <Compile Remove="TraderApi\Controllers\ValuesController.cs" />
+    <Compile Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.AssemblyInfo.cs" />
+    <Compile Remove="TraderData\Migrations\20171119121950_ChangeEnquiries.Designer.cs" />
+    <Compile Remove="TraderData\Migrations\20171119121950_ChangeEnquiries.cs" />
+    <Compile Remove="TraderData\Models\AdminModels\Notification.cs" />
+    <Compile Remove="TraderData\Models\AdminModels\NotificationUser.cs" />
+    <Compile Remove="TraderData\Models\AlertModels\Alert.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="TraderData\TraderData.csproj">
@@ -136,11 +147,32 @@
     <None Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderData.pdb" />
     <None Remove="TraderServices\obj\TraderServices.csproj.nuget.cache" />
     <None Remove="TraderServices\obj\Debug\netcoreapp1.1\TraderServices.csproj.CopyComplete" />
+    <None Remove="TraderApi\obj\TraderApi.csproj.nuget.g.props" />
+    <None Remove="TraderApi\obj\TraderApi.csproj.nuget.g.targets" />
+    <None Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.csproj.CoreCompileInputs.cache" />
+    <None Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.csproj.FileListAbsolute.txt" />
+    <None Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.csprojResolveAssemblyReference.cache" />
+    <None Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderApi.dll" />
+    <None Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderApi.pdb" />
+    <None Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderData.dll" />
+    <None Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderData.pdb" />
+    <None Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderServices.dll" />
+    <None Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderServices.pdb" />
+    <None Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.csproj.CopyComplete" />
+    <None Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.dll" />
+    <None Remove="TraderApi\obj\Debug\netcoreapp1.1\TraderApi.pdb" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="TraderData\bin\Debug\netcoreapp1.1\TraderData.deps.json" />
     <Content Remove="TraderData\obj\project.assets.json" />
     <Content Remove="TraderServices\obj\project.assets.json" />
     <Content Remove="TraderServices\bin\Debug\netcoreapp1.1\TraderServices.deps.json" />
+    <Content Remove="TraderApi\appsettings.Development.json" />
+    <Content Remove="TraderApi\appsettings.json" />
+    <Content Remove="TraderApi\Properties\launchSettings.json" />
+    <Content Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderApi.deps.json" />
+    <Content Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderApi.runtimeconfig.dev.json" />
+    <Content Remove="TraderApi\bin\Debug\netcoreapp1.1\TraderApi.runtimeconfig.json" />
+    <Content Remove="TraderApi\obj\project.assets.json" />
   </ItemGroup>
 </Project>
