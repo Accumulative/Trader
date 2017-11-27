@@ -31,6 +31,8 @@
 <PackageReference Include="Chart.js" Version="2.6.0" />
 <PackageReference Include="ChartJSCore" Version="1.1.1" />
 <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="1.1.2" />
+<PackageReference Include="TraderData" Version="1.0.0" />
+<PackageReference Include="TraderServices" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -112,12 +114,6 @@
     <Compile Remove="TraderData\Models\AdminModels\Notification.cs" />
     <Compile Remove="TraderData\Models\AdminModels\NotificationUser.cs" />
     <Compile Remove="TraderData\Models\AlertModels\Alert.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="TraderData\TraderData.csproj">
-    </ProjectReference>
-    <ProjectReference Include="TraderServices\TraderServices.csproj">
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="TraderData\.DS_Store" />
